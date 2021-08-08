@@ -21,8 +21,6 @@ class MainActivity : BaseActivity<LoginViewModel>() {
 
         initEvent()
 
-        Log.d(TAG,"2222222222")
-        Log.d(TAG,"3333333333")
     }
 
     private fun initEvent() {

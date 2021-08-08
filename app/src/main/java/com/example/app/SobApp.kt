@@ -2,6 +2,8 @@ package app
 
 import android.app.Application
 import android.content.Context
+import android.os.Build
+import com.tencent.mmkv.MMKV
 
 /**
 
@@ -18,5 +20,8 @@ class SobApp :Application() {
     override fun onCreate() {
         super.onCreate()
         sContext = applicationContext
+
+        //context.getFilesDir().getAbsolutePath() + "/mmkv"
+        MMKV.initialize(this)
     }
 }

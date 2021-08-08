@@ -16,10 +16,7 @@ import retrofit2.http.*
  */
 interface ApiServices {
 
-    @GET("/uc/ut/captcha?")
-    suspend fun getCapchaPic(@Query("code") random:Long):ResponseBody
-
     @POST("/uc/ut/join/send-sms")
-     fun getPhoneCheckCode(@Body sendSmsVo: SendSmsVo): Flow<CheckPhoneCodeResult>
+     fun getPhoneCheckCode(@Header("cookie") cookie:String, @Body sendSmsVo: SendSmsVo): Flow<CheckPhoneCodeResult>
 
 }

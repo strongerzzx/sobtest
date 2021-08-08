@@ -9,6 +9,7 @@ import apis.ApiServices
 import base.BaseRetrofit
 import beans.requestbeans.SendSmsVo
 import beans.resultbeans.CheckPhoneCodeResult
+import com.example.utils.MmkvUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -35,22 +36,18 @@ class LoginViewModel : ViewModel() {
 
     fun getRandomPic(){
         viewModelScope.launch {
-            BaseRetrofit.createApisService(ApiServices::class.java)
-                .getCapchaPic(System.currentTimeMillis()).let {
 
-                }
         }
     }
 
     fun getPhoneCheckCode(sendSmsVo: SendSmsVo) {
         viewModelScope.launch(Dispatchers.Main) {
-            val flow = BaseRetrofit.createApisService(ApiServices::class.java)
-                .getPhoneCheckCode(sendSmsVo)
+             BaseRetrofit.createApisService(ApiServices::class.java)
+                .getPhoneCheckCode(MmkvUtil.getString("cookie"),sendSmsVo)
                 .flowOn(Dispatchers.IO)
                 .collect {
-                    Log.d(TAG,"check phone code --> $it")
+                    Log.d(TAG,"check phone code --> $it  --> ${MmkvUtil.getString("cookie")}")
                 }
-
         }
 
     }
