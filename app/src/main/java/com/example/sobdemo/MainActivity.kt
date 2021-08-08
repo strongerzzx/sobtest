@@ -20,6 +20,8 @@ class MainActivity : BaseActivity<LoginViewModel>() {
         setContentView(mBinding.root)
 
         initEvent()
+
+        Log.d(TAG,"2222222222")
     }
 
     private fun initEvent() {
