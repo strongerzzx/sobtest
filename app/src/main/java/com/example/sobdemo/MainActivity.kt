@@ -25,20 +25,20 @@ class MainActivity : BaseActivity<LoginViewModel>() {
 
     private fun initEvent() {
 
-        mViewModel.getRandomPic()
+        //加载验证码
+        mViewModel.checkPhoneCodePic.observe(this,{
+            Glide.with(this@MainActivity)
+                .load(it)
+                .into(  mBinding.ivRegisterCheckPic)
+
+        })
+
+        mViewModel.loadCheckCodePic()
 
         mBinding.apply {
-            var randomNum = UUID.randomUUID()
-
-            Glide.with(this@MainActivity)
-                    .load(BaseRetrofit.BASE_URL + "/uc/ut/captcha?code=${randomNum}")
-                    .into(ivRegisterCheckPic)
-
+            //点击切换验证码
             ivRegisterCheckPic.setOnClickListener {
-                randomNum = UUID.randomUUID()
-                Glide.with(this@MainActivity)
-                        .load(BaseRetrofit.BASE_URL + "/uc/ut/captcha?code=${randomNum}")
-                        .into(ivRegisterCheckPic)
+                mViewModel.loadCheckCodePic()
             }
 
 
@@ -53,6 +53,7 @@ class MainActivity : BaseActivity<LoginViewModel>() {
             }
         }
     }
+
 
 
     companion object{

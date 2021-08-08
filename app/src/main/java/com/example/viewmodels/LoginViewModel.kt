@@ -30,14 +30,15 @@ class LoginViewModel : ViewModel() {
     private val _registerLiveData = MutableLiveData<CheckPhoneCodeResult>()
     val registerLivedata:LiveData<CheckPhoneCodeResult> = _registerLiveData
 
+    //验证码图片
+     val checkPhoneCodePic = MutableLiveData<String>()
+
     companion object {
         private const val TAG = "LoginViewModel"
     }
 
-    fun getRandomPic(){
-        viewModelScope.launch {
-
-        }
+    fun loadCheckCodePic(){
+        checkPhoneCodePic.postValue(BaseRetrofit.BASE_URL + "/uc/ut/captcha?code=${UUID.randomUUID()}")
     }
 
     fun getPhoneCheckCode(sendSmsVo: SendSmsVo) {

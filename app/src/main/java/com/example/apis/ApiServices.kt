@@ -16,7 +16,9 @@ import retrofit2.http.*
  */
 interface ApiServices {
 
+    //获取手机验证码
     @POST("/uc/ut/join/send-sms")
-     fun getPhoneCheckCode(@Header("cookie") cookie:String, @Body sendSmsVo: SendSmsVo): Flow<CheckPhoneCodeResult>
+    fun getPhoneCheckCode(@Header("cookie") cookie: String
+                          , @Body sendSmsVo: SendSmsVo): Flow<CheckPhoneCodeResult>
 
 }
