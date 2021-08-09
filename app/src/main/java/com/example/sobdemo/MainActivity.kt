@@ -1,18 +1,17 @@
 package com.example.sobdemo
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.text.TextUtils
 import android.widget.Toast
 import base.BaseActivity
-import base.BaseRetrofit
-import beans.requestbeans.SendSmsVo
 import com.bumptech.glide.Glide
+import com.example.beans.requestbeans.UserInfo
 import com.example.sobdemo.databinding.ActivityMainBinding
-import viewmodels.LoginViewModel
+import com.example.utils.MD5Util
+import com.example.viewmodels.UserViewModel
 import java.util.*
 
-class MainActivity : BaseActivity<LoginViewModel>() {
+class MainActivity : BaseActivity<UserViewModel>() {
     private lateinit var mBinding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,41 +23,73 @@ class MainActivity : BaseActivity<LoginViewModel>() {
     }
 
     private fun initEvent() {
+        getImmersionBar().init()
 
         //加载验证码
-        mViewModel.checkPhoneCodePic.observe(this,{
+        mViewModel.checkPhoneCodePic.observe(this, {
             Glide.with(this@MainActivity)
                 .load(it)
-                .into(  mBinding.ivRegisterCheckPic)
+                .into(mBinding.ivYzmCheckPic)
 
         })
 
+
         mViewModel.loadCheckCodePic()
+
+        mViewModel.loginLiveData.observe(this, {
+            it?.let {
+                if (it.success) {
+                    //TODO:到详情页面
+                }
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+
 
         mBinding.apply {
             //点击切换验证码
-            ivRegisterCheckPic.setOnClickListener {
+            ivYzmCheckPic.setOnClickListener {
                 mViewModel.loadCheckCodePic()
             }
 
-
-            mViewModel.registerLivedata.observe(this@MainActivity,{
-                Toast.makeText(this@MainActivity,it.message,Toast.LENGTH_SHORT).show()
-            })
-
-            btnRegister.setOnClickListener {
-                mViewModel.getPhoneCheckCode(SendSmsVo(etRegisterAccount.text.toString()
-                        , etRegisterCheckPhone.text.toString()))
-                Log.d(TAG,"resgister params --> ${etRegisterAccount.text.toString()} ${etRegisterCheckPhone.text.toString()} ")
+            //登录
+            btnLogin.setOnClickListener {
+                val phoneNum = etInpuPhoneNum.text.toString()
+                val password = etInpuPhonePassword.text.toString()
+                val yzm = etInpuYzmText.text.toString()
+                if (TextUtils.isEmpty(yzm) || TextUtils.isEmpty(phoneNum)
+                    || TextUtils.isEmpty(password)
+                ) {
+                    return@setOnClickListener
+                }
+                mViewModel.doLogin(yzm, UserInfo(phoneNum, MD5Util.MD5(password)))
             }
+
+            tvForgetPassword.setOnClickListener {
+                readyGo(ForgetPasswordActivity::class.java)
+            }
+
+
+
+            tvRegister.setOnClickListener {
+                //TODO:注册
+
+
+            }
+
         }
+
+
     }
 
+    override fun isDarkBarFont(): Boolean {
+        return true
+    }
 
-
-    companion object{
+    companion object {
         private const val TAG = "MainActivity"
 
     }
-    override fun getSubViewModel(): Class<LoginViewModel> = LoginViewModel::class.java
+
+    override fun getSubViewModel(): Class<UserViewModel> = UserViewModel::class.java
 }

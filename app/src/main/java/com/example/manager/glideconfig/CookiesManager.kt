@@ -2,6 +2,7 @@ package com.example.manager.glideconfig
 
 import android.util.Log
 import base.BaseRetrofit
+import com.example.commonparams.CommonParms
 import com.example.sobdemo.BuildConfig
 import com.example.utils.MmkvUtil
 import okhttp3.Cookie
@@ -38,12 +39,12 @@ class CookiesManager : CookieJar {
         Log.d(TAG, "saveFromResponse HttpUrl --> $url  --> ${url.host}")
         if (BaseRetrofit.BASE_URL.contains(url.host)) {
             for (cookie in cookies) {
-                Log.d(TAG, "cookie --> " + cookie)
+                Log.d(TAG, "cookie --> $cookie")
             }
             val newCookies = cookies.toString().replace("[", "")
                 .replace("]", "")
-            Log.d(TAG, "cookie2 --> ${newCookies}")
-            MmkvUtil.saveString("cookie", newCookies)
+            Log.d(TAG, "cookie2 --> $newCookies")
+            MmkvUtil.saveString(CommonParms.COOKIE_KEY, newCookies) //cookie
             cookieStoreLog.put(BaseRetrofit.BASE_URL, cookies)
         }
     }

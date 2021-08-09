@@ -19,7 +19,7 @@ object BaseRetrofit {
 
     const val BASE_URL = "https://api.sunofbeach.net"
 
-    val cookieJar by lazy {
+    private val cookieJar by lazy {
         CookiesManager()
     }
 
@@ -35,8 +35,7 @@ object BaseRetrofit {
                 httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             })
         }
-        val client = builder.build()
-        return client
+        return builder.build()
     }
 
     fun getRetrofit(BASE_URL: String) = Retrofit.Builder()

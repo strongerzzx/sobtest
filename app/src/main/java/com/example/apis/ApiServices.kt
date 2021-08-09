@@ -1,10 +1,9 @@
 package apis
 
 import beans.requestbeans.SendSmsVo
-import beans.resultbeans.CheckPhoneCodeResult
+import com.example.base.BaseRet
+import com.example.beans.requestbeans.UserInfo
 import kotlinx.coroutines.flow.Flow
-import okhttp3.ResponseBody
-import retrofit2.Response
 
 import retrofit2.http.*
 
@@ -16,9 +15,37 @@ import retrofit2.http.*
  */
 interface ApiServices {
 
-    //获取手机验证码
+    //获取注册的手机验证码
     @POST("/uc/ut/join/send-sms")
-    fun getPhoneCheckCode(@Header("cookie") cookie: String
-                          , @Body sendSmsVo: SendSmsVo): Flow<CheckPhoneCodeResult>
+    fun getPhoneCheckCode(
+        @Header("cookie") cookie: String, @Body sendSmsVo: SendSmsVo
+    ): Flow<BaseRet<String>>
+
+
+    //通过手机号码获取头像
+    @GET("/uc/user/avatar/{phoneNum}")
+    fun getPhonePortrait(@Path("phoneNum") phoneNum: String): Flow<BaseRet<String>>
+
+
+    //登录
+    @POST("/uc/user/login/{captcha}")
+    fun doLogin(
+        @Header("cookie") cookie: String, @Path("captcha") captcha: String, @Body userInfo: UserInfo
+    ): Flow<BaseRet<String>>
+
+
+    //获取找回密码的手机验证码（找回密码）
+    @POST("/uc/ut/forget/send-sms")
+    fun getForgetPasswordPhoneYzm(
+        @Header("cookie") cookie: String, @Body sendSmsVo: SendSmsVo
+    ): Flow<BaseRet<String>>
+
+
+    //找回密码
+    @PUT("/uc/user/forget/{smsCode}")
+    fun doForgetPassword(
+        @Header("cookie") cookie: String, @Path("smsCode") smsCode: String, @Body userInfo: UserInfo
+    ):Flow<BaseRet<String>>
+
 
 }
