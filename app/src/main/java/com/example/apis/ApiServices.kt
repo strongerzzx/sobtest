@@ -2,7 +2,8 @@ package apis
 
 import beans.requestbeans.SendSmsVo
 import com.example.base.BaseRet
-import com.example.beans.requestbeans.UserInfo
+import com.example.beans.UserInfo
+import com.example.beans.requestbeans.LoginInfo
 import kotlinx.coroutines.flow.Flow
 
 import retrofit2.http.*
@@ -30,8 +31,14 @@ interface ApiServices {
     //登录
     @POST("/uc/user/login/{captcha}")
     fun doLogin(
-        @Header("cookie") cookie: String, @Path("captcha") captcha: String, @Body userInfo: UserInfo
+        @Header("cookie") cookie: String, @Path("captcha") captcha: String, @Body loginInfo: LoginInfo
     ): Flow<BaseRet<String>>
+
+
+    //登录成功 --> 解析Token --> 获取userid
+    @GET("/uc/user/checkToken")
+    fun checkToken():Flow<BaseRet<UserInfo>>
+
 
 
     //获取找回密码的手机验证码（找回密码）
@@ -44,7 +51,7 @@ interface ApiServices {
     //找回密码
     @PUT("/uc/user/forget/{smsCode}")
     fun doForgetPassword(
-        @Header("cookie") cookie: String, @Path("smsCode") smsCode: String, @Body userInfo: UserInfo
+        @Header("cookie") cookie: String, @Path("smsCode") smsCode: String, @Body loginInfo: LoginInfo
     ): Flow<BaseRet<String>>
 
 
@@ -54,7 +61,7 @@ interface ApiServices {
         @Header("cookie") cookie: String,
         @Path("phoneNumber") phoneNumber: String,
         @Path("smsCode") smsCode: String,
-    ):Flow<BaseRet<String>>
+    ): Flow<BaseRet<String>>
 
 
 }

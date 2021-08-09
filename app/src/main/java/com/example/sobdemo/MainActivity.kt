@@ -5,9 +5,11 @@ import android.text.TextUtils
 import android.widget.Toast
 import base.BaseActivity
 import com.bumptech.glide.Glide
-import com.example.beans.requestbeans.UserInfo
+import com.example.beans.requestbeans.LoginInfo
+import com.example.commonparams.CommonParms
 import com.example.sobdemo.databinding.ActivityMainBinding
 import com.example.utils.MD5Util
+import com.example.utils.MmkvUtil
 import com.example.viewmodels.UserViewModel
 import java.util.*
 
@@ -39,7 +41,8 @@ class MainActivity : BaseActivity<UserViewModel>() {
         mViewModel.loginLiveData.observe(this, {
             it?.let {
                 if (it.success) {
-                    //TODO:到详情页面
+                    //TODO:登录成功 --> 到主页面
+                    mViewModel.doCheckToken()
                 }
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
@@ -64,13 +67,12 @@ class MainActivity : BaseActivity<UserViewModel>() {
                         .show()
                     return@setOnClickListener
                 }
-                mViewModel.doLogin(yzm, UserInfo(phoneNum, MD5Util.MD5(password)))
+                mViewModel.doLogin(yzm, LoginInfo(phoneNum, MD5Util.MD5(password)))
             }
 
             tvForgetPassword.setOnClickListener {
                 readyGo(LookForPasswordActivity::class.java)
             }
-
 
 
             tvRegister.setOnClickListener {

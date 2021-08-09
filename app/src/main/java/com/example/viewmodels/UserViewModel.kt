@@ -9,7 +9,7 @@ import apis.ApiServices
 import base.BaseRetrofit
 import beans.requestbeans.SendSmsVo
 import com.example.base.BaseRet
-import com.example.beans.requestbeans.UserInfo
+import com.example.beans.requestbeans.LoginInfo
 import com.example.commonparams.CommonParms
 import com.example.utils.MmkvUtil
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import java.util.*
-
 
 
 /**
@@ -43,7 +42,7 @@ class UserViewModel : ViewModel() {
 
     //短信找回密码
     private val _lookforForgetpassword = MutableLiveData<BaseRet<String>>()
-    val lookforForgetpassword:LiveData<BaseRet<String>> = _lookforForgetpassword
+    val lookforForgetpassword: LiveData<BaseRet<String>> = _lookforForgetpassword
 
 
     //验证码图片
@@ -86,10 +85,10 @@ class UserViewModel : ViewModel() {
     }
 
     //登录
-    fun doLogin(captcha: String, userInfo: UserInfo) {
+    fun doLogin(captcha: String, loginInfo: LoginInfo) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ApiServices::class.java)
-                .doLogin(MmkvUtil.getString(CommonParms.COOKIE_KEY), captcha, userInfo)
+                .doLogin(MmkvUtil.getString(CommonParms.COOKIE_KEY), captcha, loginInfo)
                 .flowOn(Dispatchers.IO)
                 .catch {
                     println("catch exception")
@@ -100,6 +99,19 @@ class UserViewModel : ViewModel() {
                 }
         }
     }
+
+    //登录成功后 --> 检测token --> 获取userid
+    fun doCheckToken() {
+        viewModelScope.launch(Dispatchers.Main) {
+            BaseRetrofit.createApisService(ApiServices::class.java)
+                .checkToken()
+                .flowOn(Dispatchers.IO)
+                .collect {
+                    Log.d(TAG, "doCheckToken  -->  ${it.data.data}")
+                }
+        }
+    }
+
 
     //获取找回密码的手机验证码
     fun getForetCheckCodeByPhone(cookie: String, sendSmsVo: SendSmsVo) {
@@ -131,10 +143,10 @@ class UserViewModel : ViewModel() {
     }
 
     //找回密码 --> 短信找回
-    fun getForgetPassword(cookie: String, smsCode: String, userInfo: UserInfo) {
+    fun getForgetPassword(cookie: String, smsCode: String, loginInfo: LoginInfo) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ApiServices::class.java)
-                .doForgetPassword(cookie, smsCode, userInfo)
+                .doForgetPassword(cookie, smsCode, loginInfo)
                 .flowOn(Dispatchers.IO)
                 .collect {
                     _lookforForgetpassword.value = it

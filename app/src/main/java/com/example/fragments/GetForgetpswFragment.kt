@@ -7,16 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.base.BaseFragment
-import com.example.beans.requestbeans.UserInfo
+import com.example.beans.requestbeans.LoginInfo
 import com.example.commonparams.CommonParms
 import com.example.sobdemo.MainActivity
 import com.example.sobdemo.R
-import com.example.sobdemo.databinding.CheckSmsFragmentLayoutBinding
 import com.example.sobdemo.databinding.GetForgetPswFragmentLayoutBinding
 import com.example.utils.MmkvUtil
 import com.example.viewmodels.UserViewModel
-import com.google.gson.JsonArray
-import com.google.gson.JsonParser
 
 class GetForgetpswFragment : BaseFragment<UserViewModel>() {
 
@@ -59,7 +56,7 @@ class GetForgetpswFragment : BaseFragment<UserViewModel>() {
                 mViewModel.getForgetPassword(
                     MmkvUtil.getString(CommonParms.COOKIE_KEY),
                     etSetForgetSmsCode.text.toString(),
-                    UserInfo(
+                    LoginInfo(
                         etSetForgetPhoneNum.text.toString(),
                         etSetForgetPassword.text.toString()
                     )
