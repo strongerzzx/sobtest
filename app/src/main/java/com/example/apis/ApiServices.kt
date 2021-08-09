@@ -45,6 +45,15 @@ interface ApiServices {
     @PUT("/uc/user/forget/{smsCode}")
     fun doForgetPassword(
         @Header("cookie") cookie: String, @Path("smsCode") smsCode: String, @Body userInfo: UserInfo
+    ): Flow<BaseRet<String>>
+
+
+    //检查手机验证码是否正确
+    @GET("/uc/ut/check-sms-code/{phoneNumber}/{smsCode}")
+    fun doVerifyPhoneCode(
+        @Header("cookie") cookie: String,
+        @Path("phoneNumber") phoneNumber: String,
+        @Path("smsCode") smsCode: String,
     ):Flow<BaseRet<String>>
 
 

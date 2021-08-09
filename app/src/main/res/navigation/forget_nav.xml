@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/forget_nav"
+    app:startDestination="@id/checkSmsFragment">
+
+    <fragment
+        android:id="@+id/checkSmsFragment"
+        android:name="com.example.fragments.CheckSmsFragment"
+        android:label="CheckSmsFragment" >
+        <action
+            android:id="@+id/action_checkSmsFragment_to_getForgetpswFragment"
+            app:destination="@id/getForgetpswFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/getForgetpswFragment"
+        android:name="com.example.fragments.GetForgetpswFragment"
+        android:label="GetForgetpswFragment" />
+</navigation>

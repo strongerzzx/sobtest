@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="#000">
+
+
+    <include
+        android:id="@+id/set_new_forget_password_top"
+        layout="@layout/common_title_return_layout"/>
+
+
+    <EditText
+        android:id="@+id/et_set_forget_phone_num"
+        style="@style/EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="100dp"
+        android:hint="请输入手机号"
+        android:inputType="phone"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/set_new_forget_password_top" />
+
+    <View
+        android:id="@+id/line_phone_num"
+        style="@style/HorizontalLineStyle"
+        android:layout_marginHorizontal="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_set_forget_phone_num" />
+
+
+    <EditText
+        android:id="@+id/et_set_forget_password"
+        style="@style/EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="30dp"
+        android:hint="请输入新密码"
+        android:inputType="phone"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line_phone_num" />
+
+    <View
+        android:id="@+id/line_set_fogret_pswd"
+        style="@style/HorizontalLineStyle"
+        android:layout_marginHorizontal="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_set_forget_password" />
+
+
+    <EditText
+        android:id="@+id/et_set_forget_sms_code"
+        style="@style/EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="30dp"
+        android:hint="请输入短信验证码"
+        android:inputType="phone"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line_set_fogret_pswd" />
+
+    <View
+        android:id="@+id/line_set_fogret_sms_code"
+        style="@style/HorizontalLineStyle"
+        android:layout_marginHorizontal="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_set_forget_sms_code" />
+
+
+    <Button
+        android:id="@+id/btn_comfirm_set_foget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="确定"
+        android:layout_marginHorizontal="40dp"
+        android:background="@drawable/shape_bg_common_btn"
+        app:layout_constraintStart_toStartOf="@+id/line_set_fogret_pswd"
+        app:layout_constraintEnd_toEndOf="@+id/line_set_fogret_pswd"
+        app:layout_constraintTop_toBottomOf="@+id/line_set_fogret_sms_code"
+        android:layout_marginTop="50dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

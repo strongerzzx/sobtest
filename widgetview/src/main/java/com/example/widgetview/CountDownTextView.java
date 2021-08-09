@@ -9,6 +9,7 @@ public class CountDownTextView extends androidx.appcompat.widget.AppCompatTextVi
 
     private static final String TAG = "CountDownTextView";
     private CountDownTimer mCountDownTimer;
+    private OnCountDownOverListener mOnCountDownOverListener;
 
     public CountDownTextView(Context context) {
         this(context, null);
@@ -25,27 +26,38 @@ public class CountDownTextView extends androidx.appcompat.widget.AppCompatTextVi
 
     public void startCountDown() {
         if (mCountDownTimer == null) {
-            mCountDownTimer = new CountDownTimer(1000 * 5 * 10, 1000) {
+            mCountDownTimer = new CountDownTimer(60 * 5 * 1000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    setText(String.valueOf((millisUntilFinished / 1000)));
-                    Log.d(TAG,"count down time   --> "+(millisUntilFinished / 1000));
+                    setText("验证码倒计时(" + (millisUntilFinished / 1000) + ")");
+                    Log.d(TAG, "count down time   --> " + (millisUntilFinished / 1000));
                 }
 
                 @Override
                 public void onFinish() {
                     stopCountDown();
+                    if (mOnCountDownOverListener != null) {
+                        mOnCountDownOverListener.onCountDownOverListener();
+                    }
                 }
             };
+            mCountDownTimer.start();
         }
     }
-
 
     public void stopCountDown() {
         if (mCountDownTimer != null) {
             mCountDownTimer.cancel();
             mCountDownTimer = null;
+            Log.d(TAG,"倒计时结束 -->  ");
         }
     }
 
+    public void setmOnCountDownOverListener(OnCountDownOverListener mOnCountDownOverListener) {
+        this.mOnCountDownOverListener = mOnCountDownOverListener;
+    }
+
+    public interface OnCountDownOverListener {
+        void onCountDownOverListener();
+    }
 }

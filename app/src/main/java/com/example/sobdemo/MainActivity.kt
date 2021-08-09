@@ -60,13 +60,15 @@ class MainActivity : BaseActivity<UserViewModel>() {
                 if (TextUtils.isEmpty(yzm) || TextUtils.isEmpty(phoneNum)
                     || TextUtils.isEmpty(password)
                 ) {
+                    Toast.makeText(this@MainActivity, "账号或密码不能为空", Toast.LENGTH_SHORT)
+                        .show()
                     return@setOnClickListener
                 }
                 mViewModel.doLogin(yzm, UserInfo(phoneNum, MD5Util.MD5(password)))
             }
 
             tvForgetPassword.setOnClickListener {
-                readyGo(ForgetPasswordActivity::class.java)
+                readyGo(LookForPasswordActivity::class.java)
             }
 
 

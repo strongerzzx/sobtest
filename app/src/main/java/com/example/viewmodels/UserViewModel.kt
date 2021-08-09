@@ -19,6 +19,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import java.util.*
 
+
+
 /**
 
  * 作者：zzx on 2021/8/7 18:19
@@ -33,14 +35,20 @@ class UserViewModel : ViewModel() {
 
     //找回密码 --> 获取手机短信
     private val _getForgetPasswordPhoneCode = MutableLiveData<BaseRet<String>>()
-    val getForgetPasswordPhoneCode:LiveData<BaseRet<String>> = _getForgetPasswordPhoneCode
+    val getForgetPasswordPhoneCode: LiveData<BaseRet<String>> = _getForgetPasswordPhoneCode
+
+    //短信校验结果
+    private val _verifySmsCode = MutableLiveData<BaseRet<String>>()
+    val verifySmsCode: LiveData<BaseRet<String>> = _verifySmsCode
+
+    //短信找回密码
+    private val _lookforForgetpassword = MutableLiveData<BaseRet<String>>()
+    val lookforForgetpassword:LiveData<BaseRet<String>> = _lookforForgetpassword
+
 
     //验证码图片
     val checkPhoneCodePic = MutableLiveData<String>()
 
-    companion object {
-        private const val TAG = "LoginViewModel"
-    }
 
     //加载验证码图片
     fun loadCheckCodePic() {
@@ -94,29 +102,50 @@ class UserViewModel : ViewModel() {
     }
 
     //获取找回密码的手机验证码
-    fun getForetCheckCodeByPhone(cookie:String,sendSmsVo: SendSmsVo){
+    fun getForetCheckCodeByPhone(cookie: String, sendSmsVo: SendSmsVo) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ApiServices::class.java)
                 .getForgetPasswordPhoneYzm(cookie, sendSmsVo)
                 .flowOn(Dispatchers.IO)
                 .collect {
                     _getForgetPasswordPhoneCode.value = it
-                    Log.d(TAG,"getForetCheckCodeByPhone --> $it")
+                    Log.d(TAG, "getForetCheckCodeByPhone --> $it")
                 }
         }
     }
 
+    //校验验证码
+    fun doVerifyPhoneCode(cookie: String, phoneNum: String, smsCode: String) {
+        viewModelScope.launch(Dispatchers.Main) {
+            BaseRetrofit.createApisService(ApiServices::class.java)
+                .doVerifyPhoneCode(cookie, phoneNum, smsCode)
+                .flowOn(Dispatchers.IO)
+                .catch {
 
-    //TODO:找回密码 --> 短信找回
-    fun getForgetPassword(cookie: String,smsCode:String,userInfo: UserInfo){
+                }
+                .collect {
+                    _verifySmsCode.value = it
+                    Log.d(TAG, "doVerifyPhoneCode  -->  $it")
+                }
+        }
+    }
+
+    //找回密码 --> 短信找回
+    fun getForgetPassword(cookie: String, smsCode: String, userInfo: UserInfo) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ApiServices::class.java)
                 .doForgetPassword(cookie, smsCode, userInfo)
                 .flowOn(Dispatchers.IO)
                 .collect {
-                    Log.d(TAG,"getForgetPassword  --> $it")
+                    _lookforForgetpassword.value = it
+                    Log.d(TAG, "getForgetPassword  --> $it")
                 }
         }
+    }
+
+
+    companion object {
+        private const val TAG = "LoginViewModel"
     }
 
 }
