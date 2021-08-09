@@ -1,6 +1,7 @@
 package com.example.manager.glideconfig
 
 import android.util.Log
+import android.webkit.CookieManager
 import base.BaseRetrofit
 import com.example.commonparams.CommonParms
 import com.example.sobdemo.BuildConfig
@@ -44,6 +45,7 @@ class CookiesManager : CookieJar {
             val newCookies = cookies.toString().replace("[", "")
                 .replace("]", "")
             Log.d(TAG, "cookie2 --> $newCookies")
+            CookieManager.getInstance().setCookie(url.host, newCookies)
             MmkvUtil.saveString(CommonParms.COOKIE_KEY, newCookies) //cookie
             cookieStoreLog.put(BaseRetrofit.BASE_URL, cookies)
         }

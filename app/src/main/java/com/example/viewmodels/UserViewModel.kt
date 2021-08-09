@@ -107,7 +107,7 @@ class UserViewModel : ViewModel() {
                 .checkToken()
                 .flowOn(Dispatchers.IO)
                 .collect {
-                    Log.d(TAG, "doCheckToken  -->  ${it.data.data}")
+                    Log.d(TAG, "doCheckToken  -->  ${it}")
                 }
         }
     }
