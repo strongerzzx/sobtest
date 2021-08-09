@@ -25,10 +25,10 @@ object BaseRetrofit {
 
     fun getOkHttpClient(): OkHttpClient {
         val builder: OkHttpClient.Builder = OkHttpClient.Builder()
-            .cookieJar(cookieJar)
-            .readTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
-            .connectTimeout(60, TimeUnit.SECONDS)
+                .cookieJar(cookieJar)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
         if (BuildConfig.DEBUG) {
             val httpLoggingInterceptor = HttpLoggingInterceptor()
             builder.addInterceptor(httpLoggingInterceptor.apply {
@@ -39,10 +39,11 @@ object BaseRetrofit {
     }
 
     fun getRetrofit(BASE_URL: String) = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(FlowCallAdapterFactory.create())
-        .build()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(FlowCallAdapterFactory.create())
+            .client(getOkHttpClient())
+            .build()
 
     fun <T> createApisService(ApiService: Class<T>) = getRetrofit(BASE_URL).create(ApiService)
 

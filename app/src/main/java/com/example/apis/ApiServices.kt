@@ -2,8 +2,9 @@ package apis
 
 import beans.requestbeans.SendSmsVo
 import com.example.base.BaseRet
-import com.example.beans.UserInfo
+import com.example.beans.userinfo.UserBasicInfo
 import com.example.beans.requestbeans.LoginInfo
+import com.example.beans.userinfo.UserInfo
 import kotlinx.coroutines.flow.Flow
 
 import retrofit2.http.*
@@ -34,12 +35,9 @@ interface ApiServices {
         @Header("cookie") cookie: String, @Path("captcha") captcha: String, @Body loginInfo: LoginInfo
     ): Flow<BaseRet<String>>
 
-
     //登录成功 --> 解析Token --> 获取userid
     @GET("/uc/user/checkToken")
-    fun checkToken():Flow<BaseRet<UserInfo>>
-
-
+    fun checkToken():Flow<BaseRet<UserBasicInfo>>
 
     //获取找回密码的手机验证码（找回密码）
     @POST("/uc/ut/forget/send-sms")
@@ -64,4 +62,7 @@ interface ApiServices {
     ): Flow<BaseRet<String>>
 
 
+    //获取用户信息
+    @GET("/uc/user-info/{userId}")
+    fun doGetUserInfo(@Path("userId")userId:String):Flow<UserInfo>
 }

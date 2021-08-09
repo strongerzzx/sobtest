@@ -1,5 +1,11 @@
-package com.example.beans
+package com.example.beans.userinfo
 
+/**
+
+ * 作者：zzx on 2021/8/9 19:59
+
+ *  作用： xxxx
+ */
 data class UserInfo(
     val code: Int,
     val `data`: Data,

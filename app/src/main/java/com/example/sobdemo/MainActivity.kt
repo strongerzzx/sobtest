@@ -43,6 +43,8 @@ class MainActivity : BaseActivity<UserViewModel>() {
                 if (it.success) {
                     //TODO:登录成功 --> 到主页面
                     mViewModel.doCheckToken()
+                }else{
+                    mViewModel.loadCheckCodePic()
                 }
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
@@ -69,6 +71,7 @@ class MainActivity : BaseActivity<UserViewModel>() {
                 }
                 mViewModel.doLogin(yzm, LoginInfo(phoneNum, MD5Util.MD5(password)))
             }
+
 
             tvForgetPassword.setOnClickListener {
                 readyGo(LookForPasswordActivity::class.java)

@@ -45,7 +45,6 @@ class CookiesManager : CookieJar {
             val newCookies = cookies.toString().replace("[", "")
                 .replace("]", "")
             Log.d(TAG, "cookie2 --> $newCookies")
-            CookieManager.getInstance().setCookie(url.host, newCookies)
             MmkvUtil.saveString(CommonParms.COOKIE_KEY, newCookies) //cookie
             cookieStoreLog.put(BaseRetrofit.BASE_URL, cookies)
         }

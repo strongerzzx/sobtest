@@ -10,12 +10,11 @@ import base.BaseRetrofit
 import beans.requestbeans.SendSmsVo
 import com.example.base.BaseRet
 import com.example.beans.requestbeans.LoginInfo
+import com.example.beans.userinfo.UserInfo
 import com.example.commonparams.CommonParms
 import com.example.utils.MmkvUtil
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -109,6 +108,17 @@ class UserViewModel : ViewModel() {
                 .collect {
                     Log.d(TAG, "doCheckToken  -->  ${it}")
                 }
+        }
+    }
+
+    fun getUserInfo(){
+        viewModelScope.launch(Dispatchers.Main) {
+            BaseRetrofit.createApisService(ApiServices::class.java)
+                    .doGetUserInfo("1279706481779875840")
+                    .flowOn(Dispatchers.IO)
+                    .collect {
+                        Log.d(TAG, "getUserInfo  -->  ${it}")
+                    }
         }
     }
 
