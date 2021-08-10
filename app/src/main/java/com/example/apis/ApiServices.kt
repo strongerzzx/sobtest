@@ -31,32 +31,35 @@ interface ApiServices {
 
     //登录
     @POST("/uc/user/login/{captcha}")
-    fun doLogin(
-        @Header("cookie") cookie: String, @Path("captcha") captcha: String, @Body loginInfo: LoginInfo
+    fun doLogin( @Header("cookie") cookie: String,
+        @Path("captcha") captcha: String, @Body loginInfo: LoginInfo
     ): Flow<BaseRet<String>>
+
+
 
     //登录成功 --> 解析Token --> 获取userid
     @GET("/uc/user/checkToken")
-    fun checkToken():Flow<BaseRet<UserBasicInfo>>
+    fun checkToken(@Header("cookie") cookie: String):Flow<BaseRet<UserBasicInfo>>
+
+
 
     //获取找回密码的手机验证码（找回密码）
     @POST("/uc/ut/forget/send-sms")
     fun getForgetPasswordPhoneYzm(
-        @Header("cookie") cookie: String, @Body sendSmsVo: SendSmsVo
+         @Body sendSmsVo: SendSmsVo
     ): Flow<BaseRet<String>>
 
 
     //找回密码
     @PUT("/uc/user/forget/{smsCode}")
     fun doForgetPassword(
-        @Header("cookie") cookie: String, @Path("smsCode") smsCode: String, @Body loginInfo: LoginInfo
+        @Path("smsCode") smsCode: String, @Body loginInfo: LoginInfo
     ): Flow<BaseRet<String>>
 
 
     //检查手机验证码是否正确
     @GET("/uc/ut/check-sms-code/{phoneNumber}/{smsCode}")
     fun doVerifyPhoneCode(
-        @Header("cookie") cookie: String,
         @Path("phoneNumber") phoneNumber: String,
         @Path("smsCode") smsCode: String,
     ): Flow<BaseRet<String>>

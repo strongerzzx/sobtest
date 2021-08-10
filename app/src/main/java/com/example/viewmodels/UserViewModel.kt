@@ -10,9 +10,11 @@ import base.BaseRetrofit
 import beans.requestbeans.SendSmsVo
 import com.example.base.BaseRet
 import com.example.beans.requestbeans.LoginInfo
+import com.example.beans.userinfo.UserBasicInfo
 import com.example.beans.userinfo.UserInfo
 import com.example.commonparams.CommonParms
 import com.example.utils.MmkvUtil
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -43,6 +45,9 @@ class UserViewModel : ViewModel() {
     private val _lookforForgetpassword = MutableLiveData<BaseRet<String>>()
     val lookforForgetpassword: LiveData<BaseRet<String>> = _lookforForgetpassword
 
+    //checkToken
+    private val _checkTokenLiveData = MutableLiveData<BaseRet<UserBasicInfo>>()
+    val checkTokenLiveData: LiveData<BaseRet<UserBasicInfo>> = _checkTokenLiveData
 
     //验证码图片
     val checkPhoneCodePic = MutableLiveData<String>()
@@ -57,12 +62,12 @@ class UserViewModel : ViewModel() {
     fun getPhoneCheckCode(sendSmsVo: SendSmsVo) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ApiServices::class.java)
-                .getPhoneCheckCode(MmkvUtil.getString(CommonParms.COOKIE_KEY), sendSmsVo)
+                .getPhoneCheckCode(MmkvUtil.getString(CommonParms.COOKIE_PIC_KEY), sendSmsVo)
                 .flowOn(Dispatchers.IO)
                 .collect {
                     Log.d(
                         TAG,
-                        "check phone code --> $it  --> ${MmkvUtil.getString(CommonParms.COOKIE_KEY)}"
+                        "check phone code --> $it  --> ${MmkvUtil.getString(CommonParms.COOKIE_PIC_KEY)}"
                     )
                 }
         }
@@ -87,7 +92,7 @@ class UserViewModel : ViewModel() {
     fun doLogin(captcha: String, loginInfo: LoginInfo) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ApiServices::class.java)
-                .doLogin(MmkvUtil.getString(CommonParms.COOKIE_KEY), captcha, loginInfo)
+                .doLogin(MmkvUtil.getString(CommonParms.COOKIE_PIC_KEY),captcha, loginInfo)//MmkvUtil.getString(CommonParms.COOKIE_KEY),
                 .flowOn(Dispatchers.IO)
                 .catch {
                     println("catch exception")
@@ -103,22 +108,24 @@ class UserViewModel : ViewModel() {
     fun doCheckToken() {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ApiServices::class.java)
-                .checkToken()
+                .checkToken(MmkvUtil.getString(CommonParms.SOB_TOKEN))
                 .flowOn(Dispatchers.IO)
                 .collect {
-                    Log.d(TAG, "doCheckToken  -->  ${it}")
+                    _checkTokenLiveData.value = it
+                    Log.d(TAG, "doCheckToken  -->  $it")
                 }
         }
     }
 
-    fun getUserInfo(){
+    fun getUserInfo(userId: String) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ApiServices::class.java)
-                    .doGetUserInfo("1279706481779875840")
-                    .flowOn(Dispatchers.IO)
-                    .collect {
-                        Log.d(TAG, "getUserInfo  -->  ${it}")
-                    }
+                .doGetUserInfo(userId)
+                .flowOn(Dispatchers.IO)
+                .collect {
+                    saveUserInfo(it)
+                    Log.d(TAG, "getUserInfo  -->  $it")
+                }
         }
     }
 
@@ -127,7 +134,7 @@ class UserViewModel : ViewModel() {
     fun getForetCheckCodeByPhone(cookie: String, sendSmsVo: SendSmsVo) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ApiServices::class.java)
-                .getForgetPasswordPhoneYzm(cookie, sendSmsVo)
+                .getForgetPasswordPhoneYzm(sendSmsVo)
                 .flowOn(Dispatchers.IO)
                 .collect {
                     _getForgetPasswordPhoneCode.value = it
@@ -140,7 +147,7 @@ class UserViewModel : ViewModel() {
     fun doVerifyPhoneCode(cookie: String, phoneNum: String, smsCode: String) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ApiServices::class.java)
-                .doVerifyPhoneCode(cookie, phoneNum, smsCode)
+                .doVerifyPhoneCode(phoneNum, smsCode)
                 .flowOn(Dispatchers.IO)
                 .catch {
 
@@ -156,7 +163,7 @@ class UserViewModel : ViewModel() {
     fun getForgetPassword(cookie: String, smsCode: String, loginInfo: LoginInfo) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ApiServices::class.java)
-                .doForgetPassword(cookie, smsCode, loginInfo)
+                .doForgetPassword(smsCode, loginInfo)//cookie,
                 .flowOn(Dispatchers.IO)
                 .collect {
                     _lookforForgetpassword.value = it
@@ -165,6 +172,11 @@ class UserViewModel : ViewModel() {
         }
     }
 
+    private fun saveUserInfo(userInfo: UserInfo) {
+        val gson = Gson()
+        val localUserInfo = gson.toJson(userInfo)
+        MmkvUtil.saveString(CommonParms.BASIC_USER_INFO, localUserInfo)
+    }
 
     companion object {
         private const val TAG = "LoginViewModel"

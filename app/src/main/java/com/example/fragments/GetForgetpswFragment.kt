@@ -54,7 +54,7 @@ class GetForgetpswFragment : BaseFragment<UserViewModel>() {
             //找回密码
             btnComfirmSetFoget.setOnClickListener {
                 mViewModel.getForgetPassword(
-                    MmkvUtil.getString(CommonParms.COOKIE_KEY),
+                    MmkvUtil.getString(CommonParms.COOKIE_PIC_KEY),
                     etSetForgetSmsCode.text.toString(),
                     LoginInfo(
                         etSetForgetPhoneNum.text.toString(),

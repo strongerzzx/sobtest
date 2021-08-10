@@ -88,7 +88,7 @@ class CheckSmsFragment : BaseFragment<UserViewModel>() {
             //获取手机短信验证码
             tvCountDown.setOnClickListener {
                 mViewModel.getForetCheckCodeByPhone(
-                    MmkvUtil.getString(CommonParms.COOKIE_KEY),
+                    MmkvUtil.getString(CommonParms.COOKIE_PIC_KEY),
                     SendSmsVo(etForgetPhoneNum.text.toString(), etForgetCheckCode.text.toString())
                 )
             }
@@ -116,7 +116,7 @@ class CheckSmsFragment : BaseFragment<UserViewModel>() {
                 }
 
                 mViewModel.doVerifyPhoneCode(
-                    MmkvUtil.getString(CommonParms.COOKIE_KEY),
+                    MmkvUtil.getString(CommonParms.COOKIE_PIC_KEY),
                     etForgetPhoneNum.text.toString(),
                     etForgetInputSmsCode.text.toString()
                 )

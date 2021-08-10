@@ -35,6 +35,8 @@ class MainActivity : BaseActivity<UserViewModel>() {
 
         })
 
+        mViewModel.doCheckToken()
+
 
         mViewModel.loadCheckCodePic()
 
@@ -49,6 +51,14 @@ class MainActivity : BaseActivity<UserViewModel>() {
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
         })
+
+        mViewModel.checkTokenLiveData.observe(this,{
+            if (it.success && it.data != null) {
+                readyGo(HomeActivity::class.java)
+                mViewModel.getUserInfo(it.data.id)
+            }
+        })
+
 
 
         mBinding.apply {
