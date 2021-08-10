@@ -11,15 +11,19 @@ class MmkvUtil {
 
     private static final MMKV sMMKv = MMKV.defaultMMKV();
 
-    public static void saveString(String key,String ret){
-        sMMKv.encode(key,ret);
+    public static void saveString(String key, String ret) {
+        sMMKv.encode(key, ret);
     }
 
-    public static String getString(String key){
-        return sMMKv.decodeString(key);
+    public static String getString(String key) {
+        String ret = sMMKv.decodeString(key);
+        if (ret != null && ret.length() > 0) {
+            return ret;
+        }
+        return "";
     }
 
-    public static void saveOtherFile(String fileName){
+    public static void saveOtherFile(String fileName) {
         MMKV mmkv = MMKV.mmkvWithID(fileName);
 
     }

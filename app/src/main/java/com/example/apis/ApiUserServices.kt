@@ -15,7 +15,7 @@ import retrofit2.http.*
 
  *  作用： xxxx
  */
-interface ApiServices {
+interface ApiUserServices {
 
     //获取注册的手机验证码
     @POST("/uc/ut/join/send-sms")

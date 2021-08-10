@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import apis.ApiServices
+import apis.ApiUserServices
 import base.BaseRetrofit
 import beans.requestbeans.SendSmsVo
 import com.example.base.BaseRet
@@ -61,7 +61,7 @@ class UserViewModel : ViewModel() {
     //获取注册的手机验证码
     fun getPhoneCheckCode(sendSmsVo: SendSmsVo) {
         viewModelScope.launch(Dispatchers.Main) {
-            BaseRetrofit.createApisService(ApiServices::class.java)
+            BaseRetrofit.createApisService(ApiUserServices::class.java)
                 .getPhoneCheckCode(MmkvUtil.getString(CommonParms.COOKIE_PIC_KEY), sendSmsVo)
                 .flowOn(Dispatchers.IO)
                 .collect {
@@ -76,7 +76,7 @@ class UserViewModel : ViewModel() {
     //根据手机获取头像
     fun getPhoneHeadPortrait(phoneNum: String) {
         viewModelScope.launch(Dispatchers.Main) {
-            BaseRetrofit.createApisService(ApiServices::class.java)
+            BaseRetrofit.createApisService(ApiUserServices::class.java)
                 .getPhonePortrait(phoneNum)
                 .flowOn(Dispatchers.IO)
                 .collect {
@@ -91,7 +91,7 @@ class UserViewModel : ViewModel() {
     //登录
     fun doLogin(captcha: String, loginInfo: LoginInfo) {
         viewModelScope.launch(Dispatchers.Main) {
-            BaseRetrofit.createApisService(ApiServices::class.java)
+            BaseRetrofit.createApisService(ApiUserServices::class.java)
                 .doLogin(MmkvUtil.getString(CommonParms.COOKIE_PIC_KEY),captcha, loginInfo)//MmkvUtil.getString(CommonParms.COOKIE_KEY),
                 .flowOn(Dispatchers.IO)
                 .catch {
@@ -107,7 +107,7 @@ class UserViewModel : ViewModel() {
     //登录成功后 --> 检测token --> 获取userid
     fun doCheckToken() {
         viewModelScope.launch(Dispatchers.Main) {
-            BaseRetrofit.createApisService(ApiServices::class.java)
+            BaseRetrofit.createApisService(ApiUserServices::class.java)
                 .checkToken(MmkvUtil.getString(CommonParms.SOB_TOKEN))
                 .flowOn(Dispatchers.IO)
                 .collect {
@@ -119,7 +119,7 @@ class UserViewModel : ViewModel() {
 
     fun getUserInfo(userId: String) {
         viewModelScope.launch(Dispatchers.Main) {
-            BaseRetrofit.createApisService(ApiServices::class.java)
+            BaseRetrofit.createApisService(ApiUserServices::class.java)
                 .doGetUserInfo(userId)
                 .flowOn(Dispatchers.IO)
                 .collect {
@@ -133,7 +133,7 @@ class UserViewModel : ViewModel() {
     //获取找回密码的手机验证码
     fun getForetCheckCodeByPhone(cookie: String, sendSmsVo: SendSmsVo) {
         viewModelScope.launch(Dispatchers.Main) {
-            BaseRetrofit.createApisService(ApiServices::class.java)
+            BaseRetrofit.createApisService(ApiUserServices::class.java)
                 .getForgetPasswordPhoneYzm(sendSmsVo)
                 .flowOn(Dispatchers.IO)
                 .collect {
@@ -146,7 +146,7 @@ class UserViewModel : ViewModel() {
     //校验验证码
     fun doVerifyPhoneCode(cookie: String, phoneNum: String, smsCode: String) {
         viewModelScope.launch(Dispatchers.Main) {
-            BaseRetrofit.createApisService(ApiServices::class.java)
+            BaseRetrofit.createApisService(ApiUserServices::class.java)
                 .doVerifyPhoneCode(phoneNum, smsCode)
                 .flowOn(Dispatchers.IO)
                 .catch {
@@ -162,7 +162,7 @@ class UserViewModel : ViewModel() {
     //找回密码 --> 短信找回
     fun getForgetPassword(cookie: String, smsCode: String, loginInfo: LoginInfo) {
         viewModelScope.launch(Dispatchers.Main) {
-            BaseRetrofit.createApisService(ApiServices::class.java)
+            BaseRetrofit.createApisService(ApiUserServices::class.java)
                 .doForgetPassword(smsCode, loginInfo)//cookie,
                 .flowOn(Dispatchers.IO)
                 .collect {
