@@ -1,6 +1,7 @@
 package com.example.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,9 @@ class TestFragment : Fragment() {
 
 
     companion object {
+
+        private const val TAG = "TestFragment"
+
         fun getInstance(id: String): TestFragment {
             return TestFragment()
         }

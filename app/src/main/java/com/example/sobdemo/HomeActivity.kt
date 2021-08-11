@@ -18,14 +18,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigat
 class HomeActivity : BaseActivity<HomeViewModel>() {
 
     private lateinit var mBinding: ActivityHomeBinding
-    private lateinit var mBannearAdapter: ImageAdapter
-    private lateinit var mTabAdapter: TabAdapter
-
-    private val mBannerUrlList = mutableListOf<String>()
-
-    private val mMagicIndicatorAdapter by lazy {
-        MagicIndicatorAdapter()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,45 +30,9 @@ class HomeActivity : BaseActivity<HomeViewModel>() {
     private fun initEvent() {
         getImmersionBar().init()
 
-        mTabAdapter = TabAdapter(supportFragmentManager, lifecycle)
-        val tabNavigator = CommonNavigator(this@HomeActivity)
-        tabNavigator.isReselectWhenLayout = false //防止文字抖动
-
-
-        mViewModel.apply {
-
-            homeBannearLiveData.observe(this@HomeActivity, { it ->
-                Log.d(TAG, "banner list size --> ${it.size}")
-                it.forEach {
-                    mBannerUrlList.add(it.picUrl)
-                }
-                mBannearAdapter = ImageAdapter(mBannerUrlList)
-                mBinding.topBannear.setAdapter(mBannearAdapter)
-            })
-
-
-            //顶部Tab数据
-            categoryListLiveData.observe(this@HomeActivity, {
-                setupTopTab(it, tabNavigator)
-            })
-
-
-            getHomeBannearList()
-
-            getCategoryList()
-
-        }
-
-
         mBinding.apply {
-
-            setupBannear()
-
-
-            //bottom 联动navigation
             setupBottomNav()
         }
-
 
     }
 
@@ -86,28 +42,6 @@ class HomeActivity : BaseActivity<HomeViewModel>() {
         bvHomeView.setupWithNavController(navController)
     }
 
-    private fun setupTopTab(
-            it: List<CategoryData>,
-            tabNavigator: CommonNavigator
-    ) {
-        Log.d(TAG, "category list size --> ${it.size}")
-        mMagicIndicatorAdapter.setData(it, mBinding.viewPage2)
-        mTabAdapter.setData(it)
-        tabNavigator.adapter = mMagicIndicatorAdapter
-        mBinding.magicIndicator.navigator = tabNavigator
-        ViewPager2Bind.bind(mBinding.magicIndicator, mBinding.viewPage2)
-        tabNavigator.adapter = mMagicIndicatorAdapter
-        mBinding.magicIndicator.navigator = tabNavigator
-        mBinding.viewPage2.adapter = mTabAdapter
-    }
-
-
-    private fun ActivityHomeBinding.setupBannear() {
-        topBannear.addBannerLifecycleObserver(this@HomeActivity)
-        topBannear.setBannerRound(5f)
-        topBannear.setBannerGalleryMZ(5)
-        topBannear.indicator = CircleIndicator(this@HomeActivity)
-    }
 
     override fun getSubViewModel() = HomeViewModel::class.java
 
@@ -115,5 +49,11 @@ class HomeActivity : BaseActivity<HomeViewModel>() {
 
     companion object {
         const val TAG = "TAG"
+    }
+
+    //防止navigation按返回无法直接退出
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 }
