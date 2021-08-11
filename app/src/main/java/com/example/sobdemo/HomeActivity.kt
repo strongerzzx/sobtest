@@ -2,7 +2,8 @@ package com.example.sobdemo
 
 import android.os.Bundle
 import android.util.Log
-import androidx.viewpager2.widget.ViewPager2
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import base.BaseActivity
 import com.example.adapters.ImageAdapter
 import com.example.adapters.MagicIndicatorAdapter
@@ -12,7 +13,6 @@ import com.example.sobdemo.databinding.ActivityHomeBinding
 import com.example.utils.ViewPager2Bind
 import com.example.viewmodels.HomeViewModel
 import com.youth.banner.indicator.CircleIndicator
-import net.lucode.hackware.magicindicator.MagicIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 
 class HomeActivity : BaseActivity<HomeViewModel>() {
@@ -65,19 +65,30 @@ class HomeActivity : BaseActivity<HomeViewModel>() {
 
             getCategoryList()
 
-
         }
 
 
         mBinding.apply {
+
             setupBannear()
+
+
+            //bottom 联动navigation
+            setupBottomNav()
         }
+
 
     }
 
+    private fun ActivityHomeBinding.setupBottomNav() {
+        bvHomeView.itemIconTintList = null
+        val navController = findNavController(R.id.navigaton_home_fragment)
+        bvHomeView.setupWithNavController(navController)
+    }
+
     private fun setupTopTab(
-        it: List<CategoryData>,
-        tabNavigator: CommonNavigator
+            it: List<CategoryData>,
+            tabNavigator: CommonNavigator
     ) {
         Log.d(TAG, "category list size --> ${it.size}")
         mMagicIndicatorAdapter.setData(it, mBinding.viewPage2)
