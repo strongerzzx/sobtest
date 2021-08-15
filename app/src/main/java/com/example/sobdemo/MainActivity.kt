@@ -43,7 +43,7 @@ class MainActivity : BaseActivity<UserViewModel>() {
         mViewModel.loginLiveData.observe(this, {
             it?.let {
                 if (it.success) {
-                    //TODO:登录成功 --> 到主页面
+                    //登录成功 --> 到主页面
                     mViewModel.doCheckToken()
                 }else{
                     mViewModel.loadCheckCodePic()

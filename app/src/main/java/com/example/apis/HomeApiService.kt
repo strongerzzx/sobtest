@@ -3,6 +3,8 @@ package com.example.apis
 import com.example.base.BaseRet
 import com.example.beans.resultbeans.BannearBean
 import com.example.beans.resultbeans.CategoryBean
+import com.example.beans.resultbeans.HomeSubData
+import com.example.beans.resultbeans.HomeTabSubBean
 import kotlinx.coroutines.flow.Flow
 import okhttp3.ResponseBody
 import retrofit2.http.GET
@@ -15,14 +17,16 @@ interface HomeApiService {
     @GET("/ast/home/loop/list")
     fun getHomeBannear(): Flow<BannearBean>
 
-
     //获取分类列表
     @GET("/ct/category/list")
-    fun getCategoryList():Flow<CategoryBean>
+    fun getCategoryList(): Flow<CategoryBean>
 
+    //获取tab下的列表
+    @GET("/ct/content/home/recommend/{categoryId}/{page}")
+    fun getHomeSubTabList(@Path("categoryId") categoryId: String, @Path("page") page: String): Flow<HomeTabSubBean>
 
     //获取推荐内容
     @GET("/ct/content/home/recommend/{page}")
-    fun getRecommend(@Path("page")page:String):Flow<ResponseBody>
+    fun getRecommend(@Path("page") page: String): Flow<ResponseBody>
 
 }

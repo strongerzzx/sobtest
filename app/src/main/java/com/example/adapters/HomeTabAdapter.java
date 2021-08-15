@@ -7,25 +7,25 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.beans.resultbeans.CategoryData;
-import com.example.fragments.TestFragment;
+import com.example.fragments.HomeSubTabFragment;
 
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TabAdapter extends FragmentStateAdapter {
+public class HomeTabAdapter extends FragmentStateAdapter {
 
     private List<CategoryData> mList = new ArrayList<>();
 
-    public TabAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    public HomeTabAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return TestFragment.Companion.getInstance(mList.get(position).getId());
+        return HomeSubTabFragment.Companion.getInstance(mList.get(position).getId());
     }
 
     @Override

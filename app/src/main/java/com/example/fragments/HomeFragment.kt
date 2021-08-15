@@ -5,17 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
 import com.example.adapters.ImageAdapter
 import com.example.adapters.MagicIndicatorAdapter
-import com.example.adapters.TabAdapter
+import com.example.adapters.HomeTabAdapter
 import com.example.base.BaseFragment
 import com.example.beans.resultbeans.CategoryData
-import com.example.sobdemo.HomeActivity
 import com.example.sobdemo.R
-import com.example.sobdemo.databinding.ActivityHomeBinding
 import com.example.sobdemo.databinding.HomeFragmentLayoutBinding
 import com.example.utils.ViewPager2Bind
 import com.example.viewmodels.HomeViewModel
@@ -26,7 +21,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
 
     private lateinit var mBinding: HomeFragmentLayoutBinding
     private lateinit var mBannearAdapter: ImageAdapter
-    private lateinit var mTabAdapter: TabAdapter
+    private lateinit var mHomeTabAdapter: HomeTabAdapter
 
     private val mBannerUrlList = mutableListOf<String>()
 
@@ -48,12 +43,18 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         initEvent()
     }
 
+
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+
+        Log.d(TAG,"isVisibleToUser  -->  ${isVisibleToUser}")
+    }
+
     private fun initEvent() {
         getImmersionBar().init()
 
-
-
-        mTabAdapter = TabAdapter(childFragmentManager, lifecycle)
+        mHomeTabAdapter = HomeTabAdapter(childFragmentManager, lifecycle)
         val tabNavigator = CommonNavigator(context)
         tabNavigator.isReselectWhenLayout = false //防止文字抖动
 
@@ -61,7 +62,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         mViewModel.apply {
 
             homeBannearLiveData.observe(viewLifecycleOwner, { it ->
-                Log.d(HomeActivity.TAG, "banner list size --> ${it.size}")
+                Log.d(TAG, "banner list size --> ${it.size}")
                 it.forEach {
                     mBannerUrlList.add(it.picUrl)
                 }
@@ -73,6 +74,9 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
             //顶部Tab数据
             categoryListLiveData.observe(viewLifecycleOwner, {
                 setupTopTab(it, tabNavigator)
+
+                //配合base在onResume判断 是否第一次加载
+                mBinding.homeFragmentViewPage2.offscreenPageLimit = it.size
             })
 
 
@@ -99,15 +103,15 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
             it: List<CategoryData>,
             tabNavigator: CommonNavigator
     ) {
-        Log.d(HomeActivity.TAG, "category list size --> ${it.size}")
+        Log.d(TAG, "category list size --> ${it.size}")
         mMagicIndicatorAdapter.setData(it, mBinding.homeFragmentViewPage2)
-        mTabAdapter.setData(it)
+        mHomeTabAdapter.setData(it)
         tabNavigator.adapter = mMagicIndicatorAdapter
         mBinding.homeFragmentMagicIndicator.navigator = tabNavigator
         ViewPager2Bind.bind(mBinding.homeFragmentMagicIndicator, mBinding.homeFragmentViewPage2)
         tabNavigator.adapter = mMagicIndicatorAdapter
         mBinding.homeFragmentMagicIndicator.navigator = tabNavigator
-        mBinding.homeFragmentViewPage2.adapter = mTabAdapter
+        mBinding.homeFragmentViewPage2.adapter = mHomeTabAdapter
     }
 
 

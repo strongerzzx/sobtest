@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 
-
 /**
 
  * 作者：zzx on 2021/8/7 18:19
@@ -51,7 +50,6 @@ class UserViewModel : ViewModel() {
 
     //验证码图片
     val checkPhoneCodePic = MutableLiveData<String>()
-
 
     //加载验证码图片
     fun loadCheckCodePic() {

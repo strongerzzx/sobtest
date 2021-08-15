@@ -1,19 +1,11 @@
 package com.example.sobdemo
 
 import android.os.Bundle
-import android.util.Log
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import base.BaseActivity
-import com.example.adapters.ImageAdapter
-import com.example.adapters.MagicIndicatorAdapter
-import com.example.adapters.TabAdapter
-import com.example.beans.resultbeans.CategoryData
 import com.example.sobdemo.databinding.ActivityHomeBinding
-import com.example.utils.ViewPager2Bind
 import com.example.viewmodels.HomeViewModel
-import com.youth.banner.indicator.CircleIndicator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 
 class HomeActivity : BaseActivity<HomeViewModel>() {
 

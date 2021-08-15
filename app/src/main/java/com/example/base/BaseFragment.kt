@@ -14,6 +14,7 @@ abstract class BaseFragment<VM:ViewModel>:Fragment() {
 
     protected lateinit var mViewModel: VM
     private lateinit var mImmersionBar: ImmersionBar
+    private var isFirstLoad = true
 
     companion object {
         private const val TAG = "BaseFragment"
@@ -34,6 +35,19 @@ abstract class BaseFragment<VM:ViewModel>:Fragment() {
         initViewModel()
 
         createStatusBarConfig()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (isFirstLoad){
+            initDataEvent()
+            isFirstLoad = false
+        }
+    }
+
+     open protected fun initDataEvent(){
+
     }
 
     protected fun getImmersionBar(): ImmersionBar {
