@@ -43,14 +43,6 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         initEvent()
     }
 
-
-
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-
-        Log.d(TAG,"isVisibleToUser  -->  ${isVisibleToUser}")
-    }
-
     private fun initEvent() {
         getImmersionBar().init()
 

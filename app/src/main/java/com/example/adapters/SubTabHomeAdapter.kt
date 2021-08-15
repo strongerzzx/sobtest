@@ -1,5 +1,6 @@
 package com.example.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,7 @@ class SubTabHomeAdapter : RecyclerView.Adapter<SubTabHomeAdapter.InnerViewHolder
     private val mCurrentList = mutableListOf<HomeSubItem>()
 
     inner class InnerViewHolder(itemView: ItemSubTabHomeLayoutBinding) : RecyclerView.ViewHolder(itemView.root) {
-         val mBinding = itemView
+        val mBinding = itemView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InnerViewHolder {
@@ -32,14 +33,21 @@ class SubTabHomeAdapter : RecyclerView.Adapter<SubTabHomeAdapter.InnerViewHolder
     override fun onBindViewHolder(holder: InnerViewHolder, position: Int) {
         val homeSubItem = mCurrentList[position]
         Glide.with(holder.itemView.context)
-                .load(homeSubItem.covers[0])
-                .into(holder.mBinding.ivSubTabCover)
+            .load(homeSubItem.covers[0])
+            .into(holder.mBinding.ivSubTabCover)
 
     }
 
     override fun getItemCount() = mCurrentList.size
+
     fun setData(list: List<HomeSubItem>) {
-        mCurrentList.clear()
         mCurrentList.addAll(list)
+        Log.d(TAG,"sub home size --> ${mCurrentList.size}")
+        notifyDataSetChanged()
+
+    }
+
+    companion object{
+        private const val TAG = "SubTabHomeAdapter"
     }
 }

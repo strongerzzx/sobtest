@@ -84,7 +84,7 @@ class HomeViewModel : ViewModel() {
     }
 
     //获取tab下的列表
-    fun getHomeTabSubData(categoryId:String,page:String){
+    fun getHomeTabSubData(categoryId:String,page:Int){
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(HomeApiService::class.java)
                     .getHomeSubTabList(categoryId,page)

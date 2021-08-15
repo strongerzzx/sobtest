@@ -41,12 +41,12 @@ abstract class BaseFragment<VM:ViewModel>:Fragment() {
         super.onResume()
 
         if (isFirstLoad){
-            initDataEvent()
+            initLazyDataEvent()
             isFirstLoad = false
         }
     }
 
-     open protected fun initDataEvent(){
+     open protected fun initLazyDataEvent(){
 
     }
 
