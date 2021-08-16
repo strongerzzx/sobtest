@@ -16,7 +16,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="20dp"
         app:navGraph="@navigation/home_navigation" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -31,7 +30,6 @@
         app:itemTextColor="@drawable/home_bottom_text_selector"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/navigaton_home_fragment"
         app:menu="@menu/bottom_bar_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

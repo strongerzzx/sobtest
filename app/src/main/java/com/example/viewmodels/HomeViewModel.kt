@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 
 import base.BaseRetrofit
 import com.example.apis.HomeApiService
+import com.example.beans.resultbeans.ArticleDetailBean
 import com.example.beans.resultbeans.BannearData
 import com.example.beans.resultbeans.CategoryData
 import com.example.beans.resultbeans.HomeTabSubBean
@@ -31,7 +32,12 @@ class HomeViewModel : ViewModel() {
 
     //tab下的数据
     private val _tabListLiveData = MutableLiveData<HomeTabSubBean>()
-    val tabListLivedata:LiveData<HomeTabSubBean> = _tabListLiveData
+    val tabListLivedata: LiveData<HomeTabSubBean> = _tabListLiveData
+
+    //tab详情中的文章内容
+    private val _tabContentArticleLiveData = MutableLiveData<ArticleDetailBean>()
+    val tabContentArticleLiveData:LiveData<ArticleDetailBean> = _tabContentArticleLiveData
+
 
     //获取bannear
     fun getHomeBannearList() {
@@ -84,17 +90,31 @@ class HomeViewModel : ViewModel() {
     }
 
     //获取tab下的列表
-    fun getHomeTabSubData(categoryId:String,page:Int){
+    fun getHomeTabSubData(categoryId: String, page: Int) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(HomeApiService::class.java)
-                    .getHomeSubTabList(categoryId,page)
-                    .flowOn(Dispatchers.IO)
-                    .collect {
-                        _tabListLiveData.postValue(it)
-                        Log.d(TAG,"getHomeTabSubData --> ${it.data.list.size}  ${it.data.list}")
-                    }
+                .getHomeSubTabList(categoryId, page)
+                .flowOn(Dispatchers.IO)
+                .collect {
+                    _tabListLiveData.postValue(it)
+                    Log.d(TAG, "getHomeTabSubData --> ${it.data.list.size}  ${it.data.list}")
+                }
         }
     }
+
+    //获取文章详情
+    fun getTabArticleDetail(articileId:String){
+        viewModelScope.launch (Dispatchers.Main){
+            BaseRetrofit.createApisService(HomeApiService::class.java)
+                .getArticleDetail(articileId)
+                .flowOn(Dispatchers.IO)
+                .collect {
+                    _tabContentArticleLiveData.value = it
+                    Log.d(TAG,"getTabArticleDetail  -->  $it")
+                }
+        }
+    }
+
 
     companion object {
         const val TAG = "HomeViewModel"

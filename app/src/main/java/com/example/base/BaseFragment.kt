@@ -46,7 +46,7 @@ abstract class BaseFragment<VM:ViewModel>:Fragment() {
         }
     }
 
-     open protected fun initLazyDataEvent(){
+     protected open fun initLazyDataEvent(){
 
     }
 

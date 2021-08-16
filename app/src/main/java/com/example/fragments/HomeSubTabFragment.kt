@@ -1,6 +1,8 @@
 package com.example.fragments
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.adapters.SubTabHomeAdapter
 import com.example.base.BaseFragment
 import com.example.sobdemo.R
+import com.example.sobdemo.TabContentActivity
 import com.example.sobdemo.databinding.TestFragmentLayoutBinding
 import com.example.viewmodels.HomeViewModel
 import com.scwang.smart.refresh.footer.ClassicsFooter
@@ -28,9 +31,9 @@ class HomeSubTabFragment : BaseFragment<HomeViewModel>() {
     private lateinit var mHomeSubTabAdapter: SubTabHomeAdapter
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.test_fragment_layout, container, false)
         mBinding = TestFragmentLayoutBinding.bind(rootView)
@@ -60,7 +63,7 @@ class HomeSubTabFragment : BaseFragment<HomeViewModel>() {
                     if (dy < 0) return
 
                     val lastVisiItemPos = linearLayoutManager.findLastVisibleItemPosition()
-                    if (lastVisiItemPos == mHomeSubTabAdapter.itemCount - 1){
+                    if (lastVisiItemPos == mHomeSubTabAdapter.itemCount - 1) {
                         //加载更多
                         mIsSlideBottom = true
                     }
@@ -68,8 +71,8 @@ class HomeSubTabFragment : BaseFragment<HomeViewModel>() {
             })
 
             tabRefreshTabHome.setOnLoadMoreListener {
-                if (mIsSlideBottom){
-                    mViewModel.getHomeTabSubData(mCurrentTabId,++mCurrentPage)
+                if (mIsSlideBottom) {
+                    mViewModel.getHomeTabSubData(mCurrentTabId, ++mCurrentPage)
                     mBinding.tabRefreshTabHome.finishLoadMore()
                     mIsSlideBottom = false
                 }
@@ -77,7 +80,6 @@ class HomeSubTabFragment : BaseFragment<HomeViewModel>() {
                 Log.d(TAG, "加载更多")
             }
         }
-
 
         mViewModel.apply {
             tabListLivedata.observe(viewLifecycleOwner, Observer {
@@ -91,6 +93,17 @@ class HomeSubTabFragment : BaseFragment<HomeViewModel>() {
             //获取tab下的数据
             getHomeTabSubData(mCurrentTabId, mCurrentPage)
         }
+
+
+        mHomeSubTabAdapter.setOnTabItemContentClickListener {
+
+            val intent = Intent(context, TabContentActivity::class.java)
+            intent.putExtra("contentId", it)
+            startActivity(intent)
+            Log.d(TAG, "tab item content id --> $it")
+
+        }
+
     }
 
     companion object {
