@@ -10,6 +10,8 @@ import com.example.apis.ArticleApiService
 import com.example.beans.requestbeans.CommentBean
 import com.example.beans.resultbeans.ArticleCommenBean
 import com.example.beans.resultbeans.ArticleDetailBean
+import com.example.commonparams.CommonParms
+import com.example.utils.MmkvUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -24,7 +26,7 @@ class ArticleViewModel : ViewModel() {
 
     //获取文章评论
     private val _articleCommentLiveData = MutableLiveData<ArticleCommenBean>()
-    val articleCommentLiveData:LiveData<ArticleCommenBean> = _articleCommentLiveData
+    val articleCommentLiveData: LiveData<ArticleCommenBean> = _articleCommentLiveData
 
     //文章评论
 //    private val _reviewArticleCommentLiveData = MutableLiveData<>
@@ -33,12 +35,12 @@ class ArticleViewModel : ViewModel() {
     fun getTabArticleDetail(articileId: String) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ArticleApiService::class.java)
-                .getArticleDetail(articileId)
-                .flowOn(Dispatchers.IO)
-                .collect {
-                    _tabContentArticleLiveData.value = it
-                    Log.d(HomeViewModel.TAG, "getTabArticleDetail  -->  $it")
-                }
+                    .getArticleDetail(articileId)
+                    .flowOn(Dispatchers.IO)
+                    .collect {
+                        _tabContentArticleLiveData.value = it
+                        Log.d(HomeViewModel.TAG, "getTabArticleDetail  -->  $it")
+                    }
         }
     }
 
@@ -46,29 +48,29 @@ class ArticleViewModel : ViewModel() {
     fun getArticleComment(articileId: String, page: Int) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ArticleApiService::class.java)
-                .getArticleComment(articileId, page)
-                .flowOn(Dispatchers.IO)
-                .catch {
-                    Log.d(TAG, "article  comment error --> ")
-                }
-                .collect {
-                    _articleCommentLiveData.value = it
-                    Log.d(TAG, "getArticleComment -->  $it")
-                }
+                    .getArticleComment(articileId, page)
+                    .flowOn(Dispatchers.IO)
+                    .catch {
+                        Log.d(TAG, "article  comment error --> ")
+                    }
+                    .collect {
+                        _articleCommentLiveData.value = it
+                        Log.d(TAG, "getArticleComment -->  $it")
+                    }
         }
     }
 
     //评论文章
-    fun doReviewArticle(commentBean: CommentBean){
-        viewModelScope.launch (Dispatchers.Main){
+    fun doReviewArticle(commentBean: CommentBean) {
+        viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ArticleApiService::class.java)
-                    .reviewArticle(commentBean)
+                    .reviewArticle(MmkvUtil.getString(CommonParms.SOB_TOKEN), commentBean)
                     .flowOn(Dispatchers.IO)
                     .catch {
                         Log.d(TAG, "doReviewArticle error --> ")
                     }
                     .collect {
-                        Log.d(TAG,"doReviewArticle --> ${it.string()}")
+                        Log.d(TAG, "doReviewArticle --> ${it.string()}")
                     }
         }
     }

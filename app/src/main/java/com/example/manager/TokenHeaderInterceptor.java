@@ -22,7 +22,7 @@ public class TokenHeaderInterceptor implements Interceptor {
         if (sobToken.isEmpty()) {
             return chain.proceed(request);
         } else {
-            Request tokenRequest = request.newBuilder().header("token", sobToken).build();
+            Request tokenRequest = request.newBuilder().header("sob_token", sobToken).build();
             return chain.proceed(tokenRequest);
         }
     }

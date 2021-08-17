@@ -33,19 +33,20 @@ class CookiesManagerLogin : CookieJar {
         if (BaseRetrofit.BASE_URL.contains(url.host)) {
             Log.d(TAG, "login cookie --> $cookies")
 
-            if (cookies.toString().contains("sob_token")) {
-                val newCookieLogin = cookies.toString().replace("[", "")
+            val cookieListStr = cookies.toString()
+            if (cookieListStr.contains("sob_token")) {
+                val newCookieLogin = cookieListStr.replace("[", "")
                     .replace("]", "")
                 MmkvUtil.saveString(CommonParms.COOKIE_LOGIN_KEY, newCookieLogin)
 
-                val firstIndex = cookies.toString().indexOf("sobToken")
-                val endIndex = cookies.toString().indexOf(";")
+                val firstIndex = newCookieLogin.indexOf("=")
+                val endIndex = newCookieLogin.indexOf(";")
 
                 Log.d(TAG, "firstIndex  -->  $firstIndex  $endIndex")
 
-                val token = cookies.toString().substring(firstIndex, endIndex + 1)
-                Log.d(TAG,"token -->  $token")
-                MmkvUtil.saveString(CommonParms.SOB_TOKEN,token)
+                val token = newCookieLogin.substring(firstIndex + 1, endIndex)
+                Log.d(TAG, "token -->  $token")
+                MmkvUtil.saveString(CommonParms.SOB_TOKEN, token)
 
             }
             cookieStoreLog[BaseRetrofit.BASE_URL] = cookies

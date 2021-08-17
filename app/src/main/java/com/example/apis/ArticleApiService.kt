@@ -5,10 +5,7 @@ import com.example.beans.resultbeans.ArticleCommenBean
 import com.example.beans.resultbeans.ArticleDetailBean
 import kotlinx.coroutines.flow.Flow
 import okhttp3.ResponseBody
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface ArticleApiService {
 
@@ -28,7 +25,7 @@ interface ArticleApiService {
 
     //评论文章
     @POST("/ct/article/comment")
-    fun reviewArticle(@Body commentBean: CommentBean): Flow<ResponseBody>
+    fun reviewArticle(@Header("sob_token")sobToken:String, @Body commentBean: CommentBean): Flow<ResponseBody>
 
 
 }
