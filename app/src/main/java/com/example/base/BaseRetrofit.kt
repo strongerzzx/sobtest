@@ -44,7 +44,7 @@ object BaseRetrofit {
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .connectTimeout(60, TimeUnit.SECONDS)
-                .addInterceptor(TokenHeaderInterceptor())
+                .addNetworkInterceptor(TokenHeaderInterceptor())
         return builder.build()
     }
 
