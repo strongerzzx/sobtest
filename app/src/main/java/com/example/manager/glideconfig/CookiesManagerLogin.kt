@@ -1,7 +1,7 @@
 package com.example.manager.glideconfig
 
 import android.util.Log
-import base.BaseRetrofit
+import com.example.base.BaseRetrofit
 import com.example.commonparams.CommonParms
 import com.example.utils.MmkvUtil
 import okhttp3.Cookie
@@ -36,7 +36,17 @@ class CookiesManagerLogin : CookieJar {
             if (cookies.toString().contains("sob_token")) {
                 val newCookieLogin = cookies.toString().replace("[", "")
                     .replace("]", "")
-                MmkvUtil.saveString(CommonParms.SOB_TOKEN, newCookieLogin)
+                MmkvUtil.saveString(CommonParms.COOKIE_LOGIN_KEY, newCookieLogin)
+
+                val firstIndex = cookies.toString().indexOf("sobToken")
+                val endIndex = cookies.toString().indexOf(";")
+
+                Log.d(TAG, "firstIndex  -->  $firstIndex  $endIndex")
+
+                val token = cookies.toString().substring(firstIndex, endIndex + 1)
+                Log.d(TAG,"token -->  $token")
+                MmkvUtil.saveString(CommonParms.SOB_TOKEN,token)
+
             }
             cookieStoreLog[BaseRetrofit.BASE_URL] = cookies
         }

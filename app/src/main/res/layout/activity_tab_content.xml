@@ -8,14 +8,115 @@
 
     <include
         android:id="@+id/tab_content_top_return"
-        layout="@layout/common_title_return_layout"/>
+        layout="@layout/common_title_return_layout" />
 
-    <TextView
-        android:id="@+id/tv_tab_content_article"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/tab_content_top_return"
-        app:layout_constraintStart_toStartOf="parent"/>
+    <com.example.webview.WebViewScrollView
+        android:id="@+id/art_web_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_comment"
+        app:layout_constraintTop_toBottomOf="@+id/tab_content_top_return">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <!--            文章内容-->
+            <com.example.webview.ArticleWebView
+                android:id="@+id/art_web_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:fadingEdge="none"
+                android:minHeight="200dp"
+                android:overScrollMode="never"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <!--            文章评论消息-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/art_rv_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/art_web_view" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.example.webview.WebViewScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/ll_comment"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:alpha="0.3"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/art_web_scroll">
+
+        <EditText
+            android:id="@+id/et_article_input_comment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:background="@drawable/shape_comment_article"
+            android:hint="发一条有善的评论"
+            android:paddingLeft="20dp"
+            android:textColorHint="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/art_web_scroll" />
+
+        <Button
+            android:id="@+id/btn_article_review"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="评论"
+            app:layout_constraintBottom_toBottomOf="@+id/et_article_input_comment"
+            app:layout_constraintStart_toEndOf="@+id/et_article_input_comment"
+            app:layout_constraintTop_toTopOf="@+id/et_article_input_comment" />
+
+    </LinearLayout>
+
+    <!--    评论-->
+    <!--    <EditText
+            android:id="@+id/et_article_input_comment"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/shape_comment_article"
+            android:hint="发一条有善的评论"
+            android:paddingLeft="20dp"
+            android:textColorHint="@color/gray"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/art_web_scroll" />
+
+        <Button
+            android:id="@+id/btn_article_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="点击评论"
+            app:layout_constraintBottom_toBottomOf="@+id/et_article_input_comment"
+            app:layout_constraintStart_toEndOf="@+id/et_article_input_comment"
+            app:layout_constraintTop_toTopOf="@+id/et_article_input_comment" />-->
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

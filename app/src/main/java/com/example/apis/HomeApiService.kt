@@ -30,8 +30,4 @@ interface HomeApiService {
     fun getRecommend(@Path("page") page: String): Flow<ResponseBody>
 
 
-    //文章详情
-    @GET("/ct/article/detail/{articleId}")
-    fun getArticleDetail(@Path("articleId") articleId: String):Flow<ArticleDetailBean>
-
 }

@@ -1,28 +1,25 @@
 package com.example.sobdemo
 
-import android.graphics.Color
 import android.os.Bundle
-import android.text.Html
-import android.text.method.ScrollingMovementMethod
 import android.util.Log
+import android.view.WindowManager
+import android.widget.Toast
 import androidx.lifecycle.Observer
-import app.SobApp
+import androidx.recyclerview.widget.LinearLayoutManager
 import base.BaseActivity
+import com.example.adapters.ArticelCommentAdpater
+import com.example.beans.requestbeans.CommentBean
 import com.example.sobdemo.databinding.ActivityTabContentBinding
-import com.example.utils.markdowm.MyGrammarLocator
-import com.example.viewmodels.HomeViewModel
-import io.noties.markwon.Markwon
-import io.noties.markwon.html.HtmlPlugin
-import io.noties.markwon.image.glide.GlideImagesPlugin
-import io.noties.markwon.syntax.Prism4jThemeDarkula
-import io.noties.markwon.syntax.SyntaxHighlightPlugin
-import io.noties.prism4j.Prism4j
+import com.example.viewmodels.ArticleViewModel
 
 
-class TabContentActivity : BaseActivity<HomeViewModel>() {
+
+class TabContentActivity : BaseActivity<ArticleViewModel>() {
 
     private lateinit var mBinding: ActivityTabContentBinding
     private lateinit var mCurrentArticleId: String
+    private var mCurrentCommentPage = DEFAULT_COMMENT_PAGE
+    private lateinit var mArticleCommentAdapter: ArticelCommentAdpater
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,18 +44,43 @@ class TabContentActivity : BaseActivity<HomeViewModel>() {
     }
 
     private fun initImmberBar() {
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         getImmersionBar().init()
     }
 
     private fun initEvent() {
 
+        mArticleCommentAdapter = ArticelCommentAdpater()
+
         mBinding.apply {
             tabContentTopReturn.ivCommonBack.setOnClickListener {
                 finish()
             }
+            artWebView.setWebViewScrollView(artWebScroll)
 
-            //设置TextView重置滑动
-            tvTabContentArticle.movementMethod = ScrollingMovementMethod.getInstance()
+            artWebView.setOpenUrlListener {
+
+            }
+
+            artWebScroll.setOverScrollListener {
+                artRvComment.isNestedScrollingEnabled = it
+
+            }
+
+            artRvComment.layoutManager = LinearLayoutManager(this@TabContentActivity)
+            artRvComment.adapter = mArticleCommentAdapter
+
+
+            //TODO:发表评论
+            btnArticleReview.setOnClickListener {
+                val commentBean = CommentBean("0", mCurrentArticleId, etArticleInputComment.text.toString())
+
+                Log.d(TAG,"commentBean  --> ${commentBean}")
+
+                mViewModel.doReviewArticle(commentBean)
+            }
+
 
         }
 
@@ -70,27 +92,30 @@ class TabContentActivity : BaseActivity<HomeViewModel>() {
                 if (it.success) {
                     if (it.data.content.isNotEmpty()) {
                         val content = it.data.content
-                        val prism4jTheme = Prism4jThemeDarkula.create(Color.parseColor("#7C7C7C"))
-                        val markwon = Markwon.builder(SobApp.sContext)
-                            .usePlugin(HtmlPlugin.create())
-                            .usePlugin(
-                                SyntaxHighlightPlugin.create(
-                                    Prism4j(MyGrammarLocator()),
-                                    prism4jTheme
-                                )
-                            )
-                            .usePlugin(GlideImagesPlugin.create(SobApp.sContext))
-                            .build()
-                        markwon.setMarkdown(mBinding.tvTabContentArticle, content ?: "")
-
-
-
+                        mBinding.artWebView.loadArticle(content)
                         Log.d(TAG, "article content --> ${it.data.content}")
                     }
                 }
             })
+
+            //评论
+            articleCommentLiveData.observe(this@TabContentActivity, Observer {
+                if (!it.success) return@Observer
+                //一共页数
+                val totalPages = it.data.totalPages
+                val contentCommom = it.data.content
+                if (contentCommom.isNotEmpty()) {
+                    mArticleCommentAdapter.setData(contentCommom)
+                } else {
+                    Toast.makeText(this@TabContentActivity, "暂无评论", Toast.LENGTH_SHORT).show()
+                }
+            })
+
+
             getTabArticleDetail(mCurrentArticleId)
 
+
+            getArticleComment(mCurrentArticleId, mCurrentCommentPage)
         }
 
     }
@@ -98,9 +123,10 @@ class TabContentActivity : BaseActivity<HomeViewModel>() {
 
     companion object {
         private const val TAG = "TabContentActivity"
+        private const val DEFAULT_COMMENT_PAGE = 1
     }
 
-    override fun getSubViewModel() = HomeViewModel::class.java
+    override fun getSubViewModel() = ArticleViewModel::class.java
 
     override fun isDarkBarFont() = true
 }

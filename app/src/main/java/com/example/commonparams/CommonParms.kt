@@ -2,10 +2,12 @@ package com.example.commonparams
 
 object CommonParms {
 
-    //缓存cookie
-    const val COOKIE_PIC_KEY = "cookie"
+    //缓存yzm cookie
+    const val COOKIE_PIC_KEY = "glide_cookie"
 
-    //缓存token
+    //login cookie
+    const val COOKIE_LOGIN_KEY = "login_cookie" //sob_token
+
     const val SOB_TOKEN = "sob_token"
 
     //登陆后的头像

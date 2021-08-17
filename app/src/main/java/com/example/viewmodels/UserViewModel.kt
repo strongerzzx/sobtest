@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import apis.ApiUserServices
-import base.BaseRetrofit
+import com.example.base.BaseRetrofit
 import beans.requestbeans.SendSmsVo
 import com.example.base.BaseRet
 import com.example.beans.requestbeans.LoginInfo
@@ -89,8 +89,9 @@ class UserViewModel : ViewModel() {
     //登录
     fun doLogin(captcha: String, loginInfo: LoginInfo) {
         viewModelScope.launch(Dispatchers.Main) {
+            Log.d(TAG,"pic cookie --> ${MmkvUtil.getString(CommonParms.COOKIE_PIC_KEY)}")
             BaseRetrofit.createApisService(ApiUserServices::class.java)
-                .doLogin(MmkvUtil.getString(CommonParms.COOKIE_PIC_KEY),captcha, loginInfo)//MmkvUtil.getString(CommonParms.COOKIE_KEY),
+                .doLogin(MmkvUtil.getString(CommonParms.COOKIE_PIC_KEY),captcha, loginInfo)
                 .flowOn(Dispatchers.IO)
                 .catch {
                     println("catch exception")
@@ -106,7 +107,7 @@ class UserViewModel : ViewModel() {
     fun doCheckToken() {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ApiUserServices::class.java)
-                .checkToken(MmkvUtil.getString(CommonParms.SOB_TOKEN))
+                .checkToken(MmkvUtil.getString(CommonParms.COOKIE_LOGIN_KEY))
                 .flowOn(Dispatchers.IO)
                 .collect {
                     _checkTokenLiveData.value = it
@@ -177,7 +178,7 @@ class UserViewModel : ViewModel() {
     }
 
     companion object {
-        private const val TAG = "LoginViewModel"
+        private const val TAG = "UserViewModel"
     }
 
 }

@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.widget.Toast
 import base.BaseActivity
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.beans.requestbeans.LoginInfo
 import com.example.commonparams.CommonParms
 import com.example.sobdemo.databinding.ActivityMainBinding
@@ -31,6 +32,8 @@ class MainActivity : BaseActivity<UserViewModel>() {
         mViewModel.checkPhoneCodePic.observe(this, {
             Glide.with(this@MainActivity)
                 .load(it)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(mBinding.ivYzmCheckPic)
 
         })
@@ -45,14 +48,14 @@ class MainActivity : BaseActivity<UserViewModel>() {
                 if (it.success) {
                     //登录成功 --> 到主页面
                     mViewModel.doCheckToken()
-                }else{
+                } else {
                     mViewModel.loadCheckCodePic()
                 }
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
         })
 
-        mViewModel.checkTokenLiveData.observe(this,{
+        mViewModel.checkTokenLiveData.observe(this, {
             if (it.success && it.data != null) {
                 readyGo(HomeActivity::class.java)
                 mViewModel.getUserInfo(it.data.id)

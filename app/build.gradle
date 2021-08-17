@@ -37,6 +37,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets{
+        main{
+            jniLibs.srcDirs=['libs']
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -53,8 +60,7 @@ android {
 
 dependencies {
 
-    final def markwon_version = "4.6.2"
-    final def prism_version = "2.0.0"
+    implementation files('libs\\jsoup-1.12.2.jar')
 
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -70,13 +76,16 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
 
-    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    //okHttp3LoggingInterceptor
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation"com.github.bumptech.glide:okhttp3-integration:4.9.0"
+    annotationProcessor'androidx.annotation:annotation:1.1.0'
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
 
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
-    implementation 'com.github.bumptech.glide:okhttp3-integration:4.11.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     implementation 'org.greenrobot:eventbus:3.1.1'
 
@@ -100,18 +109,5 @@ dependencies {
 
     implementation  'com.scwang.smart:refresh-layout-kernel:2.0.3'      //核心必须依赖
     implementation  'com.scwang.smart:refresh-header-classics:2.0.3'    //经典刷新头
-
-
-
-    // Markwon是一个适用于 Android 的Markdown库：https://noties.io/Markwon/
-    implementation "io.noties.markwon:core:$markwon_version"
-    implementation "io.noties.markwon:html:$markwon_version"
-    // implementation "io.noties.markwon:image:$markwon_version"
-    implementation "io.noties.markwon:image-glide:$markwon_version"
-    implementation "io.noties:prism4j:${prism_version}"
-    kapt "io.noties:prism4j-bundler:${prism_version}"
-    implementation "io.noties.markwon:syntax-highlight:$markwon_version"
-    // 自动生成语法高亮类的注解处理器
-    annotationProcessor "io.noties:prism4j-bundler:${prism_version}"
 
 }

@@ -1,6 +1,7 @@
 package com.example.adapters;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
@@ -9,7 +10,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.example.beans.resultbeans.CategoryData;
 import com.example.fragments.HomeSubTabFragment;
 
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;

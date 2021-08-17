@@ -6,9 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
-import base.BaseRetrofit
+import com.example.base.BaseRetrofit
 import com.example.apis.HomeApiService
-import com.example.beans.resultbeans.ArticleDetailBean
 import com.example.beans.resultbeans.BannearData
 import com.example.beans.resultbeans.CategoryData
 import com.example.beans.resultbeans.HomeTabSubBean
@@ -33,10 +32,6 @@ class HomeViewModel : ViewModel() {
     //tab下的数据
     private val _tabListLiveData = MutableLiveData<HomeTabSubBean>()
     val tabListLivedata: LiveData<HomeTabSubBean> = _tabListLiveData
-
-    //tab详情中的文章内容
-    private val _tabContentArticleLiveData = MutableLiveData<ArticleDetailBean>()
-    val tabContentArticleLiveData:LiveData<ArticleDetailBean> = _tabContentArticleLiveData
 
 
     //获取bannear
@@ -64,7 +59,7 @@ class HomeViewModel : ViewModel() {
                 .getCategoryList()
                 .flowOn(Dispatchers.IO)
                 .catch {
-                    Log.d(TAG, "getCategoryList --> ")
+                    Log.d(TAG, "getCategoryList error --> ")
                 }
                 .collect {
                     _categoryListLiveData.value = it.data
@@ -101,20 +96,6 @@ class HomeViewModel : ViewModel() {
                 }
         }
     }
-
-    //获取文章详情
-    fun getTabArticleDetail(articileId:String){
-        viewModelScope.launch (Dispatchers.Main){
-            BaseRetrofit.createApisService(HomeApiService::class.java)
-                .getArticleDetail(articileId)
-                .flowOn(Dispatchers.IO)
-                .collect {
-                    _tabContentArticleLiveData.value = it
-                    Log.d(TAG,"getTabArticleDetail  -->  $it")
-                }
-        }
-    }
-
 
     companion object {
         const val TAG = "HomeViewModel"

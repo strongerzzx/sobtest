@@ -2,6 +2,7 @@ package com.example.manager;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -14,19 +15,22 @@ import com.bumptech.glide.module.AppGlideModule;
 
 import java.io.InputStream;
 
-import base.BaseRetrofit;
+import com.example.base.BaseRetrofit;
 
 /**
  * 作者：zzx on 2021/8/8 19:48
- *  作用： xxxx
+ * 作用： xxxx
  */
 @GlideModule
 public class HttpGlideMoudle extends AppGlideModule {
+    private static final String TAG = "HttpGlideMoudle";
 
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
         registry.replace(GlideUrl.class, InputStream.class
-                ,new OkHttpUrlLoader.Factory(BaseRetrofit.INSTANCE.getGlideOkHttpClient()));
+                , new OkHttpUrlLoader.Factory(BaseRetrofit.INSTANCE.getGlideOkHttpClient()));
+
+        Log.d(TAG, "registerComponents --> ");
     }
 }
 

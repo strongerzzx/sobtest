@@ -1,7 +1,7 @@
 package com.example.manager.glideconfig
 
 import android.util.Log
-import base.BaseRetrofit
+import com.example.base.BaseRetrofit
 import com.example.commonparams.CommonParms
 import com.example.utils.MmkvUtil
 import okhttp3.Cookie
