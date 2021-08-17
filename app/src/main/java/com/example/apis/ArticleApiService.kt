@@ -25,7 +25,7 @@ interface ArticleApiService {
 
     //评论文章
     @POST("/ct/article/comment")
-    fun reviewArticle(@Header("sob_token")sobToken:String, @Body commentBean: CommentBean): Flow<ResponseBody>
-
+    fun reviewArticle(@Header("sob_token")sobToken:String,@Body commentBean: CommentBean): Flow<ResponseBody>
+    //@Header("sob_token")sobToken:String,
 
 }

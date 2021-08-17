@@ -19,7 +19,7 @@ class CookiesManagerGlide : CookieJar {
     private val cookieStoreLog = HashMap<String, List<Cookie>>()
 
     companion object {
-        private const val TAG = "CookiesManager"
+        private const val TAG = "CookiesManagerGlide"
     }
 
     override fun loadForRequest(url: HttpUrl): List<Cookie> {

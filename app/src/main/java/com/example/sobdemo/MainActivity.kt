@@ -2,6 +2,7 @@ package com.example.sobdemo
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Toast
 import base.BaseActivity
 import com.bumptech.glide.Glide
@@ -31,10 +32,10 @@ class MainActivity : BaseActivity<UserViewModel>() {
         //加载验证码
         mViewModel.checkPhoneCodePic.observe(this, {
             Glide.with(this@MainActivity)
-                .load(it)
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(mBinding.ivYzmCheckPic)
+                    .load(it)
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(mBinding.ivYzmCheckPic)
 
         })
 
@@ -56,8 +57,11 @@ class MainActivity : BaseActivity<UserViewModel>() {
         })
 
         mViewModel.checkTokenLiveData.observe(this, {
-            if (it.success && it.data != null) {
+            if (it.success) {
                 readyGo(HomeActivity::class.java)
+
+                Log.d(TAG, "sobToken  -->  ${it.data.token}")
+                MmkvUtil.saveString(CommonParms.SOB_TOKEN, it.data.token)
                 mViewModel.getUserInfo(it.data.id)
             }
         })
@@ -76,10 +80,10 @@ class MainActivity : BaseActivity<UserViewModel>() {
                 val password = etInpuPhonePassword.text.toString()
                 val yzm = etInpuYzmText.text.toString()
                 if (TextUtils.isEmpty(yzm) || TextUtils.isEmpty(phoneNum)
-                    || TextUtils.isEmpty(password)
+                        || TextUtils.isEmpty(password)
                 ) {
                     Toast.makeText(this@MainActivity, "账号或密码不能为空", Toast.LENGTH_SHORT)
-                        .show()
+                            .show()
                     return@setOnClickListener
                 }
                 mViewModel.doLogin(yzm, LoginInfo(phoneNum, MD5Util.MD5(password)))

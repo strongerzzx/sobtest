@@ -46,7 +46,7 @@ class CookiesManagerLogin : CookieJar {
 
                 val token = newCookieLogin.substring(firstIndex + 1, endIndex)
                 Log.d(TAG, "token -->  $token")
-                MmkvUtil.saveString(CommonParms.SOB_TOKEN, token)
+//                MmkvUtil.saveString(CommonParms.SOB_TOKEN, token)
 
             }
             cookieStoreLog[BaseRetrofit.BASE_URL] = cookies

@@ -76,7 +76,7 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
             btnArticleReview.setOnClickListener {
                 val commentBean = CommentBean("0", mCurrentArticleId, etArticleInputComment.text.toString())
 
-                Log.d(TAG,"commentBean  --> ${commentBean}")
+                Log.d(TAG,"commentBean  --> $commentBean")
 
                 mViewModel.doReviewArticle(commentBean)
             }
