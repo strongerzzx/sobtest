@@ -64,7 +64,7 @@ class ArticleViewModel : ViewModel() {
     fun doReviewArticle(commentBean: CommentBean) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ArticleApiService::class.java)
-                    .reviewArticle(MmkvUtil.getString(CommonParms.SOB_TOKEN),commentBean)//MmkvUtil.getString(CommonParms.SOB_TOKEN),
+                    .reviewArticle(commentBean)//MmkvUtil.getString(CommonParms.SOB_TOKEN),
                     .flowOn(Dispatchers.IO)
                     .catch {
                         Log.d(TAG, "doReviewArticle error --> ")
