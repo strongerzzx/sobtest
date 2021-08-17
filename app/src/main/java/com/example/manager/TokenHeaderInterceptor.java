@@ -16,15 +16,16 @@ public class TokenHeaderInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        String token = MmkvUtil.getString(CommonParms.SOB_TOKEN);
-        Log.d(TAG, "TokenHeaderInterceptor sob token  --> " + token);
-        if (token.isEmpty()) {
+        String cookie = MmkvUtil.getString(CommonParms.COOKIE_LOGIN_KEY);
+        if (cookie.isEmpty()) {
             Request originalRequest = chain.request();
             return chain.proceed(originalRequest);
         } else {
             Request originalRequest = chain.request();
-            //key的话以后台给的为准，我这边是叫token
-            Request updateRequest = originalRequest.newBuilder().header("sob_token", token).build();
+            //好家伙 还是传cookie
+            Request updateRequest = originalRequest.newBuilder()
+                    .header("cookie", MmkvUtil.getString(CommonParms.COOKIE_LOGIN_KEY))
+                    .build();
             return chain.proceed(updateRequest);
         }
     }

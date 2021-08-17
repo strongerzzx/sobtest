@@ -72,7 +72,7 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
             artRvComment.adapter = mArticleCommentAdapter
 
 
-            //TODO:发表评论
+            //发表评论
             btnArticleReview.setOnClickListener {
                 val commentBean = CommentBean("0", mCurrentArticleId, etArticleInputComment.text.toString())
 

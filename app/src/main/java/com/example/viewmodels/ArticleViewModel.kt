@@ -70,7 +70,7 @@ class ArticleViewModel : ViewModel() {
                         Log.d(TAG, "doReviewArticle error --> ")
                     }
                     .collect {
-                        Log.d(TAG, "doReviewArticle --> ${it.string()}")
+                        Log.d(TAG, "doReviewArticle --> ${it}")
                     }
         }
     }
