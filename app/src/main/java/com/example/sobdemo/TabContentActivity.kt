@@ -62,7 +62,6 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
 
         mArticleCommentAdapter = ArticelCommentAdpater()
 
-
         mBinding.apply {
             tabContentTopReturn.ivCommonBack.setOnClickListener {
                 hideSoftKeyboard()
@@ -140,6 +139,7 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
                 it?.let {
                     if (it.success) {
 
+                        Log.d(TAG,"回复成功 --> ")
                     }
                 }
             })

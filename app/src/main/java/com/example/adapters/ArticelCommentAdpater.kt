@@ -43,7 +43,6 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerVi
         holder.mBinding.tvArticleCommentName.text = content.nickname
         holder.mBinding.tvArticleCommentPublishTime.text = content.publishTime
 
-
         //二级评论
         if (content.subComments.isEmpty()) {
             holder.mBinding.clSecondComment.visibility = View.GONE
@@ -65,8 +64,6 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerVi
         if (mSecondPos == mCommonList.size) {
             return
         }
-
-//        Log.d(TAG,"mSecondPos  -->  $mSecondPos ---> $position")
 
         val subCommentList = content.subComments
         mSecondPos = (subCommentList.size - 1) % subCommentList.size
