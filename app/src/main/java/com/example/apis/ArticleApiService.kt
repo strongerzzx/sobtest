@@ -19,8 +19,8 @@ interface ArticleApiService {
     //获取文章评论列表
     @GET("/ct/article/comment/{articleId}/{page}")
     fun getArticleComment(
-            @Path("articleId") articleId: String,
-            @Path("page") page: Int
+        @Path("articleId") articleId: String,
+        @Path("page") page: Int
     ): Flow<ArticleCommenBean>
 
 
@@ -30,6 +30,6 @@ interface ArticleApiService {
 
     //回复文章评论
     @POST("/ct/article/sub-comment")
-    fun reviewSubArticle(@Body subComment: SubComment):Flow<BaseRet<String>>
+    fun replySubArticle(@Body subComment: SubComment): Flow<BaseRet<String>>
 
 }

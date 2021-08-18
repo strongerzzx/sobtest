@@ -29,6 +29,8 @@ class MainActivity : BaseActivity<UserViewModel>() {
     private fun initEvent() {
         getImmersionBar().init()
 
+
+
         //加载验证码
         mViewModel.checkPhoneCodePic.observe(this, {
             Glide.with(this@MainActivity)

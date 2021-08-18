@@ -16,16 +16,17 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerVi
     private var mSecondPos = -1
 
     private lateinit var mHeaderCommentListener:
-            (articleId: String, parentId: String, beUid: String, beNickname: String) -> Unit
+                (articleId: String, parentId: String, beUid: String, beNickname: String) -> Unit
 
-    inner class InnerViewHolder(itemView: ArticleCommentAdapterLayoutBinding) : RecyclerView.ViewHolder(itemView.root) {
+    inner class InnerViewHolder(itemView: ArticleCommentAdapterLayoutBinding) :
+        RecyclerView.ViewHolder(itemView.root) {
 
         val mBinding = itemView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InnerViewHolder {
         val inflate = LayoutInflater.from(parent.context)
-                .inflate(R.layout.article_comment_adapter_layout, parent, false)
+            .inflate(R.layout.article_comment_adapter_layout, parent, false)
         val bind = ArticleCommentAdapterLayoutBinding.bind(inflate)
 
         Log.d(TAG, "onCreateViewHolder -->  ")
@@ -35,10 +36,13 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerVi
 
 
     override fun onBindViewHolder(holder: InnerViewHolder, position: Int) {
+        //一级评论的个数
+        Log.d(TAG, "onBindViewHolder --> $position ")
+
         val content = mCommonList[position]
         Glide.with(holder.itemView.context)
-                .load(content.avatar)
-                .into(holder.mBinding.ivArticleCommentAvter)
+            .load(content.avatar)
+            .into(holder.mBinding.ivArticleCommentAvter)
         holder.mBinding.tvArticleCommentHead.text = content.commentContent
         holder.mBinding.tvArticleCommentName.text = content.nickname
         holder.mBinding.tvArticleCommentPublishTime.text = content.publishTime
@@ -51,27 +55,14 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerVi
             holder.mBinding.clSecondComment.visibility = View.VISIBLE
         }
 
-
-        mSecondPos = if (content.subComments.size == mCommonList.size) {
-            position
-        } else {
-            (content.subComments.size % mCommonList.size) - 1
-        }
-
-        if (mSecondPos <= 0)
-            mSecondPos = 0
-
-        if (mSecondPos == mCommonList.size) {
-            return
-        }
-
-        val subCommentList = content.subComments
-        mSecondPos = (subCommentList.size - 1) % subCommentList.size
-
         holder.mBinding.clSecondComment.setOnClickListener {
-            mHeaderCommentListener.invoke(content.subComments[mSecondPos].articleId, content.subComments[mSecondPos].parentId, content.subComments[mSecondPos].beUid, content.subComments[mSecondPos].beNickname)
+            mHeaderCommentListener.invoke(
+                content.subComments[mSecondPos].articleId,
+                content.subComments[mSecondPos].parentId,
+                content.subComments[mSecondPos].beUid,
+                content.subComments[mSecondPos].beNickname
+            )
         }
-
 
         val subComments = content.subComments
         mSecondPos = (subComments.size - 1) % subComments.size
@@ -81,15 +72,8 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerVi
         holder.mBinding.tvArticleCommentSecondName.text = subComments[mSecondPos].yourNickname
         holder.mBinding.tvArticleCommentSecondPublishTime.text = subComments[mSecondPos].publishTime
         Glide.with(holder.itemView.context)
-                .load(subComments[mSecondPos].yourAvatar)
-                .into(holder.mBinding.ivArticleCommentSecondAvter)
-
-        holder.mBinding.clSecondComment.setOnClickListener {
-            mHeaderCommentListener.invoke(subComments[mSecondPos].articleId, subComments[mSecondPos].parentId, subComments[mSecondPos].beUid, subComments[mSecondPos].beNickname)
-        }
-
-
-        Log.d(TAG, "onBindViewHolder -->  ")
+            .load(subComments[mSecondPos].yourAvatar)
+            .into(holder.mBinding.ivArticleCommentSecondAvter)
     }
 
     override fun getItemViewType(position: Int): Int {

@@ -10,7 +10,6 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import base.BaseActivity
 import com.example.adapters.ArticelCommentAdpater
@@ -18,9 +17,6 @@ import com.example.beans.requestbeans.CommentBean
 import com.example.beans.requestbeans.SubComment
 import com.example.sobdemo.databinding.ActivityTabContentBinding
 import com.example.viewmodels.ArticleViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class TabContentActivity : BaseActivity<ArticleViewModel>() {
@@ -81,13 +77,15 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
             artRvComment.layoutManager = LinearLayoutManager(this@TabContentActivity)
             artRvComment.adapter = mArticleCommentAdapter
 
-            //发表评论
+            //TODO:发表评论 + 回复
             btnArticleReview.setOnClickListener {
-                val commentBean = CommentBean("0", mCurrentArticleId, etArticleInputComment.text.toString())
+                val inputComment = etArticleInputComment.text.toString()
+                val commentBean = CommentBean("0", mCurrentArticleId, inputComment)
+                if (inputComment.isEmpty()) return@setOnClickListener
 
-                Log.d(TAG, "commentBean  --> $commentBean")
 
                 mViewModel.doReviewArticle(commentBean)
+                Log.d(TAG, "commentBean  --> $commentBean")
             }
 
 
@@ -138,12 +136,11 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
                 //回复
                 it?.let {
                     if (it.success) {
-
-                        Log.d(TAG,"回复成功 --> ")
+                        getArticleComment(mCurrentArticleId, mCurrentCommentPage)
+                        Log.d(TAG, "回复评论成功 --> ")
                     }
                 }
             })
-
 
 
             getTabArticleDetail(mCurrentArticleId)
@@ -156,10 +153,11 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
             //TODO:一级评论
             val headComment = mBinding.etArticleInputComment.text.toString()
             val subCommentBean = SubComment(articleId, parentId, beUid, beNickname, headComment)
+            if (headComment.isEmpty()) return@setHeadCommentClickListenr
 
+
+            mViewModel.doReplySubArticle(subCommentBean)
             Log.d(TAG, "subCommentBean  --> $subCommentBean")
-            mViewModel.doReviewSubArticle(subCommentBean)
-
         }
 
     }
@@ -167,8 +165,12 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
     private fun hideSoftKeyboard() {
         val view: View? = currentFocus
         if (view != null) {
-            val inputMethodManager: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            val inputMethodManager: InputMethodManager =
+                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(
+                view.windowToken,
+                InputMethodManager.HIDE_NOT_ALWAYS
+            )
         }
     }
 
