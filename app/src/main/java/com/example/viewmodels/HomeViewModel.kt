@@ -79,7 +79,6 @@ class HomeViewModel : ViewModel() {
                     Log.d(TAG, "getRecommandContent --> ")
                 }
                 .collect {
-                    Log.d(TAG, "getRecommandContent --> ${it.string()}")
                 }
         }
     }

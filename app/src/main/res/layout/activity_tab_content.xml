@@ -52,10 +52,8 @@
         android:id="@+id/ll_comment"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
-        android:alpha="0.3"
         android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal"
@@ -90,33 +88,4 @@
             app:layout_constraintTop_toTopOf="@+id/et_article_input_comment" />
 
     </LinearLayout>
-
-    <!--    评论-->
-    <!--    <EditText
-            android:id="@+id/et_article_input_comment"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/shape_comment_article"
-            android:hint="发一条有善的评论"
-            android:paddingLeft="20dp"
-            android:textColorHint="@color/gray"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/art_web_scroll" />
-
-        <Button
-            android:id="@+id/btn_article_review"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:text="点击评论"
-            app:layout_constraintBottom_toBottomOf="@+id/et_article_input_comment"
-            app:layout_constraintStart_toEndOf="@+id/et_article_input_comment"
-            app:layout_constraintTop_toTopOf="@+id/et_article_input_comment" />-->
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

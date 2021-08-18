@@ -6,7 +6,7 @@ object CommonParms {
     const val COOKIE_PIC_KEY = "glide_cookie"
 
     //login cookie
-    const val COOKIE_LOGIN_KEY = "login_cookie" //sob_token
+    const val COOKIE_LOGIN_KEY = "login_cookie"
 
     const val SOB_TOKEN = "sob_token"
 

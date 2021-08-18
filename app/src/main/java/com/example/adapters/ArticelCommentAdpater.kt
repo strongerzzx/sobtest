@@ -1,14 +1,11 @@
 package com.example.adapters
 
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.beans.resultbeans.Content
 import com.example.sobdemo.R
 import com.example.sobdemo.databinding.ArticleCommentAdapterLayoutBinding
@@ -17,6 +14,9 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerVi
 
     private val mCommonList = mutableListOf<Content>()
     private var mSecondPos = -1
+
+    private lateinit var mHeaderCommentListener:
+            (articleId: String, parentId: String, beUid: String, beNickname: String) -> Unit
 
     inner class InnerViewHolder(itemView: ArticleCommentAdapterLayoutBinding) : RecyclerView.ViewHolder(itemView.root) {
 
@@ -46,21 +46,40 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerVi
 
         //二级评论
         if (content.subComments.isEmpty()) {
+            holder.mBinding.clSecondComment.visibility = View.GONE
             return
+        } else {
+            holder.mBinding.clSecondComment.visibility = View.VISIBLE
         }
+
+
         mSecondPos = if (content.subComments.size == mCommonList.size) {
             position
         } else {
             (content.subComments.size % mCommonList.size) - 1
         }
 
+        if (mSecondPos <= 0)
+            mSecondPos = 0
+
         if (mSecondPos == mCommonList.size) {
             return
         }
 
-        setSecondVisible(holder)
+//        Log.d(TAG,"mSecondPos  -->  $mSecondPos ---> $position")
+
+        val subCommentList = content.subComments
+        mSecondPos = (subCommentList.size - 1) % subCommentList.size
+
+        holder.mBinding.clSecondComment.setOnClickListener {
+            mHeaderCommentListener.invoke(content.subComments[mSecondPos].articleId, content.subComments[mSecondPos].parentId, content.subComments[mSecondPos].beUid, content.subComments[mSecondPos].beNickname)
+        }
+
 
         val subComments = content.subComments
+        mSecondPos = (subComments.size - 1) % subComments.size
+
+        holder.mBinding.clSecondComment.visibility = View.VISIBLE
         holder.mBinding.tvArticleCommentSecondComment.text = subComments[mSecondPos].content
         holder.mBinding.tvArticleCommentSecondName.text = subComments[mSecondPos].yourNickname
         holder.mBinding.tvArticleCommentSecondPublishTime.text = subComments[mSecondPos].publishTime
@@ -68,15 +87,30 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerVi
                 .load(subComments[mSecondPos].yourAvatar)
                 .into(holder.mBinding.ivArticleCommentSecondAvter)
 
+        holder.mBinding.clSecondComment.setOnClickListener {
+            mHeaderCommentListener.invoke(subComments[mSecondPos].articleId, subComments[mSecondPos].parentId, subComments[mSecondPos].beUid, subComments[mSecondPos].beNickname)
+        }
+
 
         Log.d(TAG, "onBindViewHolder -->  ")
     }
 
-    private fun setSecondVisible(holder: InnerViewHolder) {
-        holder.mBinding.tvArticleCommentSecondComment.visibility = View.VISIBLE
-        holder.mBinding.tvArticleCommentSecondName.visibility = View.VISIBLE
-        holder.mBinding.tvArticleCommentSecondPublishTime.visibility = View.VISIBLE
-        holder.mBinding.ivArticleCommentSecondAvter.visibility = View.VISIBLE
+    override fun getItemViewType(position: Int): Int {
+        Log.d(TAG, "getItemViewType -->  ")
+        if (position < mCommonList.size) {
+            //加载一级？？
+        }
+
+        //TODO:一开始最多 只显示3个
+        //TODO:如果超过3个 显示更多按钮
+
+
+        return super.getItemViewType(position)
+    }
+
+
+    fun setHeadCommentClickListenr(listener: (articleId: String, parentId: String, beUid: String, beNickname: String) -> Unit) {
+        this.mHeaderCommentListener = listener
     }
 
     override fun getItemCount() = mCommonList.size
@@ -92,6 +126,9 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerVi
     }
 
     companion object {
+
+        const val TYPE_HEAD_COMMENT = 0
+        const val TYPE_SECOND_COMMENT = 1
         private const val TAG = "ArticelCommentAdpater"
     }
 

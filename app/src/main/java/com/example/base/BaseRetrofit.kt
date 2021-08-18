@@ -23,12 +23,16 @@ object BaseRetrofit {
 
     const val BASE_URL = "https://api.sunofbeach.net"
 
+    private val cookieGlideJad by lazy {
+        CookiesManagerGlide()
+    }
+
     fun getGlideOkHttpClient(): OkHttpClient {
         val builder: OkHttpClient.Builder = OkHttpClient.Builder()
-            .cookieJar(CookiesManagerGlide()) //cookieGlideJar
-            .readTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
-            .connectTimeout(60, TimeUnit.SECONDS)
+                .cookieJar(cookieGlideJad) //cookieGlideJar
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
         if (BuildConfig.DEBUG) {
             val httpLoggingInterceptor = HttpLoggingInterceptor()
             builder.addInterceptor(httpLoggingInterceptor.apply {
@@ -40,20 +44,20 @@ object BaseRetrofit {
 
     private fun getLoginOkHttpClient(): OkHttpClient {
         val builder: OkHttpClient.Builder = OkHttpClient.Builder()
-            .cookieJar(CookiesManagerLogin())
-            .readTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .addInterceptor(TokenHeaderInterceptor())
+                .cookieJar(CookiesManagerLogin())
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .addInterceptor(TokenHeaderInterceptor())
         return builder.build()
     }
 
     private fun getRetrofit(BASE_URL: String) = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(FlowCallAdapterFactory.create())
-        .client(getLoginOkHttpClient())
-        .build()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(FlowCallAdapterFactory.create())
+            .client(getLoginOkHttpClient())
+            .build()
 
     fun <T> createApisService(ApiService: Class<T>): T = getRetrofit(BASE_URL).create(ApiService)
 

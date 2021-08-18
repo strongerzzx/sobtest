@@ -7,11 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.base.BaseRetrofit
 import com.example.apis.ArticleApiService
+import com.example.base.BaseRet
 import com.example.beans.requestbeans.CommentBean
+import com.example.beans.requestbeans.SubComment
 import com.example.beans.resultbeans.ArticleCommenBean
 import com.example.beans.resultbeans.ArticleDetailBean
-import com.example.commonparams.CommonParms
-import com.example.utils.MmkvUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -29,7 +29,13 @@ class ArticleViewModel : ViewModel() {
     val articleCommentLiveData: LiveData<ArticleCommenBean> = _articleCommentLiveData
 
     //文章评论
-//    private val _reviewArticleCommentLiveData = MutableLiveData<>
+    private val _reviewArticleCommentLiveData = MutableLiveData<BaseRet<String>>()
+    val reviewArticleCommentLiveData: LiveData<BaseRet<String>> = _reviewArticleCommentLiveData
+
+    //文章回复
+    private val _replyArticleCommentLiveData = MutableLiveData<BaseRet<String>>()
+    val replyArticleCommentLiveData: LiveData<BaseRet<String>> = _replyArticleCommentLiveData
+
 
     //获取文章详情
     fun getTabArticleDetail(articileId: String) {
@@ -64,17 +70,33 @@ class ArticleViewModel : ViewModel() {
     fun doReviewArticle(commentBean: CommentBean) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ArticleApiService::class.java)
-                    .reviewArticle(commentBean)//MmkvUtil.getString(CommonParms.SOB_TOKEN),
+                    .reviewArticle(commentBean)
                     .flowOn(Dispatchers.IO)
                     .catch {
                         Log.d(TAG, "doReviewArticle error --> ")
                     }
                     .collect {
-                        Log.d(TAG, "doReviewArticle --> ${it}")
+                        _reviewArticleCommentLiveData.value = it
+                        Log.d(TAG, "doReviewArticle --> $it")
                     }
         }
     }
 
+    //回复文章评论
+    fun doReviewSubArticle(subComment: SubComment) {
+        viewModelScope.launch(Dispatchers.Main) {
+            BaseRetrofit.createApisService(ArticleApiService::class.java)
+                    .reviewSubArticle(subComment)
+                    .flowOn(Dispatchers.IO)
+                    .catch {
+                        Log.d(TAG, "doReviewSubArticle error --> ")
+                    }
+                    .collect {
+                        _replyArticleCommentLiveData.value = it
+                        Log.d(TAG, "doReviewSubArticle  --> $it")
+                    }
+        }
+    }
 
     companion object {
         private const val TAG = "ArticleViewModel"

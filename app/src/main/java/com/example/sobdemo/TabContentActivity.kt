@@ -1,17 +1,26 @@
 package com.example.sobdemo
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import base.BaseActivity
 import com.example.adapters.ArticelCommentAdpater
 import com.example.beans.requestbeans.CommentBean
+import com.example.beans.requestbeans.SubComment
 import com.example.sobdemo.databinding.ActivityTabContentBinding
 import com.example.viewmodels.ArticleViewModel
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class TabContentActivity : BaseActivity<ArticleViewModel>() {
@@ -53,8 +62,10 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
 
         mArticleCommentAdapter = ArticelCommentAdpater()
 
+
         mBinding.apply {
             tabContentTopReturn.ivCommonBack.setOnClickListener {
+                hideSoftKeyboard()
                 finish()
             }
             artWebView.setWebViewScrollView(artWebScroll)
@@ -71,16 +82,20 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
             artRvComment.layoutManager = LinearLayoutManager(this@TabContentActivity)
             artRvComment.adapter = mArticleCommentAdapter
 
-
             //发表评论
             btnArticleReview.setOnClickListener {
                 val commentBean = CommentBean("0", mCurrentArticleId, etArticleInputComment.text.toString())
 
-                Log.d(TAG,"commentBean  --> $commentBean")
+                Log.d(TAG, "commentBean  --> $commentBean")
 
                 mViewModel.doReviewArticle(commentBean)
             }
 
+
+            //点击回复的时候
+            etArticleInputComment.setOnClickListener {
+                translateInputComment(llComment, etArticleInputComment)
+            }
 
         }
 
@@ -111,15 +126,62 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
                 }
             })
 
+            reviewArticleCommentLiveData.observe(this@TabContentActivity, Observer {
+                it?.let {
+                    if (it.success) {
+                        getArticleComment(mCurrentArticleId, mCurrentCommentPage)
+                        Log.d(TAG, "评论成功 --> ")
+                    }
+                }
+            })
+
+            replyArticleCommentLiveData.observe(this@TabContentActivity, Observer {
+                //回复
+                it?.let {
+                    if (it.success) {
+
+                    }
+                }
+            })
+
+
 
             getTabArticleDetail(mCurrentArticleId)
-
 
             getArticleComment(mCurrentArticleId, mCurrentCommentPage)
         }
 
+
+        mArticleCommentAdapter.setHeadCommentClickListenr { articleId, parentId, beUid, beNickname ->
+            //TODO:一级评论
+            val headComment = mBinding.etArticleInputComment.text.toString()
+            val subCommentBean = SubComment(articleId, parentId, beUid, beNickname, headComment)
+
+            Log.d(TAG, "subCommentBean  --> $subCommentBean")
+            mViewModel.doReviewSubArticle(subCommentBean)
+
+        }
+
     }
 
+    private fun hideSoftKeyboard() {
+        val view: View? = currentFocus
+        if (view != null) {
+            val inputMethodManager: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        }
+    }
+
+    private fun translateInputComment(llComment: LinearLayout, etArticleInputComment: EditText) {
+        etArticleInputComment.viewTreeObserver.addOnGlobalLayoutListener {
+            val rect = Rect()
+            etArticleInputComment.getWindowVisibleDisplayFrame(rect)
+            val screenHeight = etArticleInputComment.rootView.height
+            val keyHeight = screenHeight - rect.bottom
+            val totalTranslateY = -keyHeight.toFloat() + 20
+            llComment.translationY = totalTranslateY
+        }
+    }
 
     companion object {
         private const val TAG = "TabContentActivity"
