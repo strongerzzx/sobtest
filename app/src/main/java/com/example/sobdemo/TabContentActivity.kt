@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -25,6 +26,8 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
     private lateinit var mCurrentArticleId: String
     private var mCurrentCommentPage = DEFAULT_COMMENT_PAGE
     private lateinit var mArticleCommentAdapter: ArticelCommentAdpater
+    private lateinit var mCurrentSubComment: SubComment //二级评论 --> 点击头像的时候赋值
+    private var isReply = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,15 +86,23 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
                 val commentBean = CommentBean("0", mCurrentArticleId, inputComment)
                 if (inputComment.isEmpty()) return@setOnClickListener
 
+                if (isReply) {
+                    //回复
+                    mViewModel.doReplySubArticle(mCurrentSubComment)
+                    isReply = false
+                } else {
+                    //发表评论
+                    mViewModel.doReviewArticle(commentBean)
+                }
 
-                mViewModel.doReviewArticle(commentBean)
+
                 Log.d(TAG, "commentBean  --> $commentBean")
             }
 
 
             //点击回复的时候
             etArticleInputComment.setOnClickListener {
-                translateInputComment(llComment, etArticleInputComment)
+                translateInputComment()
             }
 
         }
@@ -99,7 +110,6 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
 
         //加载详情内容
         mViewModel.apply {
-
             tabContentArticleLiveData.observe(this@TabContentActivity, Observer {
                 if (it.success) {
                     if (it.data.content.isNotEmpty()) {
@@ -150,16 +160,16 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
 
 
         mArticleCommentAdapter.setHeadCommentClickListenr { articleId, parentId, beUid, beNickname ->
-            //TODO:一级评论
+            //TODO:回复
+            translateInputComment()
+            Log.d(TAG,"111111111111111111111111")
+
             val headComment = mBinding.etArticleInputComment.text.toString()
-            val subCommentBean = SubComment(articleId, parentId, beUid, beNickname, headComment)
             if (headComment.isEmpty()) return@setHeadCommentClickListenr
-
-
-            mViewModel.doReplySubArticle(subCommentBean)
-            Log.d(TAG, "subCommentBean  --> $subCommentBean")
+            isReply = true
+            mCurrentSubComment = SubComment(articleId, parentId, beUid, beNickname, headComment)
+            Log.d(TAG, "mCurrentSubComment  -->  $mCurrentSubComment")
         }
-
     }
 
     private fun hideSoftKeyboard() {
@@ -174,15 +184,22 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
         }
     }
 
-    private fun translateInputComment(llComment: LinearLayout, etArticleInputComment: EditText) {
-        etArticleInputComment.viewTreeObserver.addOnGlobalLayoutListener {
+    private fun translateInputComment() {
+        mBinding.etArticleInputComment.viewTreeObserver.addOnGlobalLayoutListener {
             val rect = Rect()
-            etArticleInputComment.getWindowVisibleDisplayFrame(rect)
-            val screenHeight = etArticleInputComment.rootView.height
+            mBinding.etArticleInputComment.getWindowVisibleDisplayFrame(rect)
+            //屏幕宽度
+            val screenHeight = mBinding.etArticleInputComment.rootView.height
+
+            //获取etInput的底部
             val keyHeight = screenHeight - rect.bottom
             val totalTranslateY = -keyHeight.toFloat() + 20
-            llComment.translationY = totalTranslateY
+            mBinding.llComment.translationY = totalTranslateY
+
+            Log.d(TAG, "111111111111111111111")
         }
+
+        Log.d(TAG, "22222222222222222222222")
     }
 
     companion object {

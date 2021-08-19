@@ -41,12 +41,12 @@ class ArticleViewModel : ViewModel() {
     fun getTabArticleDetail(articileId: String) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ArticleApiService::class.java)
-                    .getArticleDetail(articileId)
-                    .flowOn(Dispatchers.IO)
-                    .collect {
-                        _tabContentArticleLiveData.value = it
-                        Log.d(HomeViewModel.TAG, "getTabArticleDetail  -->  $it")
-                    }
+                .getArticleDetail(articileId)
+                .flowOn(Dispatchers.IO)
+                .collect {
+                    _tabContentArticleLiveData.value = it
+                    Log.d(HomeViewModel.TAG, "getTabArticleDetail  -->  $it")
+                }
         }
     }
 
@@ -54,15 +54,15 @@ class ArticleViewModel : ViewModel() {
     fun getArticleComment(articileId: String, page: Int) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ArticleApiService::class.java)
-                    .getArticleComment(articileId, page)
-                    .catch {
-                        Log.d(TAG, "article  comment error --> ")
-                    }
-                    .flowOn(Dispatchers.IO)
-                    .collect {
-                        _articleCommentLiveData.value = it
-                        Log.d(TAG, "getArticleComment -->  $it")
-                    }
+                .getArticleComment(articileId, page)
+                .catch {
+                    Log.d(TAG, "article  comment error --> ")
+                }
+                .flowOn(Dispatchers.IO)
+                .collect {
+                    _articleCommentLiveData.value = it
+                    Log.d(TAG, "getArticleComment -->  $it")
+                }
         }
     }
 
@@ -70,15 +70,15 @@ class ArticleViewModel : ViewModel() {
     fun doReviewArticle(commentBean: CommentBean) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ArticleApiService::class.java)
-                    .reviewArticle(commentBean)
-                    .flowOn(Dispatchers.IO)
-                    .catch {
-                        Log.d(TAG, "doReviewArticle error --> ")
-                    }
-                    .collect {
-                        _reviewArticleCommentLiveData.value = it
-                        Log.d(TAG, "doReviewArticle --> $it")
-                    }
+                .reviewArticle(commentBean)
+                .flowOn(Dispatchers.IO)
+                .catch {
+                    Log.d(TAG, "doReviewArticle error --> ")
+                }
+                .collect {
+                    _reviewArticleCommentLiveData.value = it
+                    Log.d(TAG, "doReviewArticle --> $it")
+                }
         }
     }
 
@@ -86,15 +86,15 @@ class ArticleViewModel : ViewModel() {
     fun doReplySubArticle(subComment: SubComment) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ArticleApiService::class.java)
-                    .replySubArticle(subComment)
-                    .flowOn(Dispatchers.IO)
-                    .catch {
-                        Log.d(TAG, "doReviewSubArticle error --> ")
-                    }
-                    .collect {
-                        _replyArticleCommentLiveData.value = it
-                        Log.d(TAG, "doReviewSubArticle  --> $it")
-                    }
+                .replySubArticle(subComment)
+                .flowOn(Dispatchers.IO)
+                .catch {
+                    Log.d(TAG, "doReviewSubArticle error --> ")
+                }
+                .collect {
+                    _replyArticleCommentLiveData.value = it
+                    Log.d(TAG, "doReviewSubArticle  --> $it")
+                }
         }
     }
 

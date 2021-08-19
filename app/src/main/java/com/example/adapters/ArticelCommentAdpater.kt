@@ -52,18 +52,18 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerVi
             return
         }
 
+        val subComments = content.subComments
+        mSecondPos = (subComments.size - 1) % subComments.size
+
         holder.mBinding.clSecondComment.visibility = View.VISIBLE
         holder.mBinding.clSecondComment.setOnClickListener {
             mHeaderCommentListener.invoke(
-                content.subComments[mSecondPos].articleId,
-                content.subComments[mSecondPos].parentId,
-                content.subComments[mSecondPos].beUid,
-                content.subComments[mSecondPos].beNickname
+                content.subComments[0].articleId,
+                content.subComments[0].parentId,
+                content.subComments[0].beUid,
+                content.subComments[0].beNickname
             )
         }
-
-        val subComments = content.subComments
-        mSecondPos = (subComments.size - 1) % subComments.size
 
         holder.mBinding.clSecondComment.visibility = View.VISIBLE
         holder.mBinding.tvArticleCommentSecondComment.text = subComments[mSecondPos].content
