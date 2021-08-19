@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.example.adapters.ImageAdapter
 import com.example.adapters.MagicIndicatorAdapter
 import com.example.adapters.HomeTabAdapter
@@ -14,6 +15,7 @@ import com.example.sobdemo.R
 import com.example.sobdemo.databinding.HomeFragmentLayoutBinding
 import com.example.utils.ViewPager2Bind
 import com.example.viewmodels.HomeViewModel
+import com.example.viewmodels.MoYuViewModel
 import com.youth.banner.indicator.CircleIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 
@@ -49,7 +51,6 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         mHomeTabAdapter = HomeTabAdapter(childFragmentManager, lifecycle)
         val tabNavigator = CommonNavigator(context)
         tabNavigator.isReselectWhenLayout = false //防止文字抖动
-
 
         mViewModel.apply {
 

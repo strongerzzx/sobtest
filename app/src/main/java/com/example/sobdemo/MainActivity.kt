@@ -30,14 +30,13 @@ class MainActivity : BaseActivity<UserViewModel>() {
         getImmersionBar().init()
 
 
-
         //加载验证码
         mViewModel.checkPhoneCodePic.observe(this, {
             Glide.with(this@MainActivity)
-                    .load(it)
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(mBinding.ivYzmCheckPic)
+                .load(it)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(mBinding.ivYzmCheckPic)
 
         })
 
@@ -82,10 +81,10 @@ class MainActivity : BaseActivity<UserViewModel>() {
                 val password = etInpuPhonePassword.text.toString()
                 val yzm = etInpuYzmText.text.toString()
                 if (TextUtils.isEmpty(yzm) || TextUtils.isEmpty(phoneNum)
-                        || TextUtils.isEmpty(password)
+                    || TextUtils.isEmpty(password)
                 ) {
                     Toast.makeText(this@MainActivity, "账号或密码不能为空", Toast.LENGTH_SHORT)
-                            .show()
+                        .show()
                     return@setOnClickListener
                 }
                 mViewModel.doLogin(yzm, LoginInfo(phoneNum, MD5Util.MD5(password)))

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
+
     <fragment
         android:id="@+id/navigaton_home_fragment"
         android:name="com.example.navigations.NavHostFragmentHideShow"

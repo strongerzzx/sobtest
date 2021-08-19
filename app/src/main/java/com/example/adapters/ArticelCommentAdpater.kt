@@ -49,12 +49,10 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerVi
 
         //二级评论
         if (content.subComments.isEmpty()) {
-            holder.mBinding.clSecondComment.visibility = View.GONE
             return
-        } else {
-            holder.mBinding.clSecondComment.visibility = View.VISIBLE
         }
 
+        holder.mBinding.clSecondComment.visibility = View.VISIBLE
         holder.mBinding.clSecondComment.setOnClickListener {
             mHeaderCommentListener.invoke(
                 content.subComments[mSecondPos].articleId,

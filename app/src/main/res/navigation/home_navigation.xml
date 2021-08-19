@@ -12,7 +12,7 @@
 
     <fragment
         android:id="@+id/articleFragment"
-        android:name="com.example.fragments.ArticleFragment"
+        android:name="com.example.fragments.MoYuFragment"
         android:label="ArticleFragment">
     </fragment>
 </navigation>

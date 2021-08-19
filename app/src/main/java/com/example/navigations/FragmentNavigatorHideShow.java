@@ -19,6 +19,7 @@ import androidx.navigation.fragment.FragmentNavigator;
 
 import java.lang.reflect.Field;
 import java.util.ArrayDeque;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -70,6 +71,7 @@ public class FragmentNavigatorHideShow extends FragmentNavigator {
             popExitAnim = popExitAnim != -1 ? popExitAnim : 0;
             ft.setCustomAnimations(enterAnim, exitAnim, popEnterAnim, popExitAnim);
         }
+
 
         Fragment fragment = mFragmentManager.getPrimaryNavigationFragment();
         if (fragment != null) {
