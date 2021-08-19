@@ -162,7 +162,7 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
         mArticleCommentAdapter.setHeadCommentClickListenr { articleId, parentId, beUid, beNickname ->
             //TODO:回复
             translateInputComment()
-            Log.d(TAG,"111111111111111111111111")
+            Log.d(TAG, "111111111111111111111111")
 
             val headComment = mBinding.etArticleInputComment.text.toString()
             if (headComment.isEmpty()) return@setHeadCommentClickListenr
@@ -188,10 +188,7 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
         mBinding.etArticleInputComment.viewTreeObserver.addOnGlobalLayoutListener {
             val rect = Rect()
             mBinding.etArticleInputComment.getWindowVisibleDisplayFrame(rect)
-            //屏幕宽度
             val screenHeight = mBinding.etArticleInputComment.rootView.height
-
-            //获取etInput的底部
             val keyHeight = screenHeight - rect.bottom
             val totalTranslateY = -keyHeight.toFloat() + 20
             mBinding.llComment.translationY = totalTranslateY
@@ -200,6 +197,7 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
         }
 
         Log.d(TAG, "22222222222222222222222")
+
     }
 
     companion object {
