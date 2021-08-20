@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray">
+
+    <ImageView
+        android:id="@+id/iv_round_avter"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="#000" />
+
+
+    <TextView
+        android:id="@+id/tv_nick_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="NickName"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/iv_round_avter"
+        app:layout_constraintTop_toTopOf="@+id/iv_round_avter" />
+
+
+    <TextView
+        android:id="@+id/tv_user_vip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="vip"
+        android:textColor="@color/purple_200"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_round_avter"
+        app:layout_constraintEnd_toEndOf="@+id/iv_round_avter" />
+
+
+    <TextView
+        android:id="@+id/tv_user_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="userId"
+        android:textColor="@color/purple_200"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_nick_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nick_name" />
+
+    <TextView
+        android:id="@+id/tv_un_rad_msg_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_msg_bridge"
+        android:gravity="center"
+        android:text="32"
+        android:textColor="@color/white"
+        android:textSize="8sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_go_to_un_read_msg"
+        app:layout_constraintEnd_toEndOf="@+id/iv_go_to_un_read_msg" />
+
+    <ImageView
+        android:id="@+id/iv_go_to_un_read_msg"
+        android:layout_width="35dp"
+        android:layout_height="32dp"
+        android:layout_marginRight="10dp"
+        android:src="@mipmap/ic_user_email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_nick_name" />
+
+
+    <TextView
+        android:id="@+id/tv_custom_achievement"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="个人成就"
+        android:textColor="@color/black_80"
+        app:layout_constraintEnd_toStartOf="@+id/tv_user_article_list"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_round_avter" />
+
+
+    <TextView
+        android:id="@+id/tv_user_article_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="文章评论列表"
+        android:textColor="@color/black_80"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_custom_achievement"
+        app:layout_constraintEnd_toStartOf="@+id/tv_user_dynamic_comment"
+        app:layout_constraintStart_toEndOf="@+id/tv_custom_achievement"
+        app:layout_constraintTop_toTopOf="@+id/tv_custom_achievement" />
+
+
+    <TextView
+        android:id="@+id/tv_user_dynamic_comment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="动态评论"
+        android:textColor="@color/black_80"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_custom_achievement"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_user_article_list"
+        app:layout_constraintTop_toTopOf="@+id/tv_custom_achievement" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

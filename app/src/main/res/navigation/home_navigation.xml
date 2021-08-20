@@ -15,4 +15,8 @@
         android:name="com.example.fragments.MoYuFragment"
         android:label="ArticleFragment">
     </fragment>
+    <fragment
+        android:id="@+id/mineFragment"
+        android:name="com.example.fragments.MineFragment"
+        android:label="MineFragment" />
 </navigation>

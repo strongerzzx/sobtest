@@ -13,9 +13,9 @@ import com.example.sobdemo.MainActivity
 import com.example.sobdemo.R
 import com.example.sobdemo.databinding.GetForgetPswFragmentLayoutBinding
 import com.example.utils.MmkvUtil
-import com.example.viewmodels.UserViewModel
+import com.example.viewmodels.LoginViewModel
 
-class GetForgetpswFragment : BaseFragment<UserViewModel>() {
+class GetForgetpswFragment : BaseFragment<LoginViewModel>() {
 
     private lateinit var mBinding: GetForgetPswFragmentLayoutBinding
 
@@ -70,7 +70,7 @@ class GetForgetpswFragment : BaseFragment<UserViewModel>() {
 
     }
 
-    override fun getSubViewModel() = UserViewModel::class.java
+    override fun getSubViewModel() = LoginViewModel::class.java
 
     override fun isDarkBarFont() = true
 }

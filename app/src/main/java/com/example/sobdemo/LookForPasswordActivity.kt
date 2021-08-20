@@ -2,9 +2,7 @@ package com.example.sobdemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import base.BaseActivity
 import com.example.sobdemo.databinding.ActivityLookForPasswordBinding
-import com.example.viewmodels.UserViewModel
 
 class LookForPasswordActivity : AppCompatActivity() {
 

@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import base.BaseActivity
 import com.example.adapters.ArticelCommentAdpater
+import com.example.adapters.MutilArtcleCommentAdapter
 import com.example.beans.requestbeans.CommentBean
 import com.example.beans.requestbeans.SubComment
 import com.example.sobdemo.databinding.ActivityTabContentBinding
@@ -28,6 +29,7 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
     private lateinit var mArticleCommentAdapter: ArticelCommentAdpater
     private lateinit var mCurrentSubComment: SubComment //二级评论 --> 点击头像的时候赋值
     private var isReply = false
+    private lateinit var mMultiArticleAdapter:MutilArtcleCommentAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +63,8 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
 
         mArticleCommentAdapter = ArticelCommentAdpater()
 
+        mMultiArticleAdapter = MutilArtcleCommentAdapter()
+
         mBinding.apply {
             tabContentTopReturn.ivCommonBack.setOnClickListener {
                 hideSoftKeyboard()
@@ -79,6 +83,8 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
 
             artRvComment.layoutManager = LinearLayoutManager(this@TabContentActivity)
             artRvComment.adapter = mArticleCommentAdapter
+//            artRvComment.adapter = mMultiArticleAdapter
+
 
             //TODO:发表评论 + 回复
             btnArticleReview.setOnClickListener {
@@ -127,7 +133,11 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
                 val totalPages = it.data.totalPages
                 val contentCommom = it.data.content
                 if (contentCommom.isNotEmpty()) {
+                    //par adapter --> setdata --> 抽取子评论内容 --> child adapter --> setData
                     mArticleCommentAdapter.setData(contentCommom)
+
+//                    mMultiArticleAdapter.setData(contentCommom)
+
                 } else {
                     Toast.makeText(this@TabContentActivity, "暂无评论", Toast.LENGTH_SHORT).show()
                 }

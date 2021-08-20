@@ -12,10 +12,10 @@ import com.example.commonparams.CommonParms
 import com.example.sobdemo.databinding.ActivityMainBinding
 import com.example.utils.MD5Util
 import com.example.utils.MmkvUtil
-import com.example.viewmodels.UserViewModel
+import com.example.viewmodels.LoginViewModel
 import java.util.*
 
-class MainActivity : BaseActivity<UserViewModel>() {
+class MainActivity : BaseActivity<LoginViewModel>() {
     private lateinit var mBinding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,5 +116,5 @@ class MainActivity : BaseActivity<UserViewModel>() {
 
     }
 
-    override fun getSubViewModel(): Class<UserViewModel> = UserViewModel::class.java
+    override fun getSubViewModel(): Class<LoginViewModel> = LoginViewModel::class.java
 }

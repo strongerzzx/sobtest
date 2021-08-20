@@ -74,18 +74,6 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerVi
             .into(holder.mBinding.ivArticleCommentSecondAvter)
     }
 
-    override fun getItemViewType(position: Int): Int {
-        Log.d(TAG, "getItemViewType -->  ")
-        if (position < mCommonList.size) {
-            //加载一级？？
-        }
-
-        //TODO:一开始最多 只显示3个
-        //TODO:如果超过3个 显示更多按钮
-
-
-        return super.getItemViewType(position)
-    }
 
 
     fun setHeadCommentClickListenr(listener: (articleId: String, parentId: String, beUid: String, beNickname: String) -> Unit) {

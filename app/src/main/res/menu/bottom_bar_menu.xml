@@ -11,4 +11,10 @@
         android:id="@+id/articleFragment"
         android:icon="@drawable/home_article_selector"
         android:title="摸鱼" />
+
+
+    <item
+        android:id="@+id/mineFragment"
+        android:icon="@drawable/home_article_selector"
+        android:title="我的" />
 </menu>
