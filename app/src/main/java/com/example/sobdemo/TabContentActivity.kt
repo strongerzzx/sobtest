@@ -29,7 +29,7 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
     private lateinit var mArticleCommentAdapter: ArticelCommentAdpater
     private lateinit var mCurrentSubComment: SubComment //二级评论 --> 点击头像的时候赋值
     private var isReply = false
-    private lateinit var mMultiArticleAdapter:MutilArtcleCommentAdapter
+    private lateinit var mMultiArticleAdapter: MutilArtcleCommentAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,7 +83,6 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
 
             artRvComment.layoutManager = LinearLayoutManager(this@TabContentActivity)
             artRvComment.adapter = mArticleCommentAdapter
-//            artRvComment.adapter = mMultiArticleAdapter
 
 
             //TODO:发表评论 + 回复
@@ -133,19 +132,19 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
                 val totalPages = it.data.totalPages
                 val contentCommom = it.data.content
                 if (contentCommom.isNotEmpty()) {
-                    //par adapter --> setdata --> 抽取子评论内容 --> child adapter --> setData
                     mArticleCommentAdapter.setData(contentCommom)
-
-//                    mMultiArticleAdapter.setData(contentCommom)
-
                 } else {
                     Toast.makeText(this@TabContentActivity, "暂无评论", Toast.LENGTH_SHORT).show()
                 }
+
+
+                Log.d(TAG, "comment")
             })
 
             reviewArticleCommentLiveData.observe(this@TabContentActivity, Observer {
                 it?.let {
                     if (it.success) {
+                        //评论完刷新
                         getArticleComment(mCurrentArticleId, mCurrentCommentPage)
                         Log.d(TAG, "评论成功 --> ")
                     }
@@ -153,9 +152,9 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
             })
 
             replyArticleCommentLiveData.observe(this@TabContentActivity, Observer {
-                //回复
                 it?.let {
                     if (it.success) {
+                        //回复完刷新
                         getArticleComment(mCurrentArticleId, mCurrentCommentPage)
                         Log.d(TAG, "回复评论成功 --> ")
                     }
@@ -165,6 +164,7 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
 
             getTabArticleDetail(mCurrentArticleId)
 
+            //第一次进入获取评论
             getArticleComment(mCurrentArticleId, mCurrentCommentPage)
         }
 
@@ -186,10 +186,10 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
         val view: View? = currentFocus
         if (view != null) {
             val inputMethodManager: InputMethodManager =
-                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(
-                view.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
+                    view.windowToken,
+                    InputMethodManager.HIDE_NOT_ALWAYS
             )
         }
     }

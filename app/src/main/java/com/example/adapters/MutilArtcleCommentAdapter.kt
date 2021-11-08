@@ -17,13 +17,13 @@ public class MutilArtcleCommentAdapter : RecyclerView.Adapter<RecyclerView.ViewH
         when (getItemViewType(viewType)) {
             TYPE_PAR_COMMENT -> {
                 val inflate = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_mutil_areticle_comment_parent_layout, parent, false)
+                        .inflate(R.layout.item_mutil_areticle_comment_parent_layout, parent, false)
                 val parBind = ItemMutilAreticleCommentParentLayoutBinding.bind(inflate)
                 return PareViewHolder(parBind)
             }
             TYPE_CHILD_COMMENT -> {
                 val inflate = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_mutil_areticle_comment_child_layout, parent, false)
+                        .inflate(R.layout.item_mutil_areticle_comment_child_layout, parent, false)
                 val childBind = ItemMutilAreticleCommentChildLayoutBinding.bind(inflate)
                 return ChildViewHolder(childBind)
             }
@@ -74,12 +74,12 @@ public class MutilArtcleCommentAdapter : RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     class PareViewHolder(itemView: ItemMutilAreticleCommentParentLayoutBinding) :
-        RecyclerView.ViewHolder(itemView.root) {
+            RecyclerView.ViewHolder(itemView.root) {
         val parBinding = itemView
     }
 
     class ChildViewHolder(itemView: ItemMutilAreticleCommentChildLayoutBinding) :
-        RecyclerView.ViewHolder(itemView.root) {
+            RecyclerView.ViewHolder(itemView.root) {
         val childBinding = itemView
     }
 

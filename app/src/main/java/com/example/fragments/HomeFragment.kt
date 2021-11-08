@@ -41,7 +41,6 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
         initEvent()
     }
 
@@ -102,7 +101,6 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         tabNavigator.adapter = mMagicIndicatorAdapter
         mBinding.homeFragmentMagicIndicator.navigator = tabNavigator
         ViewPager2Bind.bind(mBinding.homeFragmentMagicIndicator, mBinding.homeFragmentViewPage2)
-        tabNavigator.adapter = mMagicIndicatorAdapter
         mBinding.homeFragmentMagicIndicator.navigator = tabNavigator
         mBinding.homeFragmentViewPage2.adapter = mHomeTabAdapter
     }

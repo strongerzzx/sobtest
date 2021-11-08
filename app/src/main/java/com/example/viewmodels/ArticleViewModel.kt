@@ -12,6 +12,7 @@ import com.example.beans.requestbeans.CommentBean
 import com.example.beans.requestbeans.SubComment
 import com.example.beans.resultbeans.ArticleCommenBean
 import com.example.beans.resultbeans.ArticleDetailBean
+import com.example.beans.resultbeans.TestTypeBean
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -49,6 +50,11 @@ class ArticleViewModel : ViewModel() {
                 }
         }
     }
+
+
+    private val mTestCommentBean = mutableListOf<TestTypeBean>()
+    val _mTestCommentBean = mTestCommentBean
+
 
     //获取文章评论
     fun getArticleComment(articileId: String, page: Int) {

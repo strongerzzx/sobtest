@@ -2,15 +2,15 @@ package com.example.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.beans.resultbeans.Content
 import com.example.sobdemo.R
-import com.example.sobdemo.databinding.ArticleCommentAdapterLayoutBinding
+import com.example.sobdemo.databinding.ArticleCommentBlankLayoutBinding
+import com.example.sobdemo.databinding.ArticleCommentChildLayoutBinding
+import com.example.sobdemo.databinding.ArticleCommentParentLayoutBinding
 
-class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerViewHolder>() {
+class ArticelCommentAdpater : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val mCommonList = mutableListOf<Content>()
     private var mSecondPos = -1
@@ -18,28 +18,41 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerVi
     private lateinit var mHeaderCommentListener:
                 (articleId: String, parentId: String, beUid: String, beNickname: String) -> Unit
 
-    inner class InnerViewHolder(itemView: ArticleCommentAdapterLayoutBinding) :
-        RecyclerView.ViewHolder(itemView.root) {
-
-        val mBinding = itemView
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        when (viewType) {
+            TYPE_PARENT_COMMENT -> {
+                //父评论
+                val inflate = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.article_comment_parent_layout, parent, false)
+                val bind = ArticleCommentParentLayoutBinding.bind(inflate)
+                Log.d(TAG, "onCreateViewHolder -->  ")
+                return ParentViewHolder(bind)
+            }
+            TYPE_CHILD_COMMENT -> {
+                //子评论
+                val inflate = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.article_comment_child_layout, parent, false)
+                val bind = ArticleCommentChildLayoutBinding.bind(inflate)
+                Log.d(TAG, "onCreateViewHolder -->  ")
+                return ChildViewHolder(bind)
+            }
+            else -> {
+                //空评论
+                val inflate = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.article_comment_blank_layout, parent, false)
+                val bind = ArticleCommentBlankLayoutBinding.bind(inflate)
+                Log.d(TAG, "onCreateViewHolder -->  ")
+                return BlankViewHolder(bind)
+            }
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InnerViewHolder {
-        val inflate = LayoutInflater.from(parent.context)
-            .inflate(R.layout.article_comment_adapter_layout, parent, false)
-        val bind = ArticleCommentAdapterLayoutBinding.bind(inflate)
 
-        Log.d(TAG, "onCreateViewHolder -->  ")
-
-        return InnerViewHolder(bind)
-    }
-
-
-    override fun onBindViewHolder(holder: InnerViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         //一级评论的个数
         Log.d(TAG, "onBindViewHolder --> $position ")
 
-        val content = mCommonList[position]
+/*        val content = mCommonList[position]
         Glide.with(holder.itemView.context)
             .load(content.avatar)
             .into(holder.mBinding.ivArticleCommentAvter)
@@ -71,9 +84,8 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerVi
         holder.mBinding.tvArticleCommentSecondPublishTime.text = subComments[mSecondPos].publishTime
         Glide.with(holder.itemView.context)
             .load(subComments[mSecondPos].yourAvatar)
-            .into(holder.mBinding.ivArticleCommentSecondAvter)
+            .into(holder.mBinding.ivArticleCommentSecondAvter)*/
     }
-
 
 
     fun setHeadCommentClickListenr(listener: (articleId: String, parentId: String, beUid: String, beNickname: String) -> Unit) {
@@ -92,11 +104,32 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnerVi
 
     }
 
-    companion object {
+    override fun getItemViewType(position: Int): Int {
+        return super.getItemViewType(position)
+    }
 
-        const val TYPE_HEAD_COMMENT = 0
-        const val TYPE_SECOND_COMMENT = 1
+
+    companion object {
+        const val TYPE_PARENT_COMMENT = 0
+        const val TYPE_CHILD_COMMENT = 1
+        const val TYPE_BLANK_COMMENT = 2
         private const val TAG = "ArticelCommentAdpater"
+    }
+
+
+    inner class ParentViewHolder(itemView: ArticleCommentParentLayoutBinding) :
+        RecyclerView.ViewHolder(itemView.root) {
+        val mBinding = itemView
+    }
+
+    inner class ChildViewHolder(itemView: ArticleCommentChildLayoutBinding) :
+        RecyclerView.ViewHolder(itemView.root) {
+        val mBinding = itemView
+    }
+
+    inner class BlankViewHolder(itemView: ArticleCommentBlankLayoutBinding) :
+        RecyclerView.ViewHolder(itemView.root) {
+        val mBinding = itemView
     }
 
 }

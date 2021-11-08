@@ -4,7 +4,8 @@ data class ArticleCommenBean(
         val code: Int,
         val `data`: Data,
         val message: String,
-        val success: Boolean
+        val success: Boolean,
+        val type:Int
 )
 
 data class Data(
