@@ -17,6 +17,7 @@ class MmkvUtil {
 
     public static String getString(String key) {
         String ret = sMMKv.decodeString(key);
+
         if (ret != null && ret.length() > 0) {
             return ret;
         }

@@ -60,7 +60,7 @@ class LoginViewModel : ViewModel() {
     fun getPhoneCheckCode(sendSmsVo: SendSmsVo) {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ApiUserServices::class.java)
-                .getPhoneCheckCode(MmkvUtil.getString(CommonParms.COOKIE_PIC_KEY), sendSmsVo)
+                .getPhoneCheckCode(sendSmsVo)
                 .flowOn(Dispatchers.IO)
                 .collect {
                     Log.d(
@@ -89,9 +89,9 @@ class LoginViewModel : ViewModel() {
     //登录
     fun doLogin(captcha: String, loginInfo: LoginInfo) {
         viewModelScope.launch(Dispatchers.Main) {
-            Log.d(TAG,"pic cookie --> ${MmkvUtil.getString(CommonParms.COOKIE_PIC_KEY)}")
+            Log.d(TAG, "pic cookie --> ${MmkvUtil.getString(CommonParms.COOKIE_PIC_KEY)}")
             BaseRetrofit.createApisService(ApiUserServices::class.java)
-                .doLogin(MmkvUtil.getString(CommonParms.COOKIE_PIC_KEY),captcha, loginInfo)
+                .doLogin(captcha, loginInfo)
                 .flowOn(Dispatchers.IO)
                 .catch {
                     println("catch exception")
@@ -107,7 +107,7 @@ class LoginViewModel : ViewModel() {
     fun doCheckToken() {
         viewModelScope.launch(Dispatchers.Main) {
             BaseRetrofit.createApisService(ApiUserServices::class.java)
-                .checkToken(MmkvUtil.getString(CommonParms.COOKIE_LOGIN_KEY))
+                .checkToken()
                 .flowOn(Dispatchers.IO)
                 .collect {
                     _checkTokenLiveData.value = it

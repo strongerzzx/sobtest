@@ -4,17 +4,14 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import base.BaseActivity
 import com.example.adapters.ArticelCommentAdpater
-import com.example.adapters.MutilArtcleCommentAdapter
+import com.example.adapters.TestArticleAdpter
 import com.example.beans.requestbeans.CommentBean
 import com.example.beans.requestbeans.SubComment
 import com.example.sobdemo.databinding.ActivityTabContentBinding
@@ -29,7 +26,7 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
     private lateinit var mArticleCommentAdapter: ArticelCommentAdpater
     private lateinit var mCurrentSubComment: SubComment //二级评论 --> 点击头像的时候赋值
     private var isReply = false
-    private lateinit var mMultiArticleAdapter: MutilArtcleCommentAdapter
+    private lateinit var mTestArticleAdapter: TestArticleAdpter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,8 +59,7 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
     private fun initEvent() {
 
         mArticleCommentAdapter = ArticelCommentAdpater()
-
-        mMultiArticleAdapter = MutilArtcleCommentAdapter()
+        mTestArticleAdapter = TestArticleAdpter()
 
         mBinding.apply {
             tabContentTopReturn.ivCommonBack.setOnClickListener {
@@ -82,7 +78,8 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
             }
 
             artRvComment.layoutManager = LinearLayoutManager(this@TabContentActivity)
-            artRvComment.adapter = mArticleCommentAdapter
+//            artRvComment.adapter = mArticleCommentAdapter
+            artRvComment.adapter = mTestArticleAdapter
 
 
             //TODO:发表评论 + 回复
@@ -129,17 +126,26 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
             articleCommentLiveData.observe(this@TabContentActivity, Observer {
                 if (!it.success) return@Observer
                 //一共页数
+
                 val totalPages = it.data.totalPages
                 val contentCommom = it.data.content
                 if (contentCommom.isNotEmpty()) {
-                    mArticleCommentAdapter.setData(contentCommom)
+//                    mArticleCommentAdapter.setData(contentCommom)
                 } else {
                     Toast.makeText(this@TabContentActivity, "暂无评论", Toast.LENGTH_SHORT).show()
                 }
-
-
                 Log.d(TAG, "comment")
             })
+
+
+            //TODO:test
+            this.mTestCommentBeanLiveData.observe(this@TabContentActivity, Observer {
+//                mArticleCommentAdapter.setTestData(it)
+                mTestArticleAdapter.setData(it)
+            })
+
+
+
 
             reviewArticleCommentLiveData.observe(this@TabContentActivity, Observer {
                 it?.let {
@@ -186,10 +192,10 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
         val view: View? = currentFocus
         if (view != null) {
             val inputMethodManager: InputMethodManager =
-                    getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(
-                    view.windowToken,
-                    InputMethodManager.HIDE_NOT_ALWAYS
+                view.windowToken,
+                InputMethodManager.HIDE_NOT_ALWAYS
             )
         }
     }

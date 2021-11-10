@@ -4,16 +4,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.beans.resultbeans.ArticleCommenBean
 import com.example.beans.resultbeans.Content
+import com.example.beans.resultbeans.TestTypeBean
 import com.example.sobdemo.R
 import com.example.sobdemo.databinding.ArticleCommentBlankLayoutBinding
 import com.example.sobdemo.databinding.ArticleCommentChildLayoutBinding
 import com.example.sobdemo.databinding.ArticleCommentParentLayoutBinding
+import java.lang.IllegalArgumentException
 
 class ArticelCommentAdpater : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private var mList: List<TestTypeBean>? = null
     private val mCommonList = mutableListOf<Content>()
-    private var mSecondPos = -1
+    private val mData = mutableListOf<ArticleCommenBean>()
+
 
     private lateinit var mHeaderCommentListener:
                 (articleId: String, parentId: String, beUid: String, beNickname: String) -> Unit
@@ -48,43 +54,37 @@ class ArticelCommentAdpater : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
 
+
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        //一级评论的个数
-        Log.d(TAG, "onBindViewHolder --> $position ")
-
-/*        val content = mCommonList[position]
-        Glide.with(holder.itemView.context)
-            .load(content.avatar)
-            .into(holder.mBinding.ivArticleCommentAvter)
-        holder.mBinding.tvArticleCommentHead.text = content.commentContent
-        holder.mBinding.tvArticleCommentName.text = content.nickname
-        holder.mBinding.tvArticleCommentPublishTime.text = content.publishTime
-
-        //二级评论
-        if (content.subComments.isEmpty()) {
-            return
+        val testTypeBean = mList?.get(position)
+        if (testTypeBean?.type == TYPE_PARENT_COMMENT) {
+            if (holder is ParentViewHolder) {
+                val parentComment = testTypeBean.parentComment
+                Glide.with(holder.itemView.context)
+                    .load(parentComment.avatar)
+                    .into(holder.mBinding.ivArticleCommentAvter)
+                holder.mBinding.tvArticleCommentHead.text = parentComment.commentContent
+                holder.mBinding.tvArticleCommentName.text = parentComment.nickname
+                holder.mBinding.tvArticleCommentPublishTime.text = parentComment.publishTime
+            }
+        } else if (testTypeBean?.type == TYPE_CHILD_COMMENT) {
+            if (holder is ChildViewHolder) {
+                val subComment = testTypeBean.parentComment.subComments[position]
+                Glide.with(holder.itemView.context)
+                    .load(subComment.yourAvatar)
+                    .into(holder.mBinding.ivArticleCommentSecondAvter)
+                holder.mBinding.tvArticleCommentSecondComment.text = subComment.content
+                holder.mBinding.tvArticleCommentSecondName.text = subComment.yourNickname
+                holder.mBinding.tvArticleCommentSecondPublishTime.text =
+                    subComment.publishTime
+            }
+        } else {
+            if (holder is BlankViewHolder) {
+                holder.mBinding.tvBlankComment.text = "暂无评论..."
+            }
         }
 
-        val subComments = content.subComments
-        mSecondPos = (subComments.size - 1) % subComments.size
-
-        holder.mBinding.clSecondComment.visibility = View.VISIBLE
-        holder.mBinding.clSecondComment.setOnClickListener {
-            mHeaderCommentListener.invoke(
-                content.subComments[0].articleId,
-                content.subComments[0].parentId,
-                content.subComments[0].beUid,
-                content.subComments[0].beNickname
-            )
-        }
-
-        holder.mBinding.clSecondComment.visibility = View.VISIBLE
-        holder.mBinding.tvArticleCommentSecondComment.text = subComments[mSecondPos].content
-        holder.mBinding.tvArticleCommentSecondName.text = subComments[mSecondPos].yourNickname
-        holder.mBinding.tvArticleCommentSecondPublishTime.text = subComments[mSecondPos].publishTime
-        Glide.with(holder.itemView.context)
-            .load(subComments[mSecondPos].yourAvatar)
-            .into(holder.mBinding.ivArticleCommentSecondAvter)*/
     }
 
 
@@ -92,7 +92,7 @@ class ArticelCommentAdpater : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         this.mHeaderCommentListener = listener
     }
 
-    override fun getItemCount() = mCommonList.size
+    override fun getItemCount(): Int = mList?.size ?: 0
 
     fun setData(contentCommom: List<Content>) {
         mCommonList.clear()
@@ -101,11 +101,15 @@ class ArticelCommentAdpater : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
         notifyDataSetChanged()
         Log.d(TAG, "setData -->  ")
-
     }
 
     override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
+        return mData[position].type
+    }
+
+    fun setTestData(it: List<TestTypeBean>?) {
+        this.mList = it
+        notifyDataSetChanged()
     }
 
 

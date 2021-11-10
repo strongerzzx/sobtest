@@ -2,11 +2,9 @@ package com.example.base
 
 import com.chenxyu.retrofit.adapter.BuildConfig
 import com.chenxyu.retrofit.adapter.FlowCallAdapterFactory
-import com.example.commonparams.CommonParms
-import com.example.manager.TokenHeaderInterceptor
+import com.example.base.cookieconfig.AddCookiesInterceptor
+import com.example.base.cookieconfig.SaveCookieIntercept
 import com.example.manager.glideconfig.CookiesManagerGlide
-import com.example.manager.glideconfig.CookiesManagerLogin
-import com.example.utils.MmkvUtil
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -27,12 +25,14 @@ object BaseRetrofit {
         CookiesManagerGlide()
     }
 
-    fun getGlideOkHttpClient(): OkHttpClient {
+    fun getOkHttpClient(): OkHttpClient {
         val builder: OkHttpClient.Builder = OkHttpClient.Builder()
-                .cookieJar(cookieGlideJad) //cookieGlideJar
-                .readTimeout(60, TimeUnit.SECONDS)
-                .writeTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(60, TimeUnit.SECONDS)
+            .cookieJar(cookieGlideJad) //cookieGlideJar
+//            .addInterceptor(SaveCookieIntercept())
+//            .addInterceptor(AddCookiesInterceptor())
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
         if (BuildConfig.DEBUG) {
             val httpLoggingInterceptor = HttpLoggingInterceptor()
             builder.addInterceptor(httpLoggingInterceptor.apply {
@@ -42,22 +42,12 @@ object BaseRetrofit {
         return builder.build()
     }
 
-    private fun getLoginOkHttpClient(): OkHttpClient {
-        val builder: OkHttpClient.Builder = OkHttpClient.Builder()
-                .cookieJar(CookiesManagerLogin())
-                .readTimeout(60, TimeUnit.SECONDS)
-                .writeTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .addInterceptor(TokenHeaderInterceptor())
-        return builder.build()
-    }
-
     private fun getRetrofit(BASE_URL: String) = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(FlowCallAdapterFactory.create())
-            .client(getLoginOkHttpClient())
-            .build()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(FlowCallAdapterFactory.create())
+        .client(getOkHttpClient())
+        .build()
 
     fun <T> createApisService(ApiService: Class<T>): T = getRetrofit(BASE_URL).create(ApiService)
 

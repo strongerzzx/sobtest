@@ -1,12 +1,15 @@
 package com.example.manager.glideconfig
 
 import android.util.Log
+import android.webkit.CookieManager
 import com.example.base.BaseRetrofit
 import com.example.commonparams.CommonParms
 import com.example.utils.MmkvUtil
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 /**
 
@@ -24,29 +27,37 @@ class CookiesManagerGlide : CookieJar {
 
     override fun loadForRequest(url: HttpUrl): List<Cookie> {
         val list = ArrayList<Cookie>()
-        val sob = cookieStoreLog[BaseRetrofit.BASE_URL]
-        sob?.let {
-            for (cookie in it) {
-                println(cookie)
-            }
-            return it
+
+        val localCookie = MmkvUtil.getString(CommonParms.COOKIE_PIC_KEY)
+
+        Log.d(TAG, "save cookie --> $localCookie")
+        if (cookieStoreLog.isNotEmpty()) {
+            val sob = cookieStoreLog[url.host]
+            return sob!!
         }
         return list
     }
 
     override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
         Log.d(TAG, "saveFromResponse HttpUrl --> $url  --> ${url.host}")
+        if (cookies.isNullOrEmpty()) return
+
         if (BaseRetrofit.BASE_URL.contains(url.host)) {
-            for (cookie in cookies) {
-                Log.d(TAG, "cookie --> $cookie")
+            MmkvUtil.saveString(CommonParms.COOKIE_PIC_KEY, cookies.toString())
+            cookieStoreLog[url.host] = cookies
+        }
+
+        //TODO:存储在数据库
+
+        val cm = CookieManager.getInstance()
+        if (cookieStoreLog.isNotEmpty()) {
+            val list = cookieStoreLog[url.host]
+            list?.forEach {
+                cm.setCookie(url.host, it.value)
             }
-
-            val newCookies = cookies.toString().replace("[", "")
-                .replace("]", "")
-            Log.d(TAG, "cookie2 --> $newCookies")
-
-            MmkvUtil.saveString(CommonParms.COOKIE_PIC_KEY, newCookies)
-            cookieStoreLog[BaseRetrofit.BASE_URL] = cookies
+            cm.flush()
         }
     }
+
+
 }

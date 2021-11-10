@@ -22,18 +22,18 @@ data class Data(
 )
 
 data class Content(
-        val _id: String,
-        val articleId: String,
-        val avatar: String,
-        val commentContent: String,
-        val isTop: String,
-        val nickname: String,
-        val parentId: String,
-        val publishTime: String,
-        val role: Any,
-        val subComments: List<SubComment>, //子评论
-        val userId: String,
-        val vip: Boolean
+    val _id: String,
+    val articleId: String,
+    val avatar: String,
+    val commentContent: String,
+    val isTop: String,
+    val nickname: String,
+    val parentId: String,
+    val publishTime: String,
+    val role: Any,
+    var subComments: List<SubComment>, //子评论
+    val userId: String,
+    val vip: Boolean
 )
 
 data class Pageable(
