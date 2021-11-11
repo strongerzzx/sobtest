@@ -122,7 +122,8 @@ dependencies {
 
     def roomVersion = "2.3.0"
     implementation "androidx.room:room-runtime:$roomVersion"
-    kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
 
+    implementation 'com.blankj:utilcodex:1.30.6'
 }

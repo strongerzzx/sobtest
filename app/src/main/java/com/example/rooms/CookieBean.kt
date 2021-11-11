@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import okhttp3.Cookie
 
 
-@Entity
+@Entity(tableName = "tb_cookie")
 data class CookieBean(
     @PrimaryKey
     val host: String,
