@@ -9,7 +9,7 @@ import okhttp3.Cookie
 class CookieConverter {
 
     @TypeConverter
-    fun cookieToJson(cookieList: List<Cookie>) = cookieList.toJson()
+    fun cookieToJson(cookieList: List<Cookie>): String = cookieList.toJson()
 
 
     @TypeConverter
