@@ -87,7 +87,7 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
                 val inputComment = etArticleInputComment.text.toString()
                 if (inputComment.isEmpty()) return@setOnClickListener
                 if (isReply) {
-                    //TODO:回复
+                    //回复
                     mCurrentSubComment.content = inputComment
                     mViewModel.doReplySubArticle(mCurrentSubComment)
                     isReply = false
@@ -97,13 +97,13 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
                     val commentBean = CommentBean("0", mCurrentArticleId, inputComment)
                     mViewModel.doReviewArticle(commentBean)
                 }
+                mBinding.etArticleInputComment.hint = "发表一条友善的评论..."
                 hideSoftKeyboard()
             }
 
 
             //添加父评论的时候
             etArticleInputComment.setOnClickListener {
-                isReply = false
                 translateInputComment()
             }
 
@@ -169,15 +169,16 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
 
 
         mArticleCommentAdapter.setParentCommentClickListenr { articleId, parentId, beUid, beNickname ->
-            //TODO:给1级评论的回复
-            showSoftKeyBorad()
+            //给1级评论的回复
+            showSoftKeyBorad(beNickname)
             isReply = true
             mCurrentSubComment = SubComment(articleId, parentId, beUid, beNickname)
         }
 
 
         mArticleCommentAdapter.setSecCommentClickListener { articleId, parentId, beUid, beNickname ->
-            showSoftKeyBorad()
+            //给2级评论添加的回复
+            showSoftKeyBorad(beNickname)
             isReply = true
             mCurrentSubComment = SubComment(articleId, parentId, beUid, beNickname)
         }
@@ -189,19 +190,26 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
         val view: View? = currentFocus
         if (view != null) {
             val inputMethodManager: InputMethodManager =
-                    getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(
-                    view.windowToken,
-                    InputMethodManager.HIDE_NOT_ALWAYS
+                view.windowToken,
+                InputMethodManager.HIDE_NOT_ALWAYS
             )
         }
     }
 
-    private fun showSoftKeyBorad() {
+    private fun showSoftKeyBorad(content: String) {
+        mBinding.etArticleInputComment.hint = "@$content "
         val inputMethodManager: InputMethodManager =
-                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.showSoftInput(mBinding.etArticleInputComment, InputMethodManager.RESULT_SHOWN)
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(
+            mBinding.etArticleInputComment,
+            InputMethodManager.RESULT_SHOWN
+        )
+        inputMethodManager.toggleSoftInput(
+            InputMethodManager.SHOW_FORCED,
+            InputMethodManager.HIDE_IMPLICIT_ONLY
+        )
         translateInputComment()
     }
 
@@ -215,9 +223,13 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
             val screengHeight = this.window.decorView.height
             //键盘高度
             val heightDiff = screengHeight - rect.bottom
-            val totalTranY = -heightDiff.toFloat() + ImmersionBar.getStatusBarHeight(this) + (mBinding.llComment.height / 2)
+            val totalTranY =
+                -heightDiff.toFloat() + ImmersionBar.getStatusBarHeight(this) + (mBinding.llComment.height / 2)
             mBinding.llComment.translationY = totalTranY
-            Log.d(TAG, "soft height --> $heightDiff --> $totalTranY --> ${mBinding.llComment.height}")
+            Log.d(
+                TAG,
+                "soft height --> $heightDiff --> $totalTranY --> ${mBinding.llComment.height}"
+            )
         }
     }
 

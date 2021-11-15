@@ -70,9 +70,7 @@ class VerCommentView extends LinearLayout implements ViewGroup.OnHierarchyChange
         if (subCommentList == null || subCommentList.isEmpty()) {
             return;
         }
-
         this.mList.addAll(subCommentList);
-
         int oldCount = getChildCount();
         if (!isMore && oldCount > 0) {
             removeViewsInLayout(0, oldCount);
@@ -97,14 +95,11 @@ class VerCommentView extends LinearLayout implements ViewGroup.OnHierarchyChange
             }
         }
 
-
         if (subCommentList.size() > MAX_SHOW_COUNT) {
             addViewInLayout(makeMoreView(true, mList)
                     , MAX_SHOW_COUNT - subCommentList.size(), generateMarginLayoutParams(showCount), true);
         }
-
         requestLayout();
-
     }
 
     private View makeMoreView(boolean isMore, List<SubComment> list) {
