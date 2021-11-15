@@ -11,11 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import base.BaseActivity
 import com.example.adapters.ArticelCommentAdpater
-import com.example.adapters.TestArticleAdpter
 import com.example.beans.requestbeans.CommentBean
 import com.example.beans.requestbeans.SubComment
 import com.example.sobdemo.databinding.ActivityTabContentBinding
 import com.example.viewmodels.ArticleViewModel
+import com.gyf.immersionbar.ImmersionBar
 
 
 class TabContentActivity : BaseActivity<ArticleViewModel>() {
@@ -26,7 +26,6 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
     private lateinit var mArticleCommentAdapter: ArticelCommentAdpater
     private lateinit var mCurrentSubComment: SubComment //二级评论 --> 点击头像的时候赋值
     private var isReply = false
-    private lateinit var mTestArticleAdapter: TestArticleAdpter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +58,6 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
     private fun initEvent() {
 
         mArticleCommentAdapter = ArticelCommentAdpater()
-        mTestArticleAdapter = TestArticleAdpter()
 
         mBinding.apply {
             tabContentTopReturn.ivCommonBack.setOnClickListener {
@@ -78,8 +76,8 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
             }
 
             artRvComment.layoutManager = LinearLayoutManager(this@TabContentActivity)
-//            artRvComment.adapter = mArticleCommentAdapter
-            artRvComment.adapter = mTestArticleAdapter
+            artRvComment.adapter = mArticleCommentAdapter
+//            artRvComment.adapter = mTestArticleAdapter
 
 
             //TODO:发表评论 + 回复
@@ -122,29 +120,19 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
                 }
             })
 
-            //评论
+            //获取评论
             articleCommentLiveData.observe(this@TabContentActivity, Observer {
                 if (!it.success) return@Observer
                 //一共页数
-
                 val totalPages = it.data.totalPages
                 val contentCommom = it.data.content
                 if (contentCommom.isNotEmpty()) {
-//                    mArticleCommentAdapter.setData(contentCommom)
+                    mArticleCommentAdapter.setData(contentCommom)
                 } else {
                     Toast.makeText(this@TabContentActivity, "暂无评论", Toast.LENGTH_SHORT).show()
                 }
                 Log.d(TAG, "comment")
             })
-
-
-            //TODO:test
-            this.mTestCommentBeanLiveData.observe(this@TabContentActivity, Observer {
-//                mArticleCommentAdapter.setTestData(it)
-                mTestArticleAdapter.setData(it)
-            })
-
-
 
 
             reviewArticleCommentLiveData.observe(this@TabContentActivity, Observer {
@@ -172,6 +160,9 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
 
             //第一次进入获取评论
             getArticleComment(mCurrentArticleId, mCurrentCommentPage)
+            Log.d(TAG, "article comment --> $mCurrentArticleId --> $mCurrentCommentPage")
+
+
         }
 
 
@@ -192,28 +183,30 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
         val view: View? = currentFocus
         if (view != null) {
             val inputMethodManager: InputMethodManager =
-                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(
-                view.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
+                    view.windowToken,
+                    InputMethodManager.HIDE_NOT_ALWAYS
             )
         }
     }
 
+    //点击回复的时候上移 点击其他地方在收缩回去
     private fun translateInputComment() {
-        mBinding.etArticleInputComment.viewTreeObserver.addOnGlobalLayoutListener {
+        //修改
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        mBinding.llComment.viewTreeObserver.addOnGlobalLayoutListener {
             val rect = Rect()
-            mBinding.etArticleInputComment.getWindowVisibleDisplayFrame(rect)
-            val screenHeight = mBinding.etArticleInputComment.rootView.height
-            val keyHeight = screenHeight - rect.bottom
-            val totalTranslateY = -keyHeight.toFloat() + 20
-            mBinding.llComment.translationY = totalTranslateY
+            //当前界面可见部分
+            this.window.decorView.getWindowVisibleDisplayFrame(rect)
+            val screengHeight = this.window.decorView.height
+            //键盘高度
+            val heightDiff = screengHeight - rect.bottom
+            val totalTranY = -heightDiff.toFloat() + ImmersionBar.getStatusBarHeight(this) + (mBinding.llComment.height / 2)
+            mBinding.llComment.translationY = totalTranY
 
-            Log.d(TAG, "111111111111111111111")
+            Log.d(TAG, "soft height --> $heightDiff --> $totalTranY --> ${mBinding.llComment.height}")
         }
-
-        Log.d(TAG, "22222222222222222222222")
-
     }
 
     companion object {

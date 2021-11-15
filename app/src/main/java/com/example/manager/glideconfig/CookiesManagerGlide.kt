@@ -47,7 +47,6 @@ class CookiesManagerGlide : CookieJar {
             cookieStoreLog[url.host] = cookies
         }
 
-        //TODO:存储在数据库
 
         val cm = CookieManager.getInstance()
         if (cookieStoreLog.isNotEmpty()) {

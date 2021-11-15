@@ -25,7 +25,7 @@ public class AddCookiesInterceptor implements Interceptor {
         Request.Builder builder = request.newBuilder();
         String cookie = getCookie(request.url().toString(), request.url().host());
 
-        if (!TextUtils.isEmpty(cookie)) {
+        if (cookie != null && !TextUtils.isEmpty(cookie)) {
             builder.addHeader("Cookie", cookie);
         }
 

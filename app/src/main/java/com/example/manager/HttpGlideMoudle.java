@@ -22,7 +22,7 @@ import com.example.base.BaseRetrofit;
  * 作用： xxxx
  */
 @GlideModule
-public class HttpGlideMoudle extends AppGlideModule {
+public final class HttpGlideMoudle extends AppGlideModule {
     private static final String TAG = "HttpGlideMoudle";
 
     @Override

@@ -27,9 +27,9 @@ object BaseRetrofit {
 
     fun getOkHttpClient(): OkHttpClient {
         val builder: OkHttpClient.Builder = OkHttpClient.Builder()
-            .cookieJar(cookieGlideJad) //cookieGlideJar
-//            .addInterceptor(SaveCookieIntercept())
-//            .addInterceptor(AddCookiesInterceptor())
+//            .cookieJar(cookieGlideJad) //cookieGlideJar
+            .addInterceptor(SaveCookieIntercept())
+            .addInterceptor(AddCookiesInterceptor())
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
             .connectTimeout(60, TimeUnit.SECONDS)

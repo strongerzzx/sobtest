@@ -5,8 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.adapters.ArticelCommentAdpater
-import com.example.adapters.TestArticleAdpter
 import com.example.apis.ArticleApiService
 import com.example.base.BaseRet
 import com.example.base.BaseRetrofit
@@ -14,13 +12,11 @@ import com.example.beans.requestbeans.CommentBean
 import com.example.beans.requestbeans.SubComment
 import com.example.beans.resultbeans.ArticleCommenBean
 import com.example.beans.resultbeans.ArticleDetailBean
-import com.example.beans.resultbeans.TestTypeBean
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import org.jsoup.nodes.Comment
 
 class ArticleViewModel : ViewModel() {
 
@@ -54,9 +50,6 @@ class ArticleViewModel : ViewModel() {
         }
     }
 
-
-    val mTestCommentBeanLiveData = MutableLiveData<List<TestTypeBean>>()
-
     //获取文章评论
     fun getArticleComment(articileId: String, page: Int) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -69,29 +62,6 @@ class ArticleViewModel : ViewModel() {
                 .collect {
                     _articleCommentLiveData.value = it
                     Log.d(TAG, "getArticleComment -->  $it")
-
-                    val list = mutableListOf<TestTypeBean>()
-                    if (it.data.content.isNotEmpty()) {
-                        it.data.content.forEach {
-                            val testTypeBean = TestTypeBean()
-                            testTypeBean.parentComment = it
-                            testTypeBean.type = TestArticleAdpter.TYPE_SINGLE_REPLAY
-                            if (it.subComments.isNotEmpty()) {
-                                testTypeBean.parentComment.subComments = it.subComments
-                                testTypeBean.type = TestArticleAdpter.TYPE_MULTIYPLE_REPLAY
-                            }
-                            list.add(testTypeBean)
-                        }
-                    } else {
-                        val testTypeBlan = TestTypeBean()
-                        testTypeBlan.type = ArticelCommentAdpater.TYPE_BLANK_COMMENT;
-                        list.add(testTypeBlan)
-                    }
-
-                    mTestCommentBeanLiveData.value = list
-//                    mTestCommentBeanLiveData.value = testTypeBean
-
-
                 }
         }
     }
