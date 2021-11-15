@@ -38,6 +38,19 @@
         app:layout_constraintStart_toEndOf="@+id/tv_parent_name"
         app:layout_constraintTop_toTopOf="@+id/tv_parent_name" />
 
+
+    <ImageView
+        android:id="@+id/iv_par_reply"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:padding="10dp"
+        android:src="@mipmap/ic_reply"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_par_publish_timer"
+        app:layout_constraintStart_toEndOf="@+id/tv_par_publish_timer"
+        app:layout_constraintTop_toTopOf="@+id/tv_par_publish_timer" />
+
+
     <TextView
         android:id="@+id/tv_parent"
         android:layout_width="wrap_content"
@@ -51,9 +64,12 @@
 
     <com.example.views.VerCommentView
         android:id="@+id/child_comment_view"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="13dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/iv_par_avator"
         app:layout_constraintTop_toBottomOf="@+id/tv_parent" />
 
 

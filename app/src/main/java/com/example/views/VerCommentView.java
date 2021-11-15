@@ -1,6 +1,7 @@
 package com.example.views;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 
+import com.blankj.utilcode.util.LogUtils;
 import com.bumptech.glide.Glide;
 import com.example.beans.resultbeans.SubComment;
 import com.example.sobdemo.R;
+import com.example.sobdemo.databinding.ItemCommentSingleLoadMoreBinding;
+import com.example.sobdemo.databinding.ItemVerCommentViewLayoutBinding;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
@@ -32,6 +36,7 @@ class VerCommentView extends LinearLayout implements ViewGroup.OnHierarchyChange
     private int mPos;
     private SimpleWeakObjectPool<View> commentViewPool;
     private LayoutParams mLayoutParams;
+    private final int MAX_SHOW_COUNT = 3;
     private int mCommentVerticalSpace;
     private List<SubComment> mList;
 
@@ -72,7 +77,7 @@ class VerCommentView extends LinearLayout implements ViewGroup.OnHierarchyChange
         if (!isMore && oldCount > 0) {
             removeViewsInLayout(0, oldCount);
         }
-        int showCount = Math.min(limit, subCommentList.size());
+        int showCount = Math.min(limit, MAX_SHOW_COUNT);
         for (int i = 0; i < showCount; i++) {
             //如果下标比ViewGroup的孩子少 -->就代表里面有孩子
             boolean hasChild = i < oldCount;
@@ -92,23 +97,35 @@ class VerCommentView extends LinearLayout implements ViewGroup.OnHierarchyChange
             }
         }
 
-      /*  if (secondBeansList.size() > 0) {
-            addViewInLayout(makeMoreView(mTotalCount > showCount)
-                    , showCount, generateMarginLayoutParams(showCount), true);
-        }*/
+
+        if (subCommentList.size() > MAX_SHOW_COUNT) {
+            addViewInLayout(makeMoreView(true, mList)
+                    , MAX_SHOW_COUNT - subCommentList.size(), generateMarginLayoutParams(showCount), true);
+        }
 
         requestLayout();
 
     }
 
-  /*  private View makeMoreView(boolean isMore) {
+    private View makeMoreView(boolean isMore, List<SubComment> list) {
         View view = LayoutInflater.from(getContext())
                 .inflate(R.layout.item_comment_single_load_more, null);
+        ItemCommentSingleLoadMoreBinding loadMoreBinding = ItemCommentSingleLoadMoreBinding.bind(view);
         if (isMore) {
-            //TODO:
+            loadMoreBinding.tvReplyLoadMore.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    List<SubComment> loadMoreList = list.subList(MAX_SHOW_COUNT, list.size());
+                    for (int i = 0; i < loadMoreList.size(); i++) {
+                        addView(makeView(loadMoreList.get(i), i));
+                    }
+                    loadMoreBinding.tvReplyLoadMore.setVisibility(View.GONE);
+                    Log.d(TAG, "click load more reply --> ");
+                }
+            });
         }
         return view;
-    }*/
+    }
 
     private void updateCommentData(View childView, SubComment subComment, int index) {
         bindView(childView, subComment);
@@ -142,18 +159,16 @@ class VerCommentView extends LinearLayout implements ViewGroup.OnHierarchyChange
     }
 
     private void bindView(View inflate, SubComment subComment) {
-        RoundedImageView ivChildAvator = inflate.findViewById(R.id.iv_child_avator);
-        TextView tvChildPublishTimer = inflate.findViewById(R.id.tv_child_publish_timer);
-        TextView tvChildComment = inflate.findViewById(R.id.tv_child_comment);
-        TextView tvChildName = inflate.findViewById(R.id.tv_child_name);
+        ItemVerCommentViewLayoutBinding binding = ItemVerCommentViewLayoutBinding.bind(inflate);
         Glide.with(getContext())
                 .load(subComment.getYourAvatar())
-                .into(ivChildAvator);
-        Log.d(TAG,"child name --> "+subComment.getBeNickname()+" : "+subComment.getYourNickname());
-        tvChildName.setText(subComment.getYourNickname());
-        tvChildPublishTimer.setText(subComment.getPublishTime());
-        tvChildComment.setText(subComment.getContent());
-        tvChildComment.setOnClickListener(new OnClickListener() {
+                .into(binding.ivChildAvator);
+        binding.tvReplyChildName.setVisibility(TextUtils.isEmpty(subComment.getBeNickname()) ? View.GONE : View.VISIBLE);
+        binding.tvReplyChildName.setText("  回复  " + subComment.getBeNickname());
+        binding.tvChildName.setText(subComment.getYourNickname());
+        binding.tvChildComment.setText(subComment.getContent());
+        binding.tvChildPublishTimer.setText(subComment.getPublishTime());
+        binding.tvChildComment.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mOnSecCommentItemClick != null) {
@@ -161,6 +176,8 @@ class VerCommentView extends LinearLayout implements ViewGroup.OnHierarchyChange
                 }
             }
         });
+
+
     }
 
 

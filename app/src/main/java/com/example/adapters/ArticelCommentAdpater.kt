@@ -14,8 +14,12 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnView
 
     private val mCommonList = mutableListOf<Content>()
 
-    private lateinit var mHeaderCommentListener:
+    private lateinit var mParentCommentListener:
             (articleId: String, parentId: String, beUid: String, beNickname: String) -> Unit
+
+    private lateinit var mSecCommentListener:
+            (articleId: String, parentId: String, beUid: String, beNickname: String) -> Unit
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InnViewHolder {
         val inflate = LayoutInflater.from(parent.context).inflate(R.layout.article_comment_single_layout,
@@ -36,6 +40,13 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnView
         Glide.with(holder.itemView.context)
                 .load(parContent.avatar)
                 .into(holder.binding.ivParAvator)
+        holder.binding.ivParReply.setOnClickListener {
+            mParentCommentListener.invoke(
+                    parContent.articleId, parContent._id,
+                    parContent.userId, parContent.nickname,
+            )
+            Log.d(TAG, "reply par --> $parContent")
+        }
 
 
         //2级评论
@@ -44,14 +55,25 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnView
             holder.binding.childCommentView.visibility = View.GONE
             return
         }
+
+
         holder.binding.childCommentView.visibility = View.VISIBLE
         holder.binding.childCommentView.setData(subComments, subComments.size, false)
+        holder.binding.childCommentView.setOnSecCommentItemClick { view, subComment, pos ->
+            mSecCommentListener.invoke(subComment.articleId, subComment.parentId, subComment.beUid, subComment.yourNickname)
+            Log.d(TAG, "sub reply --> $subComment   -->   $pos")
+        }
+
 
     }
 
 
-    fun setHeadCommentClickListenr(listener: (articleId: String, parentId: String, beUid: String, beNickname: String) -> Unit) {
-        this.mHeaderCommentListener = listener
+    fun setParentCommentClickListenr(listener: (articleId: String, parentId: String, beUid: String, beNickname: String) -> Unit) {
+        this.mParentCommentListener = listener
+    }
+
+    fun setSecCommentClickListener(listener: (articleId: String, parentId: String, beUid: String, beNickname: String) -> Unit) {
+        this.mSecCommentListener = listener
     }
 
     override fun getItemCount(): Int = mCommonList.size
@@ -68,4 +90,8 @@ class ArticelCommentAdpater : RecyclerView.Adapter<ArticelCommentAdpater.InnView
         val binding = itemView
     }
 
+
+    companion object {
+        private const val TAG = "ArticelCommentAdpater"
+    }
 }

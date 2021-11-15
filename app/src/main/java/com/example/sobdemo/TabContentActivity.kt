@@ -1,12 +1,15 @@
 package com.example.sobdemo
 
 import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import base.BaseActivity
@@ -30,6 +33,7 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         mBinding = ActivityTabContentBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
@@ -77,31 +81,29 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
 
             artRvComment.layoutManager = LinearLayoutManager(this@TabContentActivity)
             artRvComment.adapter = mArticleCommentAdapter
-//            artRvComment.adapter = mTestArticleAdapter
 
 
-            //TODO:发表评论 + 回复
             btnArticleReview.setOnClickListener {
                 val inputComment = etArticleInputComment.text.toString()
-                val commentBean = CommentBean("0", mCurrentArticleId, inputComment)
                 if (inputComment.isEmpty()) return@setOnClickListener
-
                 if (isReply) {
-                    //回复
+                    //TODO:回复
+                    mCurrentSubComment.content = inputComment
                     mViewModel.doReplySubArticle(mCurrentSubComment)
                     isReply = false
+                    Log.d(TAG, "mCurrentSubComment  -->  $mCurrentSubComment")
                 } else {
                     //发表评论
+                    val commentBean = CommentBean("0", mCurrentArticleId, inputComment)
                     mViewModel.doReviewArticle(commentBean)
                 }
-
-
-                Log.d(TAG, "commentBean  --> $commentBean")
+                hideSoftKeyboard()
             }
 
 
-            //点击回复的时候
+            //添加父评论的时候
             etArticleInputComment.setOnClickListener {
+                isReply = false
                 translateInputComment()
             }
 
@@ -166,17 +168,21 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
         }
 
 
-        mArticleCommentAdapter.setHeadCommentClickListenr { articleId, parentId, beUid, beNickname ->
-            //TODO:回复
-            translateInputComment()
-            Log.d(TAG, "111111111111111111111111")
-
-            val headComment = mBinding.etArticleInputComment.text.toString()
-            if (headComment.isEmpty()) return@setHeadCommentClickListenr
+        mArticleCommentAdapter.setParentCommentClickListenr { articleId, parentId, beUid, beNickname ->
+            //TODO:给1级评论的回复
+            showSoftKeyBorad()
             isReply = true
-            mCurrentSubComment = SubComment(articleId, parentId, beUid, beNickname, headComment)
-            Log.d(TAG, "mCurrentSubComment  -->  $mCurrentSubComment")
+            mCurrentSubComment = SubComment(articleId, parentId, beUid, beNickname)
         }
+
+
+        mArticleCommentAdapter.setSecCommentClickListener { articleId, parentId, beUid, beNickname ->
+            showSoftKeyBorad()
+            isReply = true
+            mCurrentSubComment = SubComment(articleId, parentId, beUid, beNickname)
+        }
+
+
     }
 
     private fun hideSoftKeyboard() {
@@ -191,10 +197,17 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
         }
     }
 
-    //点击回复的时候上移 点击其他地方在收缩回去
+    private fun showSoftKeyBorad() {
+        val inputMethodManager: InputMethodManager =
+                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(mBinding.etArticleInputComment, InputMethodManager.RESULT_SHOWN)
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        translateInputComment()
+    }
+
+
+    //输入框在键盘上
     private fun translateInputComment() {
-        //修改
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         mBinding.llComment.viewTreeObserver.addOnGlobalLayoutListener {
             val rect = Rect()
             //当前界面可见部分
@@ -204,7 +217,6 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
             val heightDiff = screengHeight - rect.bottom
             val totalTranY = -heightDiff.toFloat() + ImmersionBar.getStatusBarHeight(this) + (mBinding.llComment.height / 2)
             mBinding.llComment.translationY = totalTranY
-
             Log.d(TAG, "soft height --> $heightDiff --> $totalTranY --> ${mBinding.llComment.height}")
         }
     }

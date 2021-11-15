@@ -3,6 +3,8 @@ package com.example.base.cookieconfig;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
+import android.webkit.CookieManager;
 
 import java.io.IOException;
 
@@ -17,6 +19,7 @@ import okhttp3.Response;
 public class AddCookiesInterceptor implements Interceptor {
 
     private static final String COOKIE_PREF = "cookies_prefs";
+    private static final String TAG = "AddCookiesInterceptor";
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -25,8 +28,12 @@ public class AddCookiesInterceptor implements Interceptor {
         Request.Builder builder = request.newBuilder();
         String cookie = getCookie(request.url().toString(), request.url().host());
 
+        Log.d(TAG, "request  cookie --> " + cookie);
         if (cookie != null && !TextUtils.isEmpty(cookie)) {
             builder.addHeader("Cookie", cookie);
+            CookieManager instance = CookieManager.getInstance();
+            instance.setCookie(request.url().toString(), cookie);
+            instance.flush();
         }
 
         return chain.proceed(builder.build());
