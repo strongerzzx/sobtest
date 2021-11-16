@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.beans.resultbeans.SubComment;
 import com.example.sobdemo.R;
 import com.example.sobdemo.databinding.ItemCommentSingleLoadMoreBinding;
@@ -32,12 +33,11 @@ public
  */
 class VerCommentView extends LinearLayout implements ViewGroup.OnHierarchyChangeListener {
     private static final String TAG = "VerCommentView";
-    private int mTotalCount;
     private int mPos;
     private SimpleWeakObjectPool<View> commentViewPool;
     private LayoutParams mLayoutParams;
     private final int MAX_SHOW_COUNT = 3;
-    private int mCommentVerticalSpace;
+    private int mCommentVerticalSpace = 1;
     private List<SubComment> mList;
 
     public VerCommentView(Context context) {
@@ -61,16 +61,12 @@ class VerCommentView extends LinearLayout implements ViewGroup.OnHierarchyChange
         mList = new ArrayList<>();
     }
 
-    public void setTotalCount(int totalCount) {
-        this.mTotalCount = totalCount;
-    }
-
     public void setData(List<SubComment> subCommentList, int limit, boolean isMore) {
         mList.clear();
         if (subCommentList == null || subCommentList.isEmpty()) {
             return;
         }
-        this.mList.addAll(subCommentList);
+        mList.addAll(subCommentList);
         int oldCount = getChildCount();
         if (!isMore && oldCount > 0) {
             removeViewsInLayout(0, oldCount);
@@ -95,6 +91,7 @@ class VerCommentView extends LinearLayout implements ViewGroup.OnHierarchyChange
             }
         }
 
+        //loadMore
         if (subCommentList.size() > MAX_SHOW_COUNT) {
             addViewInLayout(makeMoreView(true, mList)
                     , MAX_SHOW_COUNT - subCommentList.size(), generateMarginLayoutParams(showCount), true);
@@ -136,6 +133,7 @@ class VerCommentView extends LinearLayout implements ViewGroup.OnHierarchyChange
             mLayoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
                     , ViewGroup.LayoutParams.WRAP_CONTENT);
         }
+
         if (mList != null && index > 0) {
             mLayoutParams.topMargin = (int) (mCommentVerticalSpace * 1.2f);
         }
@@ -157,6 +155,7 @@ class VerCommentView extends LinearLayout implements ViewGroup.OnHierarchyChange
         ItemVerCommentViewLayoutBinding binding = ItemVerCommentViewLayoutBinding.bind(inflate);
         Glide.with(getContext())
                 .load(subComment.getYourAvatar())
+                .apply(RequestOptions.circleCropTransform())
                 .into(binding.ivChildAvator);
         binding.tvReplyChildName.setVisibility(TextUtils.isEmpty(subComment.getBeNickname()) ? View.GONE : View.VISIBLE);
         binding.tvReplyChildName.setText("  回复  " + subComment.getBeNickname());

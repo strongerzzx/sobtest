@@ -12,11 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SobDemo">
+        <activity android:name=".RichListActivity"></activity>
 
         <meta-data
             android:name="com.example.manager.HttpGlideMoudle"
             android:value="AppGlideModule" />
-
         <meta-data
             android:name="design_width_in_dp"
             android:value="360" />
@@ -24,16 +24,12 @@
             android:name="design_height_in_dp"
             android:value="640" />
 
-
         <activity
             android:name=".TabContentActivity"
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-
         <activity android:name=".HomeActivity" />
-
         <activity android:name=".LookForPasswordActivity" />
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,8 +37,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity android:name="base.BaseActivity" />
     </application>
 

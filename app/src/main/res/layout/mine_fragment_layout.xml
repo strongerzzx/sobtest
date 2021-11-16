@@ -111,8 +111,21 @@
         android:text="动态评论"
         android:textColor="@color/black_80"
         app:layout_constraintBottom_toBottomOf="@+id/tv_custom_achievement"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_rich_list"
         app:layout_constraintStart_toEndOf="@+id/tv_user_article_list"
+        app:layout_constraintTop_toTopOf="@+id/tv_custom_achievement" />
+
+
+    <TextView
+        android:id="@+id/tv_rich_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="富豪榜"
+        android:textColor="@color/black_80"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_custom_achievement"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_user_dynamic_comment"
         app:layout_constraintTop_toTopOf="@+id/tv_custom_achievement" />
 
 

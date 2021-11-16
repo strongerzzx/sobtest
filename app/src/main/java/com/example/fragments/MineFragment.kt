@@ -1,5 +1,6 @@
 package com.example.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import com.example.base.BaseFragment
 import com.example.beans.userinfo.UserInfo
 import com.example.commonparams.CommonParms
 import com.example.sobdemo.R
+import com.example.sobdemo.RichListActivity
 import com.example.sobdemo.databinding.MineFragmentLayoutBinding
 import com.example.utils.MmkvUtil
 import com.example.viewmodels.UserViewModel
@@ -53,10 +55,14 @@ class MineFragment : BaseFragment<UserViewModel>() {
                     }
                 }
             })
-
-
             getUnReadMessage()
         }
+
+        mBinding.tvRichList.setOnClickListener {
+            val intent = Intent(context, RichListActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun setupBasicUser() {

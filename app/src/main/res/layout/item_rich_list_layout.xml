@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp">
+
+
+    <TextView
+        android:id="@+id/tv_rich_rank"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="15"
+        android:textColor="#000"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/iv_rich_avater"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_rich_rank"
+        app:layout_constraintStart_toStartOf="@+id/guideline_right"
+        app:layout_constraintTop_toTopOf="@+id/tv_rich_rank" />
+
+
+    <TextView
+        android:id="@+id/tv_rich_vip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="3dp"
+        android:gravity="bottom"
+        android:text="VIP"
+        android:textColor="#E91E63"
+        android:textSize="8sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_rich_avater"
+        app:layout_constraintEnd_toEndOf="@+id/iv_rich_avater" />
+
+
+    <TextView
+        android:id="@+id/tv_rich_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="name"
+        android:textColor="#E91E63"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/iv_rich_avater"
+        app:layout_constraintTop_toTopOf="@+id/iv_rich_avater" />
+
+
+    <TextView
+        android:id="@+id/tv_rich_pick_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3480"
+        android:textColor="#4d4d4d"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_rich_avater"
+        app:layout_constraintStart_toStartOf="@+id/tv_rich_name" />
+
+
+    <ImageView
+        android:id="@+id/iv_rank_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.03" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.12" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

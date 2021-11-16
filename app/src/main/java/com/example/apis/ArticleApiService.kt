@@ -5,6 +5,7 @@ import com.example.beans.requestbeans.CommentBean
 import com.example.beans.requestbeans.SubComment
 import com.example.beans.resultbeans.ArticleCommenBean
 import com.example.beans.resultbeans.ArticleDetailBean
+import com.example.beans.resultbeans.RichListBean
 import kotlinx.coroutines.flow.Flow
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -19,8 +20,8 @@ interface ArticleApiService {
     //获取文章评论列表
     @GET("/ct/article/comment/{articleId}/{page}")
     fun getArticleComment(
-        @Path("articleId") articleId: String,
-        @Path("page") page: Int
+            @Path("articleId") articleId: String,
+            @Path("page") page: Int
     ): Flow<ArticleCommenBean>
 
 
@@ -31,5 +32,10 @@ interface ArticleApiService {
     //回复文章评论
     @POST("/ct/article/sub-comment")
     fun replySubArticle(@Body subComment: SubComment): Flow<BaseRet<String>>
+
+
+    //文章打赏列表
+    @GET("/ast/prise/article/{articleId}")
+    fun getArticlePriseList(@Path("articleId") articleId: String): Flow<RichListBean>
 
 }

@@ -49,6 +49,9 @@ android {
         main {
             jniLibs.srcDirs = ['libs']
         }
+
+        main.res.srcDirs += "src/main/res_common"
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
