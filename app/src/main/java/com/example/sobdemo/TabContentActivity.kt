@@ -196,7 +196,6 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
 
             getTabArticleDetail(mCurrentArticleId)
 
-            //第一次进入获取评论
             getArticleComment(mCurrentArticleId, mCurrentCommentPage)
 
             getArticlePriceList(mCurrentArticleId)
