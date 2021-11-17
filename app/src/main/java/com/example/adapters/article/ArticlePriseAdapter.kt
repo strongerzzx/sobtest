@@ -1,7 +1,6 @@
-package com.example.adapters
+package com.example.adapters.article
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -15,7 +14,8 @@ class ArticlePriseAdapter : RecyclerView.Adapter<ArticlePriseAdapter.InnverHolde
     private val mList = mutableListOf<RichBean>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InnverHolder {
-        val inflate = LayoutInflater.from(parent.context).inflate(R.layout.item_article_prise_layout, parent, false)
+        val inflate = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_article_prise_layout, parent, false)
         val bind = ItemArticlePriseLayoutBinding.bind(inflate)
         return InnverHolder(bind)
     }
@@ -23,9 +23,9 @@ class ArticlePriseAdapter : RecyclerView.Adapter<ArticlePriseAdapter.InnverHolde
     override fun onBindViewHolder(holder: InnverHolder, position: Int) {
         val richBean = mList[position]
         Glide.with(holder.itemView.context)
-                .load(richBean.avatar)
-                .apply(RequestOptions.circleCropTransform())
-                .into(holder.binding.ivPriseAvator)
+            .load(richBean.avatar)
+            .apply(RequestOptions.circleCropTransform())
+            .into(holder.binding.ivPriseAvator)
         holder.binding.tvPriseName.text = richBean.nickname
         holder.binding.tvPriseSob.text = richBean.sob.toString()
     }
@@ -35,10 +35,12 @@ class ArticlePriseAdapter : RecyclerView.Adapter<ArticlePriseAdapter.InnverHolde
     fun setData(data: List<RichBean>) {
         mList.clear()
         mList.addAll(data)
+        notifyDataSetChanged()
     }
 
 
-    inner class InnverHolder(itemView: ItemArticlePriseLayoutBinding) : RecyclerView.ViewHolder(itemView.root) {
+    inner class InnverHolder(itemView: ItemArticlePriseLayoutBinding) :
+        RecyclerView.ViewHolder(itemView.root) {
         val binding = itemView
     }
 }

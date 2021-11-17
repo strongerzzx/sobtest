@@ -30,15 +30,10 @@ object BaseRetrofit {
 //            .cookieJar(cookieGlideJad) //cookieGlideJar
             .addInterceptor(SaveCookieIntercept())
             .addInterceptor(AddCookiesInterceptor())
+            .addInterceptor(HttpLoggingInterceptor())
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
             .connectTimeout(60, TimeUnit.SECONDS)
-        if (BuildConfig.DEBUG) {
-            val httpLoggingInterceptor = HttpLoggingInterceptor()
-            builder.addInterceptor(httpLoggingInterceptor.apply {
-                httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-            })
-        }
         return builder.build()
     }
 

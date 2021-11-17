@@ -49,7 +49,7 @@ class MineFragment : BaseFragment<UserViewModel>() {
             unUserReadMsg.observe(viewLifecycleOwner, Observer {
                 if (it.success) {
                     //TODO:更新未读信息的个数
-                    if (it.data.momentCommentCount >= 0) {
+                    if (it.data.momentCommentCount > 0) {
                         mBinding.tvUnRadMsgCount.visibility = View.VISIBLE
                         mBinding.tvUnRadMsgCount.text = it.data.momentCommentCount.toString()
                     }

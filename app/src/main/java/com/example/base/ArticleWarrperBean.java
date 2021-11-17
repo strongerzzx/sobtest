@@ -15,23 +15,24 @@ public class ArticleWarrperBean {
     public static final int TYPE_BOTH_ALL_ARTICLE = 2;
 
     private int type;
-    private List<RichBean> mPriseList;
-    private List<Content> mContentList;
+    private RichListBean mPriseList;
+    private Data mContentList;
 
-    public List<Content> getContentList() {
-        return mContentList;
-    }
 
-    public void setContentList(List<Content> contentList) {
-        mContentList = contentList;
-    }
-
-    public List<RichBean> getPriseList() {
+    public RichListBean getPriseList() {
         return mPriseList;
     }
 
-    public void setPriseList(List<RichBean> priseList) {
+    public void setPriseList(RichListBean priseList) {
         mPriseList = priseList;
+    }
+
+    public Data getContentList() {
+        return mContentList;
+    }
+
+    public void setContentList(Data contentList) {
+        mContentList = contentList;
     }
 
     public int getType() {
@@ -43,4 +44,12 @@ public class ArticleWarrperBean {
     }
 
 
+    @Override
+    public String toString() {
+        return "ArticleWarrperBean{" +
+                "type=" + type +
+                ", mPriseList=" + mPriseList +
+                ", mContentList=" + mContentList +
+                '}';
+    }
 }

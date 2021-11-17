@@ -1,15 +1,13 @@
-package com.example.adapters
+package com.example.adapters.mine
 
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.beans.resultbeans.RichBean
-import com.example.beans.resultbeans.RichListBean
 import com.example.sobdemo.R
 import com.example.sobdemo.databinding.ItemRichListLayoutBinding
 import com.example.utils.CircleBroaderTranslate
@@ -21,7 +19,7 @@ class RichListAdapter : RecyclerView.Adapter<RichListAdapter.InnerViewHolder>() 
     override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
-    ): RichListAdapter.InnerViewHolder {
+    ): InnerViewHolder {
         val inflate = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_rich_list_layout, parent, false)
 
@@ -30,7 +28,7 @@ class RichListAdapter : RecyclerView.Adapter<RichListAdapter.InnerViewHolder>() 
         return InnerViewHolder(bind)
     }
 
-    override fun onBindViewHolder(holder: RichListAdapter.InnerViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: InnerViewHolder, position: Int) {
         val richBean = mRichList[position]
 
         holder.mBinding.tvRichVip.visibility = if (richBean.vip) {

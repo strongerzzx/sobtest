@@ -1,13 +1,10 @@
 package com.example.sobdemo
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import base.BaseActivity
-import com.example.adapters.RichListAdapter
+import com.example.adapters.mine.RichListAdapter
 import com.example.sobdemo.databinding.ActivityRichListBinding
 import com.example.viewmodels.UserViewModel
 import com.gyf.immersionbar.ImmersionBar

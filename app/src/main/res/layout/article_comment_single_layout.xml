@@ -10,7 +10,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,8 +69,8 @@
         android:layout_marginTop="13dp"
         android:layout_marginBottom="5dp"
         android:background="@drawable/app_comment_bg"
-        app:layout_constraintEnd_toEndOf="parent"
         android:paddingBottom="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/iv_par_avator"
         app:layout_constraintTop_toBottomOf="@+id/tv_parent" />
 

@@ -5,9 +5,9 @@ import com.example.beans.requestbeans.CommentBean
 import com.example.beans.requestbeans.SubComment
 import com.example.beans.resultbeans.ArticleCommenBean
 import com.example.beans.resultbeans.ArticleDetailBean
+import com.example.beans.resultbeans.ArticleQrResult
 import com.example.beans.resultbeans.RichListBean
 import kotlinx.coroutines.flow.Flow
-import okhttp3.ResponseBody
 import retrofit2.http.*
 
 interface ArticleApiService {
@@ -20,8 +20,8 @@ interface ArticleApiService {
     //获取文章评论列表
     @GET("/ct/article/comment/{articleId}/{page}")
     fun getArticleComment(
-            @Path("articleId") articleId: String,
-            @Path("page") page: Int
+        @Path("articleId") articleId: String,
+        @Path("page") page: Int
     ): Flow<ArticleCommenBean>
 
 
@@ -38,4 +38,8 @@ interface ArticleApiService {
     @GET("/ast/prise/article/{articleId}")
     fun getArticlePriseList(@Path("articleId") articleId: String): Flow<RichListBean>
 
+
+    //获取打赏二维码
+    @GET("/ast/prise-qr-code/{userId}")
+    fun getQrCodeByUserId(@Path("userId") userId: String): Flow<ArticleQrResult?>
 }
