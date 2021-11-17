@@ -100,7 +100,6 @@ class UserViewModel : ViewModel() {
                         _richListLivedata.value = it
                     }
                 }
-
         }
     }
 

@@ -13,7 +13,6 @@ class RichListActivity : BaseActivity<UserViewModel>() {
 
     private lateinit var mBinding: ActivityRichListBinding
     private lateinit var mRichAdapter: RichListAdapter
-    private var mRichCount = DEFAULT_RICH_COUNT
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +30,6 @@ class RichListActivity : BaseActivity<UserViewModel>() {
     }
 
     private fun initEvent() {
-
         mRichAdapter = RichListAdapter()
         mBinding.rvRichList.layoutManager = LinearLayoutManager(this)
         mBinding.rvRichList.adapter = mRichAdapter
@@ -47,7 +45,6 @@ class RichListActivity : BaseActivity<UserViewModel>() {
 
     companion object {
         private const val TAG = "RichListActivity"
-        private const val DEFAULT_RICH_COUNT = 20
     }
 
     override fun getSubViewModel(): Class<UserViewModel> = UserViewModel::class.java

@@ -1,8 +1,10 @@
 package com.example.sobdemo
 
+import android.annotation.SuppressLint
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -60,6 +62,7 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
         getImmersionBar().init()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initEvent() {
 
         mArticleCommentAdapter = ArticelCommentAdpater()
@@ -93,8 +96,6 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
                 )
             artRvComment.adapter = concatAdapter
 
-//            artRvComment.adapter = mArticleCommentAdapter
-
             btnArticleReview.setOnClickListener {
                 val inputComment = etArticleInputComment.text.toString()
                 if (inputComment.isEmpty()) return@setOnClickListener
@@ -114,10 +115,18 @@ class TabContentActivity : BaseActivity<ArticleViewModel>() {
             }
 
 
-            //添加父评论的时候
-            etArticleInputComment.setOnClickListener {
-                translateInputComment()
+            etArticleInputComment.setOnTouchListener { v, event ->
+                when (event?.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        translateInputComment()
+                        Log.d(TAG, "et art input click --> ")
+                    }
+                    else -> {
+                    }
+                }
+                false
             }
+
 
         }
 

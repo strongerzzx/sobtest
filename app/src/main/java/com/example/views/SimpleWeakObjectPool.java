@@ -37,6 +37,8 @@ public final class SimpleWeakObjectPool<T> {
         return false;
     }
 
+
+
     public void clearPool() {
         for (int i = 0; i < objsPool.length; i++) {
             objsPool[i].clear();
@@ -44,6 +46,7 @@ public final class SimpleWeakObjectPool<T> {
         }
         curPointer = -1;
     }
+
 
     public int size() {
         return objsPool == null ? 0 : objsPool.length;

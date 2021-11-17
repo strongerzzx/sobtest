@@ -181,13 +181,14 @@ class VerCommentView extends LinearLayout implements ViewGroup.OnHierarchyChange
 
     @Override
     public void onChildViewAdded(View parent, View child) {
-
+        commentViewPool.put(child);
+        Log.d(TAG, "pool size --> " + commentViewPool.size());
     }
 
     @Override
     public void onChildViewRemoved(View parent, View child) {
-        commentViewPool.put(child);
     }
+
 
     private OnSecCommentItemClick mOnSecCommentItemClick;
 
