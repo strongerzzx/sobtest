@@ -31,7 +31,7 @@ public final class SimpleWeakObjectPool<T> {
     public synchronized boolean put(T t) {
         if (curPointer == -1 || curPointer < objsPool.length - 1) {
             curPointer++;
-            objsPool[curPointer] = new WeakReference<T>(t);
+            objsPool[curPointer] = new WeakReference<>(t);
             return true;
         }
         return false;
