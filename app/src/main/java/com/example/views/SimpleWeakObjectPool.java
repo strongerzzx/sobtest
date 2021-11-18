@@ -38,7 +38,6 @@ public final class SimpleWeakObjectPool<T> {
     }
 
 
-
     public void clearPool() {
         for (int i = 0; i < objsPool.length; i++) {
             objsPool[i].clear();
